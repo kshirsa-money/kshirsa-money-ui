@@ -28,7 +28,7 @@ const api = axios.create({
   },
 });
 
-export const setupInterceptors = (router, deviceId) => {
+export const setupInterceptors = (router) => {
 
 api.interceptors.request.use(
     async (config) => {
@@ -44,7 +44,7 @@ api.interceptors.request.use(
             config.headers['Authorization'] = `Bearer ${token}`; // Use existing JWT
           }
         }  
-        config.headers['device-id'] = deviceId; 
+        config.headers['device-id'] = deviceIdFromStorage; 
         console.log('Request Details:');
         console.log('URL:', config.url);
         console.log('Method:', config.method.toUpperCase());
@@ -53,7 +53,7 @@ api.interceptors.request.use(
         if (config.data) console.log('Body:', config.data);   
       return config;
     },(error) => {
-      console.log('error from req:', error?.response?.data)
+      console.log('error from req intercepter:', error?.response?.data)
         return Promise.reject(error);
       }
     );
@@ -71,16 +71,18 @@ api.interceptors.request.use(
     // }
   // )
     const errorDetails = error?.response?.data?.errorDetails;
-    console.log('Response Error:', error?.response?.data);
-      if (errorDetails?.errorCode?.startsWith(6)) {
+    console.log('auth intercepter Response Error:', error?.response?.data?.errorDetails?.errorCode);
+      if (errorDetails?.errorCode === 602) {
+        console.log('inside if')
         clearAuthTokens()
-        Toast.show({
-          type: 'error',
-          title: 'Session Expired',
-          message: 'Your session has expired. Please login again.',
-          autoHide: true,
-          duration: 3000,
-        });
+        // Toast.show({
+        //   type: 'error',
+        //   title: 'Session Expired',
+        //   message: 'Your session has expired. Please login again.',
+        //   autoHide: true,
+        //   duration: 3000,
+        // });
+        // router.replace('/(auth)/loginOrSignUp')
       }
       return Promise.reject(error);
   });

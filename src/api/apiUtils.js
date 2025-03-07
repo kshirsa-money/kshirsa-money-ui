@@ -34,7 +34,7 @@ export const unAuthfetchData = async (endpoint, queryParams={}) => {
     const response = await uApi.get(formattedUrl);
     return response.data;
   } catch (error) {
-    console.error('Error fetching data:', error.message);
+    console.error('Error fetching data unauth:', error.message);
     throw error;
   }
 };

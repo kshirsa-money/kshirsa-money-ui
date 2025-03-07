@@ -23,9 +23,10 @@ const GetStartedScreen = () => {
   const handleGetStarted =()=> {
     router.push(apiRoutes.loginOrSignup)
   }
+  
   return (
     <SafeAreaView style={GetStartedScreenStyles.container}>
-      <View style={{}}></View>
+      <View />
       <View style={GetStartedScreenStyles.body}>
         <Image source={imagePath.logoPath} style={logoStyles.bigLogo} />
         <Text style={logoStyles.bigLogoText}>Kshirsa</Text>

@@ -9,6 +9,7 @@ const recentTransactionStyles = StyleSheet.create({
         // borderTopRightRadius: 20,
         marginTop: 20,
         padding: 20,
+        paddingBottom: 100
         // height: 400
     },
     titleWrapper: {
@@ -26,6 +27,13 @@ const recentTransactionStyles = StyleSheet.create({
         fontSize: cssUtils.smallTextSize,
         fontWeight: cssUtils.smallBold,
         textDecorationLine: 'underline',
+    },
+    noDataText: {
+        color: Colors.lightGrey,
+        fontSize: cssUtils.smallTextSize,
+        fontWeight: cssUtils.mediumBold,
+        textAlign: 'center',
+        marginTop: 20,
     }
     });
 

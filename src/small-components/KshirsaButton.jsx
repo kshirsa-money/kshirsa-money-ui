@@ -5,7 +5,7 @@ import cssUtils from '../constants/cssUtils'
 import { LinearGradient } from 'expo-linear-gradient'
 import Colors from '../styles/Colors'
 
-const KshirsaButton = ({ title = 'button', buttonStyle, titleStyle, onPress, icon={} }) => {
+const KshirsaButton = ({ title = 'button', buttonStyle, titleStyle, onPress, icon=null }) => {
     return (
         <TouchableOpacity  onPress={onPress} activeOpacity={cssUtils.buttonOpacity}>
             <LinearGradient colors={Colors.buttonLinearGradient} style={[icon? kshirsaButtonStyles.iconContainer : kshirsaButtonStyles.container, buttonStyle, onPress]}>

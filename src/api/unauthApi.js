@@ -20,7 +20,7 @@ uApi.interceptors.response.use(response => {
     console.log('Response:', response?.data);
     return response;
 }, error => {
-    console.log('Response Error:', error);
+    console.log('Response Error from unauth intercepter:', error);
     return Promise.reject(error);
 });
 

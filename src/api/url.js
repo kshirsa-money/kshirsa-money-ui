@@ -6,5 +6,6 @@ const urls = {
    updateUserDetails: '/api/v1/my/update/details',
    logout: '/api/v1/auth/logout',
    addTransaction: '/api/v1/track/add/transaction',
+   getRecentTransactions: '/api/v1/track/get/transaction/recent',
 }
 export default urls;

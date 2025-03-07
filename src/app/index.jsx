@@ -9,7 +9,6 @@ import { errorCodes } from '../constants/utils';
 import SplashScreen from './SplashScreen';
 import apiRoutes from '../constants/apiRoutes';
 import { getStorageData } from '../utils/storage';
-import useDeviceId from '../hooks/useDeviceId';
 import { setupInterceptors } from '../api/api';
 
 export default  function  Index() {
@@ -17,10 +16,9 @@ export default  function  Index() {
   const [initialRoute, setInitialRoute] = useState(null);
   const dispatch = useDispatch();
   const router = useRouter();
-  const deviceId = useDeviceId();
-    useEffect(() => {
-      setupInterceptors(router, deviceId);
-    }, [router]);
+    // useEffect(() => {
+    //   setupInterceptors(router);
+    // }, []);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -48,6 +46,7 @@ export default  function  Index() {
                 setInitialRoute(apiRoutes.auth);
             })
         } else {
+          console.log('inside else')
           setTimeout(() => {
             setInitialRoute(apiRoutes.auth);
           }, 3000);
@@ -68,7 +67,7 @@ export default  function  Index() {
     initializeApp();
   }, []);
 
-
+  console.log(initialRoute, 'initialroute')
   return (
   !initialRoute ? <SplashScreen /> :
     <Redirect href={initialRoute} />

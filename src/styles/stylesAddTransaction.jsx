@@ -156,6 +156,7 @@ export const addTransactionStyles = StyleSheet.create({
         multiline: true, // Allows text to wrap to the next line
         flex: 1, 
         padding: 10,
+        color: Colors.white,
         height: '100%',
     },
     paymentModeOptionsContainer: {

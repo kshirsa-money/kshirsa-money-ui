@@ -61,3 +61,12 @@ export const getCombinedDateTimeString = (date, time) => {
 
   return combinedDate;
 };
+
+export const getFirstWord = (str) => {
+  return str.split(' ')[0];
+};
+
+export const utcToDataTime = (utcDateTime) => {
+  const date = new Date(utcDateTime);
+  return date;
+}

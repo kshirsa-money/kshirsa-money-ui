@@ -19,6 +19,10 @@ const TransactionPaymentModePopup = ({ visiblePaymentModePopup, setVisiblePaymen
           onPress={() => {
             setSelectedPaymentMode(option)
             setVisiblePaymentModePopup(false)
+            setFormData((prev) => ({
+              ...prev,
+              paymentMode: option.value,
+            }))
           }}
         >
           <Text style={addTransactionStyles.paymentOptionLabel}>{option?.label}</Text>

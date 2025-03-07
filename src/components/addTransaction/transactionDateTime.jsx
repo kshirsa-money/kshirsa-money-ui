@@ -4,7 +4,7 @@ import { addTransactionStyles } from '../../styles/stylesAddTransaction'
 import { AntDesign } from '@expo/vector-icons'
 import Colors from '../../styles/Colors'
 import  DateTimePicker from '@react-native-community/datetimepicker'
-import { formatDate, formatTime, formatTransactionDate, getCombinedDateTimeString } from '../../utils/helper'
+import { formatDate, formatTime, formatTransactionDate, getCombinedDateTime, getCombinedDateTimeString } from '../../utils/helper'
 
 const TransactionDateTime = ({ formData, onChange, setFormData }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -14,7 +14,7 @@ const TransactionDateTime = ({ formData, onChange, setFormData }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const combinedDateTime = getCombinedDateTimeString(date, time);
+    const combinedDateTime = getCombinedDateTime(date, time);
     setFormData((prev) => ({
       ...prev,
       transactionTime: combinedDateTime,

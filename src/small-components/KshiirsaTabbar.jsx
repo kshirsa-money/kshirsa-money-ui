@@ -138,8 +138,8 @@ const KshirsaTabbarStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 80,
-        // borderColor: Colors.darkGrey,
-        // borderWidth: 1,
+        borderColor: Colors.secondary,
+        borderWidth: 1,
         borderRadius: 50,
     },
     tabbarItem: {

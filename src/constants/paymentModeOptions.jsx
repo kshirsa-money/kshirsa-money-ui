@@ -6,12 +6,12 @@ import OtherIcon from "../../assets/icons/otherIcon";
 import UpiIcon from "../../assets/icons/upiIcon";
 
 const paymentModeOptions = [
-    { value: 'CASH', label: 'Cash', icon: <CashIcon height={40} width={40} /> },
-    { value: 'CREDIT CARD', label: 'Credit Card', icon: <CreditCardIcon height={40} width={40} /> },
-    { value: 'NET BANKING', label: 'Net Banking', icon: <BankIcon height={40} width={40} /> },
-    { value: 'UPI', label: 'Upi', icon: <UpiIcon height={40} width={40} /> },
-    { value: 'DEBIT CARD', label: 'Debit Card', icon: <AtmCardIcon height={30} width={30} color='white' /> },
-    { value: 'OTHERS', label: 'Other', icon: <OtherIcon height={40} width={40} /> },
+    { value: 'CASH', label: 'Cash', icon: <CashIcon height={30} width={30} /> },
+    { value: 'CREDIT_CARD', label: 'Credit Card', icon: <CreditCardIcon height={30} width={30} /> },
+    { value: 'NET_BANKING', label: 'Net Banking', icon: <BankIcon height={30} width={30} /> },
+    { value: 'UPI', label: 'Upi', icon: <UpiIcon height={30} width={30} /> },
+    { value: 'DEBIT_CARD', label: 'Debit Card', icon: <AtmCardIcon height={30} width={30} color='white' /> },
+    { value: 'OTHERS', label: 'Other', icon: <OtherIcon height={30} width={30} /> },
     // { value: 'BANK TRANSFER', label: 'Bank Transfer' },
     // { value: 'PAYTM', label: 'Paytm' },
     // { value: 'GOOGLE PAY', label: 'Google Pay' },
