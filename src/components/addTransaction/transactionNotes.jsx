@@ -4,7 +4,7 @@ import { addTransactionStyles } from '../../styles/stylesAddTransaction'
 import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons'
 import Colors from '../../styles/Colors'
 
-const TransactionNotes = () => {
+const TransactionNotes = ({formData, onChange}) => {
   return (
     <View style={addTransactionStyles.transactionNotesContainer}>
       <View style={addTransactionStyles.leftSideNotes}>
@@ -12,6 +12,8 @@ const TransactionNotes = () => {
         placeholder='Notes'
         style={addTransactionStyles.notesInput}
         placeholderTextColor={Colors.white}
+        onChangeText={(text) => onChange('note', text)}
+        value={formData.note}
         multiline={true}
          />
       </View>

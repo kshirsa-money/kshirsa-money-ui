@@ -8,6 +8,7 @@ const uiText ={
     SIGNUP_TITLE: 'Get Kshirsa, track your expenses',
     VERIFY_EMAIL_SUB_TEXT: ' Kshirsa will be verifying your email for a secure experience.',
     ENTER_EMAIL_BEGIN: 'Track your money like a pro! Enter your email to begin.',
+    NO_RECENT_TRANSACTION: 'Your wallet’s waiting! Log your first transaction now. 💳',
 
     // toast messages--------
     OTP_SEND_SUCCESS: 'OTP has been sent successfully',

@@ -8,50 +8,48 @@ import { ACCESS_TOKEN } from "../utils/storageKeys";
 import { Provider, useDispatch } from "react-redux";
 import KshirsaStore from "../redux/store";
 import Colors from "../styles/Colors";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { setupInterceptors } from "../api/api";
 import { AlertNotificationRoot } from "react-native-alert-notification";
 import AlertComponent from "../small-components/KshirsaAlert";
-import useDeviceId from "../hooks/useDeviceId";
 import KshirsaFloatingBtn from "../small-components/KshirsaFloatingBtn";
 import apiRoutes from "../constants/apiRoutes";
 import { setButtonState } from "../redux/reducers/floatingBtnReducer";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ErrorFallback from "../components/errorBoundary/fallbackUi";
+import { ErrorBoundary } from "react-error-boundary";
+import GetStartedScreen from "./(auth)";
 
 export default function RootLayout() {
-  console.log('from root layout')
   const router = useRouter();
   const pathname = usePathname();
-  const deviceId = useDeviceId();
   // const visibleFloatingBtn = pathname !== "/login" && pathname !== "/register" && pathname !== '/';
   const visibleFloatingBtn = pathname === apiRoutes.main;
-  console.log(deviceId, 'device')
-  useEffect(() => {
-    // Initialize SQLite database
-     initializeDatabase();
+  // useEffect(() => {
+  //   // Initialize SQLite database
+  //    initializeDatabase();
 
+  // }, []);
+  useEffect(() => {
+    setupInterceptors(router);
   }, []);
-
-  useEffect(() => {
-   setTimeout(() => {
-    getAllAuthData()
-   }, 4000);
-  }, []);
-
-  useEffect(() => {
-    setupInterceptors(router, deviceId);
-  }, [router]);
-
+  console.log('hello all')
   return (
-    <SafeAreaView style={{flex: 1, backgrounfColor: Colors.moodyBlack}}>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <SafeAreaView style={{flex: 1, backgroundColor: Colors.moodyBlack}}>
     <Provider store={KshirsaStore}>
+      <GestureHandlerRootView>
       <AlertNotificationRoot>
       <StatusBar backgroundColor={Colors.secondary} />
       <Slot />
+      {/* <GetStartedScreen /> */}
       <AlertComponent />
+      {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(apiRoutes.addTransaction)}/>}
       </AlertNotificationRoot>
-      {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(apiRoutes.addTransaction)}
-      />}
+      </GestureHandlerRootView>
+      {/* <GetStartedScreen />  */}
     </Provider>
     </SafeAreaView>
+    </ErrorBoundary>
   )
 }

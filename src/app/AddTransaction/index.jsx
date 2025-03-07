@@ -45,7 +45,7 @@ const AddTransaction = () => {
     tags: [''],
   });
   const [errors, setErrors] = useState('');
-
+  console.log(formData, 'formData')
   useEffect(() => {
     if(addTransactionResponse.success && !addTransactionResponse.loading) {
       setFormData({
@@ -72,7 +72,7 @@ const AddTransaction = () => {
     };
   }, [addTransactionResponse.success, addTransactionResponse.loading]);
   // Handle Input Change
-  const handleInputChange = useCallback((field, value) => {
+  const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     if (field === 'amount') {
@@ -84,7 +84,7 @@ const AddTransaction = () => {
         setErrors('');
       }
     }
-  }, []);
+  }
 
   // Save Transaction
   const handleSaveTransaction = useCallback(() => {

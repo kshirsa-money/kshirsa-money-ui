@@ -47,6 +47,7 @@
     "lottie-react-native": "^7.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-error-boundary": "^5.0.0",
     "react-native": "0.76.5",
     "react-native-alert-notification": "^0.4.2",
     "react-native-country-picker-modal": "^2.0.0",
