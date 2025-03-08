@@ -13,13 +13,13 @@ export const formatTime = (date) => {
   return `${String(hours).padStart(2, '0')}:${minutes} ${amPm}`;
 };
 
-export const formatTransactionDate = (date) => {
+export const formatTransactionDate = (date, timeCheck = true) => {
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-
+if(timeCheck) {
   const isToday = date.toDateString() === today.toDateString();
   const isYesterday = date.toDateString() === yesterday.toDateString();
   const isTomorrow = date.toDateString() === tomorrow.toDateString();
@@ -27,6 +27,7 @@ export const formatTransactionDate = (date) => {
   if (isToday) return 'Today';
   if (isYesterday) return 'Yesterday';
   if (isTomorrow) return 'Tomorrow';
+}
 
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
@@ -70,3 +71,31 @@ export const utcToDataTime = (utcDateTime) => {
   const date = new Date(utcDateTime);
   return date;
 }
+
+export const formatLocalDateTime = (utcDateTime) => {
+  const date = new Date(utcDateTime).
+  toLocaleString("en-US", {
+    year: "numeric",
+    month: "short", // "Mar"
+    day: "2-digit",
+    // hour: "2-digit",
+    // minute: "2-digit",
+    // second: "2-digit",
+    // hour12: true, // Converts to AM/PM format
+    timeZone: "Asia/Kolkata", // Change as per your requirement
+  });
+  return date;
+}
+
+export const createDuplicateTransactionPayload = (transaction) => {
+    return {
+      amount: transaction.amount.toString(), // Convert amount to string
+      categoryId: `Default-1`, // Use "Default-1" as categoryId (you can modify this logic as needed)
+      isRecurring: false, // Assuming the transaction is not recurring, you can adjust this logic as needed
+      note: transaction.note || "", // Default note if empty
+      paymentMode: transaction.paymentMode, // Keep the same payment mode
+      tags: transaction.tags || [""], // If tags are empty, default to an array with an empty string
+      transactionTime: transaction.transactionTime, // Keep the same transaction time
+      transactionType: transaction.transactionType, // Keep the same transaction type
+    };
+  };

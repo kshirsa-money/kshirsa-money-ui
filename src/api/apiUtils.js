@@ -39,17 +39,15 @@ export const unAuthfetchData = async (endpoint, queryParams={}) => {
   }
 };
 
-export const sendData = async ({endpoint, body = {}, pathParams = '', queryParams = {}, headers = {}, method='post'}) => {
+export const sendData = async ({endpoint, body = {}, pathParams = '', queryParams = {}, headers = {}, method = 'post'}) => {
   try {
     if (pathParams) {
       endpoint = `${endpoint}/${pathParams}`;
     }
-    console.log(queryParams, 'headers')
-    const response = await api[method](endpoint, body, {
-      params: queryParams,
-      headers: headers,
-    });
-
+    const queryString = new URLSearchParams(queryParams)?.toString();
+    const finalUrl = queryString ? `${endpoint}?${queryString}` : endpoint;
+    console.log(finalUrl, 'Final URL with Query Params');
+    const response = await api[method](finalUrl, body, { headers });
     return response?.data;
   } catch (error) {
     console.error('Error posting data:', error?.message);

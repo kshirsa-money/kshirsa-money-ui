@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { GENERATE_OTP } from "./types";
-import { sendData, unAuthfetchData } from "../../api/apiUtils";
+import { ADD_TRANSACTION } from "./types";
+import { sendData  } from "../../api/apiUtils";
 import urls from "../../api/url";
 
 const addTransactionAction = createAsyncThunk(
-    GENERATE_OTP,
+  ADD_TRANSACTION,
     async (body, { rejectWithValue }) => {
         try {
             const response = await sendData({

@@ -20,5 +20,6 @@ export default {
     tabbaroverlay: 'rgba(27, 27, 27, 0.9)',
     transparent: 'rgba(255, 255, 255, 0)',
     generalCardBg: 'rgb(73, 76, 96)',
-    generalFocusBg: 'rgb(64, 64, 66)'
+    generalFocusBg: 'rgb(64, 64, 66)',
+    transactionCardBg: 'rgb(39, 38, 38)',
 }

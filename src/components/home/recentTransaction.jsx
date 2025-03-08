@@ -1,5 +1,5 @@
 import { View, Text, Dimensions } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,36 +13,21 @@ import KshirsaSkeletonLoader from '../../small-components/KshirsaSkeletonLoader'
 import getRecentTransactionsAction from '../../redux/actions/getRecentTransactionAction';
 import KshirsaNoDataImage from '../../../assets/animatedImage/noDataImage';
 import uiText from '../../constants/uiTexts';
+import deleteTransactionAction from '../../redux/actions/deleteTransactionAction';
+import addTransactionAction from '../../redux/actions/addTransactionAction';
+import { createDuplicateTransactionPayload } from '../../utils/helper';
 
 const { height } = Dimensions.get('window'); // Get screen height
 
-const AnimatedTransactionCard = ({ transactionData, index, scrollY }) => {
-  const translateY = useSharedValue(50);
-  const opacity = useSharedValue(0);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    const startAnimation = scrollY.value + height > index * 120; // Check if the card is in view
-    if (startAnimation) {
-      translateY.value = withTiming(0, { duration: 400 });
-      opacity.value = withTiming(1, { duration: 400 });
-    }
-    return {
-      transform: [{ translateY: translateY.value }],
-      opacity: opacity.value,
-    };
-  });
-
-  return (
-    <Animated.View style={animatedStyle}>
-      <TransactionCard transactionData={transactionData} />
-    </Animated.View>
-  );
-};
-
 const RecentTransaction = () => {
   const dispatch = useDispatch();
+  const [swipeIndex, setSwipeIndex] = useState(null);
   const { loading: recentTransactionLoading, data: recentTransactionData } =
     useSelector((state) => state.getRecentTransactionsReducer) || {};
+  const { loading: deletetransactionLoading, data: deleteTransactionData, success: deleteTransactionSuccess } =
+    useSelector((state) => state.deleteTransactionReducer) || {};
+    const {success: addDuplicateTransactionSuccess} = useSelector((state) => state.addTransactionReducer);
+
 
   const scrollY = useSharedValue(0);
 
@@ -55,6 +40,18 @@ const RecentTransaction = () => {
   useEffect(() => {
     dispatch(getRecentTransactionsAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if(deleteTransactionSuccess || addDuplicateTransactionSuccess) dispatch(getRecentTransactionsAction());
+  }, [deleteTransactionSuccess, addDuplicateTransactionSuccess]);
+
+  const onEdit = (transactionData) => {
+    dispatch(addTransactionAction(createDuplicateTransactionPayload(transactionData)))
+  };
+
+  const onDelete = (transactionData) => {
+    dispatch(deleteTransactionAction({ transactionId: String(transactionData?.transactionId) }));
+  };
 
   return (
     <View style={recentTransactionStyles.container}>
@@ -73,14 +70,10 @@ const RecentTransaction = () => {
           data={recentTransactionData}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
-            <AnimatedTransactionCard
-              transactionData={item}
-              index={index}
-              scrollY={scrollY}
-            />
+            <TransactionCard transactionData={item} index={index} swipeIndex={swipeIndex} setSwipeIndex={setSwipeIndex} onEdit={onEdit} onDelete={onDelete} />
           )}
           onScroll={handleScroll}
-          scrollEventThrottle={16} // Smooth scrolling
+          scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
         />
       ) : (

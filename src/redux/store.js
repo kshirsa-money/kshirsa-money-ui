@@ -6,6 +6,7 @@ import userDetailsReducer from "./reducers/userDetailsReducer";
 import floatingButtonReducer from "./reducers/floatingBtnReducer";
 import addTransactionReducer from "./reducers/addTransactionReducer";
 import getRecentTransactionsReducer from "./reducers/getRecentTransactionsReducer";
+import deleteTransactionReducer from "./reducers/deleteTransactionReducer";
 
 const KshirsaStore = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ const KshirsaStore = configureStore({
       floatingButtonReducer: floatingButtonReducer,
       addTransactionReducer: addTransactionReducer,
       getRecentTransactionsReducer: getRecentTransactionsReducer,
+      deleteTransactionReducer: deleteTransactionReducer,
     },
   });
 

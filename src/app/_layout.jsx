@@ -23,17 +23,12 @@ import GetStartedScreen from "./(auth)";
 export default function RootLayout() {
   const router = useRouter();
   const pathname = usePathname();
-  // const visibleFloatingBtn = pathname !== "/login" && pathname !== "/register" && pathname !== '/';
   const visibleFloatingBtn = pathname === apiRoutes.main;
-  // useEffect(() => {
-  //   // Initialize SQLite database
-  //    initializeDatabase();
 
-  // }, []);
   useEffect(() => {
     setupInterceptors(router);
   }, []);
-  console.log('hello all')
+  
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
     <SafeAreaView style={{flex: 1, backgroundColor: Colors.moodyBlack}}>
@@ -42,12 +37,10 @@ export default function RootLayout() {
       <AlertNotificationRoot>
       <StatusBar backgroundColor={Colors.secondary} />
       <Slot />
-      {/* <GetStartedScreen /> */}
       <AlertComponent />
       {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(apiRoutes.addTransaction)}/>}
       </AlertNotificationRoot>
       </GestureHandlerRootView>
-      {/* <GetStartedScreen />  */}
     </Provider>
     </SafeAreaView>
     </ErrorBoundary>
