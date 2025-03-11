@@ -16,6 +16,10 @@ const uiText ={
     OTP_SEND_ERROR: `There's an error in sending OTP`,
     OTP_VALIDATION_FAILED: 'OTP is invalid or has expired. Please try again',
     ADD_TRANSACTION_SUCCESS: 'Transaction added successfully',
+    UPDATE_TRANSACTION_SUCCESS: 'Transaction updated successfully',
+    DELETE_TRANSACTION_SUCCESS: 'Transaction deleted successfully',
+    ADD_DUPLICATE_TRANSACTION_SUCCESS: 'Transaction added as duplicate successfully',
+
     //input placeholders--------
     PHONE_NUMBER: 'Enter your phone number',
 }

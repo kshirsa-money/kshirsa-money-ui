@@ -1,16 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_TRANSACTION } from "./types";
+import { UPDATE_TRANSACTION } from "./types";
 import { sendData  } from "../../api/apiUtils";
 import urls from "../../api/url";
 
-const addTransactionAction = createAsyncThunk(
-  ADD_TRANSACTION,
+const updateTransactionAction = createAsyncThunk(
+  UPDATE_TRANSACTION,
     async (body, { rejectWithValue }) => {
         try {
             const response = await sendData({
-              endpoint: urls.addTransaction,
+              endpoint: urls.updateTransaction,
               body,
-              method: 'post',
+              method: 'put',
   
             }); 
             return response;
@@ -20,4 +20,4 @@ const addTransactionAction = createAsyncThunk(
         }
 )
 
-export default addTransactionAction;
+export default updateTransactionAction;

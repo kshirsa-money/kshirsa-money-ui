@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NetInfo from "@react-native-community/netinfo";
 import { errorCodes } from '../constants/utils';
 import SplashScreen from './SplashScreen';
-import apiRoutes from '../constants/apiRoutes';
+import uiRoutes from '../constants/uiRoutes';
 import { getStorageData } from '../utils/storage';
 import { setupInterceptors } from '../api/api';
 
@@ -34,31 +34,31 @@ export default  function  Index() {
             .then((res) => {
               setTimeout(() => {
                 if (res?.data?.isSignUpFlowCompleted) {
-                  setInitialRoute(apiRoutes.main);
+                  setInitialRoute(uiRoutes.main);
                 } else {
-                setInitialRoute(apiRoutes.registration);
+                setInitialRoute(uiRoutes.registration);
                 }  
               }, 3000);
             })
             .catch((error) => {
                 console.error('Error fetching user details:', error);
               const errorcode = error?.errorDetails?.errorCode;
-                setInitialRoute(apiRoutes.auth);
+                setInitialRoute(uiRoutes.auth);
             })
         } else {
           console.log('inside else')
           setTimeout(() => {
-            setInitialRoute(apiRoutes.auth);
+            setInitialRoute(uiRoutes.auth);
           }, 3000);
         }
       } else {
         if (existToken) {
           setTimeout(() => {
-            setInitialRoute(apiRoutes.main);
+            setInitialRoute(uiRoutes.main);
           }, 3000);
         } else {
           setTimeout(() => {
-            setInitialRoute(apiRoutes.auth);
+            setInitialRoute(uiRoutes.auth);
           }, 3000);
         }
       }

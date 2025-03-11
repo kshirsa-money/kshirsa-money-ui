@@ -7,5 +7,8 @@ const urls = {
    logout: '/api/v1/auth/logout',
    addTransaction: '/api/v1/track/add/transaction',
    getRecentTransactions: '/api/v1/track/get/transaction/recent',
+   deleteTransaction: '/api/v1/track/delete/transaction',
+   getTransaction: '/api/v1/track/get/transaction',
+   updateTransaction: '/api/v1/track/update/transaction',
 }
 export default urls;

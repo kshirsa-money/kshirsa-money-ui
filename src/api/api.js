@@ -45,10 +45,6 @@ api.interceptors.request.use(
           }
         }  
         config.headers['device-id'] = deviceIdFromStorage; 
-        console.log('Request Details:');
-        console.log('URL:', config.url);
-        console.log('Method:', config.method.toUpperCase());
-        console.log('Headers:', config.headers);
         if (config.params) console.log('Params:', config.params);
         if (config.data) console.log('Body:', config.data);   
       return config;
@@ -59,7 +55,6 @@ api.interceptors.request.use(
     );
 
     api.interceptors.response.use(response => {
-      console.log('Response:', response?.data);
       return response;
   }, 
   error => {
@@ -71,9 +66,10 @@ api.interceptors.request.use(
     // }
   // )
     const errorDetails = error?.response?.data?.errorDetails;
-    console.log('auth intercepter Response Error:', error?.response?.data?.errorDetails?.errorCode);
+    console.log('auth intercepter Response Error:', error?.response?.data?.errorDetails?.errorCode,
+     ' url:' , config.url
+    );
       if (errorDetails?.errorCode === 602) {
-        console.log('inside if')
         clearAuthTokens()
         // Toast.show({
         //   type: 'error',

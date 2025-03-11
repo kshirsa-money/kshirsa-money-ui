@@ -6,21 +6,35 @@ import Colors from '../../styles/Colors'
 import  DateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate, formatTime, formatTransactionDate, getCombinedDateTime, getCombinedDateTimeString } from '../../utils/helper'
 
-const TransactionDateTime = ({ formData, onChange, setFormData }) => {
+const TransactionDateTime = ({ formData, onChange, setFormData, setInitialFormData }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
-
+  const initialDate = formData.transactionTime ? new Date(formData.transactionTime) : new Date();
+  const [date, setDate] = useState(initialDate);
+  const [time, setTime] = useState(initialDate);
   useEffect(() => {
     const combinedDateTime = getCombinedDateTime(date, time);
     setFormData((prev) => ({
       ...prev,
       transactionTime: combinedDateTime,
     }));
+
+    setInitialFormData((prev) => ({
+      ...prev,
+      transactionTime: combinedDateTime,
+    }));
     
   }, [date, time]);
+
+  useEffect(() => {
+    if (formData.transactionTime) {
+      const newDate = new Date(formData.transactionTime);
+      if (newDate.getTime() !== date.getTime() || newDate.getTime() !== time.getTime()) {
+        setDate(newDate);
+        setTime(newDate);
+      }
+    }
+  }, [formData.transactionTime]);
 
   const handleDateChange = (event, selectedDate) => {
     setShowDatePicker(false);

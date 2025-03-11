@@ -5,7 +5,7 @@ import Colors from '../styles/Colors';
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useEffect, useState } from 'react';
-import apiRoutes from '../constants/apiRoutes';
+import uiRoutes from '../constants/uiRoutes';
 import { useRouter } from 'expo-router';
 import KshirsaFloatingBtn from './KshirsaFloatingBtn';
 export default function KshirsaTabbar({ state, descriptors, navigation }) {
@@ -42,7 +42,7 @@ export default function KshirsaTabbar({ state, descriptors, navigation }) {
             }]} /> */}
             {/* <Pressable
                 style={KshirsaTabbarStyles.floatingButton}
-                onPress={() => router.push(apiRoutes.addTransaction)}
+                onPress={() => router.push(uiRoutes.addTransaction)}
             >
                 <AntDesign name="plus" size={24} color={Colors.white} />
             </Pressable> */}

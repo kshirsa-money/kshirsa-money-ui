@@ -13,7 +13,7 @@ export const addTransactionStyles = StyleSheet.create({
         backgroundColor: Colors.generalCardBg,
         margin: 10,
         borderRadius: 10,
-        height: 200,
+        height: 280,
         overflow: 'hidden',
     },
     transactionType: {
@@ -39,12 +39,24 @@ export const addTransactionStyles = StyleSheet.create({
         color: Colors.secondary,
         fontWeight: cssUtils.mediumBold,
     },
-    cardBody: {
-        alignItems: 'center',
+    cardRowBody: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
+        padding: 10,
+        // alignItems: 'flex-end',
+        gap: 10,
         // borderColor: Colors.darkGrey,
         // borderWidth: 1,
-        flexDirection: 'row',
+    },
+    blankView: {
+        width: '45%'
+    },
+    cardBody: {
+        // alignItems: 'center',
+        // justifyContent: 'space-between',
+        // borderColor: Colors.darkGrey,
+        // borderWidth: 1,
+        flexDirection: 'column',
         flex: 1,
         paddingHorizontal: 20
     },
@@ -56,23 +68,23 @@ export const addTransactionStyles = StyleSheet.create({
     paymentModeWrapper: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 20,
+        paddingVertical: 15,
         backgroundColor: Colors.generalFocusBg,
         borderRadius: 10,
     },
     rupeesText: {
         color: Colors.white,
+        fontSize: cssUtils.bigTextSize,
+        marginLeft: 10,
     },
     amountWrapper: {
-        // color: Colors.white,
-        justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
     },
     amountInput: {
         color: Colors.white,
         textAlign: 'center',
-        // width: 200,
+        fontSize: cssUtils.bigTextSize,
     },
     transactionDateTimeContainer: {
         flexDirection: 'row',

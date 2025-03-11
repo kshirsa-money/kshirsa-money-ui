@@ -1,15 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_RECENT_TRANSACTION } from "./types";
+import { GET_TRANSACTION } from "./types";
 import { fetchData } from "../../api/apiUtils";
 import urls from "../../api/url";
 
-const getRecentTransactionsAction = createAsyncThunk(
-    GET_RECENT_TRANSACTION,
-    async (_, { rejectWithValue }) => {
+const getTransactionAction = createAsyncThunk(
+    GET_TRANSACTION,
+    async (transactionId, { rejectWithValue }) => {
         try {
           const response = await fetchData({
-            endpoint: urls.getRecentTransactions
+            endpoint: urls.getTransaction,
+            pathParams: transactionId,
           }); 
+          console.log('get-transaction-action', response);
           return response;
         } catch (error) {
           return rejectWithValue(error?.response?.data); 
@@ -17,4 +19,4 @@ const getRecentTransactionsAction = createAsyncThunk(
       }
 )
 
-export default getRecentTransactionsAction;
+export default getTransactionAction;

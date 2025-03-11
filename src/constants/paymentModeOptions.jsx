@@ -8,7 +8,7 @@ import UpiIcon from "../../assets/icons/upiIcon";
 const paymentModeOptions = [
     { value: 'CASH', label: 'Cash', icon: <CashIcon height={30} width={30} /> },
     { value: 'CREDIT_CARD', label: 'Credit Card', icon: <CreditCardIcon height={30} width={30} /> },
-    { value: 'NET_BANKING', label: 'Net Banking', icon: <BankIcon height={30} width={30} /> },
+    { value: 'NET_BANKING', label: 'Net Banking', icon: <BankIcon height={25} width={25} /> },
     { value: 'UPI', label: 'Upi', icon: <UpiIcon height={30} width={30} /> },
     { value: 'DEBIT_CARD', label: 'Debit Card', icon: <AtmCardIcon height={30} width={30} color='white' /> },
     { value: 'OTHERS', label: 'Other', icon: <OtherIcon height={30} width={30} /> },

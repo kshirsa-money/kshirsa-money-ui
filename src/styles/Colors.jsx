@@ -7,6 +7,7 @@ export default {
     primary: '#00ad79',
     secondary: '#00f0a4',
     buttonLinearGradient: ['#00f0a4', '#00ad79'],
+    disabledButtonLinearGradient: ['rgb(151, 151, 150)', 'rgb(131, 133, 129)'],
     moodyBlack: 'rgb(27, 27, 27)',
     normalInputBg: 'rgb(85, 85, 85)',
     infoBlue: 'rgb(0, 122, 255)',
@@ -20,5 +21,6 @@ export default {
     tabbaroverlay: 'rgba(27, 27, 27, 0.9)',
     transparent: 'rgba(255, 255, 255, 0)',
     generalCardBg: 'rgb(73, 76, 96)',
-    generalFocusBg: 'rgb(64, 64, 66)'
+    generalFocusBg: 'rgb(64, 64, 66)',
+    transactionCardBg: 'rgb(39, 38, 38)',
 }

@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import Colors from "./Colors";
+import cssUtils from "../constants/cssUtils";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -12,7 +13,7 @@ const transactionCardStyles = StyleSheet.create({
   actionContainer: {
     position: "absolute",
     right: 0,
-    top: 0,
+    top: 20,
     bottom: 0,
     gap: 10,
     alignItems: "center",
@@ -35,14 +36,16 @@ const transactionCardStyles = StyleSheet.create({
     borderRadius: 10,
   },
   container: {
-    backgroundColor: Colors.normalInputBg,
+    backgroundColor: Colors.transactionCardBg,
     borderRadius: 20,
-    paddingVertical: 10,
+    // paddingVertical: 10,
     paddingHorizontal: 10,
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    // borderColor: Colors.lightGrey,
+    // borderWidth: 1,
   },
   leftContainer: {
     flexDirection: "row",
@@ -51,6 +54,7 @@ const transactionCardStyles = StyleSheet.create({
   rightContainer: {
     alignItems: "flex-end",
     gap: 6,
+    padding: 5,
   },
   title: {
     fontSize: 16,
@@ -63,7 +67,30 @@ const transactionCardStyles = StyleSheet.create({
   amount: {
     fontSize: 16,
     color: Colors.white,
+    fontWeight: cssUtils.mediumBold,
   },
+  newAmount: {
+    fontSize: cssUtils.mediumTextSize,
+    // marginRight: 10,
+  },
+  expenseAmount: {
+    color: Colors.red
+  },
+  incomeAmount: {
+    color: Colors.secondary
+  },
+  paymentModeIcon: {
+    width: 30,
+    height: 30,
+  },
+  leftVerticleContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    // borderColor: Colors.lightGrey,
+    // borderWidth: 1,
+    gap: 10,
+  }
 });
 
 export default transactionCardStyles;
