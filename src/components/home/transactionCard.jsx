@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, Dimensions } from 'react-native';
+import { View, Text, Image, Pressable, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
 import transactionCardStyles from '../../styles/stylesTransactioncard';
 import imagePath from '../../constants/imagePath';
@@ -14,7 +14,7 @@ import { transactionTypes } from '../../constants/utils';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const TransactionCard = ({ transactionData, onDelete, onEdit, index, swipeIndex, setSwipeIndex }) => {
+const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, swipeIndex, setSwipeIndex }) => {
   const translateX = useSharedValue(0);
   const threshold = -SCREEN_WIDTH * 0.3; // When the swipe menu should appear
 
@@ -64,65 +64,72 @@ const TransactionCard = ({ transactionData, onDelete, onEdit, index, swipeIndex,
   }));
 
   // Apply same animation to the background buttons
-  const animatedActionStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-    opacity: opacity.value,
-  }));
+// Apply same animation to the background buttons
+const animatedActionStyle = useAnimatedStyle(() => ({
+  opacity: translateX.value < -10 ? 1 : 0, // Only show when swiping left
+  transform: [{ translateY: translateY.value }],
+}));
+
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <View style={{ position: 'relative', overflow: 'hidden' }}>
-        {/* Animated Background Buttons */}
-        <Animated.View style={[transactionCardStyles.actionContainer, animatedActionStyle]}>
-          <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)}>
-            <Ionicons name="duplicate" size={24} color="white" />
-          </Pressable>
-          <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)}>
-            <Ionicons name="trash" size={22} color="white" />
-          </Pressable>
-        </Animated.View>
+<GestureDetector gesture={panGesture}>
+  <View style={{ position: 'relative', overflow: 'hidden' }}>
+    {/* Animated Background Buttons */}
+    <Animated.View 
+      style={[transactionCardStyles.actionContainer, animatedActionStyle]} 
+      pointerEvents={translateX.value < -10 ? "auto" : "none"} // Allow clicks only when visible
+    >
+      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)}>
+        <Ionicons name="duplicate" size={24} color="white" />
+      </Pressable>
+      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)}>
+        <Ionicons name="trash" size={22} color="white" />
+      </Pressable>
+    </Animated.View>
 
-        {/* Main Card */}
-        <Animated.View style={[transactionCardStyles.container, animatedCardStyle]}>
-          <View style={transactionCardStyles.leftContainer}>
-            <View style={{ marginRight: 10, width: 50 }}>
-              <Image source={imagePath.logoPath} style={logoStyles.smallLogo} />
-            </View>
-            <View style={transactionCardStyles.leftVerticleContainer}>
-              <Text style={transactionCardStyles.amount}>{transactionData?.categoryName}</Text>
-              <Text style={transactionCardStyles.subtitle}>{transactionData?.note || 'Not Specified'}</Text>
-            </View>
+    {/* Main Card */}
+    <Pressable onPress={() => onPress(transactionData)} style={translateX.value < -10 ? { zIndex: -1 } : {zIndex: 1}}>  
+      <Animated.View style={[transactionCardStyles.container, animatedCardStyle]}>
+        <View style={transactionCardStyles.leftContainer}>
+          <View style={{ marginRight: 10, width: 50 }}>
+            <Image source={imagePath.logoPath} style={logoStyles.smallLogo} />
           </View>
-          <View style={transactionCardStyles.rightContainer}>
-            <Text style={transactionCardStyles.subtitle}>{formatLocalDateTime(transactionData?.transactionTime)}</Text>
-            <Text style={[
-              transactionCardStyles.newAmount,
-              transactionData?.transactionType === transactionTypes.EXPENSE
-                ? transactionCardStyles.expenseAmount
-                : transactionData?.transactionType === transactionTypes.INCOME
-                  ? transactionCardStyles.incomeAmount
-                  : transactionCardStyles.loanAmount // Add a style for loan transactions
-            ]}>
-              {transactionData?.transactionType === transactionTypes.EXPENSE
-                ? "- ₹"
-                : transactionData?.transactionType === transactionTypes.INCOME
-                  ? "+ ₹"
-                  : "Loan ₹"}
-              {transactionData?.amount}
-            </Text>
-
-            {paymentModeOptions.map((option) =>
-              option.value === transactionData?.paymentMode ? (
-                <View style={transactionCardStyles.paymentModeIcon} key={option.label}>
-                  {option.icon}
-                </View>
-              ) : null
-            )}
+          <View style={transactionCardStyles.leftVerticleContainer}>
+            <Text style={transactionCardStyles.amount}>{transactionData?.categoryName}</Text>
+            <Text style={transactionCardStyles.subtitle}>{transactionData?.note || 'Not Specified'}</Text>
           </View>
-        </Animated.View>
+        </View>
+        <View style={transactionCardStyles.rightContainer}>
+          <Text style={transactionCardStyles.subtitle}>{formatLocalDateTime(transactionData?.transactionTime)}</Text>
+          <Text style={[
+            transactionCardStyles.newAmount,
+            transactionData?.transactionType === transactionTypes.EXPENSE
+              ? transactionCardStyles.expenseAmount
+              : transactionData?.transactionType === transactionTypes.INCOME
+                ? transactionCardStyles.incomeAmount
+                : transactionCardStyles.loanAmount
+          ]}>
+            {transactionData?.transactionType === transactionTypes.EXPENSE
+              ? "- ₹"
+              : transactionData?.transactionType === transactionTypes.INCOME
+                ? "+ ₹"
+                : "Loan ₹"}
+            {transactionData?.amount}
+          </Text>
 
-      </View>
-    </GestureDetector>
+          {paymentModeOptions.map((option) =>
+            option.value === transactionData?.paymentMode ? (
+              <View style={transactionCardStyles.paymentModeIcon} key={option.label}>
+                {option.icon}
+              </View>
+            ) : null
+          )}
+        </View>
+      </Animated.View>
+    </Pressable>
+  </View>
+</GestureDetector>
+
   );
 };
 

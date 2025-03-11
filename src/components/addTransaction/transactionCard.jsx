@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { addTransactionStyles } from '../../styles/stylesAddTransaction';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ import CashIcon from '../../../assets/icons/cashIcon';
 import UpiIcon from '../../../assets/icons/upiIcon';
 import paymentModeOptions from '../../constants/paymentModeOptions';
 
-const TransactionCard = ({ formData, onChange, setFormData }) => {
+const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) => {
   const [visiblePaymenetModePopup, setVisiblePaymentModePopup] = useState(false);
   const [selectedPaymentMode, setSelectedPaymentMode] = useState(paymentModeOptions[0]);
 
@@ -31,6 +31,12 @@ const TransactionCard = ({ formData, onChange, setFormData }) => {
     }
   };
 
+  useEffect(() => {
+    if(formData?.paymentMode) {
+      const selectedPaymentMode = paymentModeOptions.find((option) => option.value === formData.paymentMode);
+      setSelectedPaymentMode(selectedPaymentMode);
+    }
+  }, [formData]);
 
   return (
     <>
@@ -68,32 +74,35 @@ const TransactionCard = ({ formData, onChange, setFormData }) => {
           </TouchableOpacity>
         </View>
         <View style={addTransactionStyles.cardBody}>
+          <View style={addTransactionStyles.cardRowBody}>
+            <View style={addTransactionStyles.blankView}></View>
+            <View style={addTransactionStyles.paymentModeContainer}>
+              <Text style={{ color: Colors.white }}>Payment Mode</Text>
+              <TouchableOpacity
+                style={addTransactionStyles.paymentModeWrapper}
+                onPress={() => setVisiblePaymentModePopup(true)}
+              >
+                {selectedPaymentMode?.icon}
+                <Text style={{ color: Colors.white }}>{selectedPaymentMode?.label}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style={addTransactionStyles.amountWrapper}>
-            <Text style={[addTransactionStyles.rupeesText, { fontSize: rupeesIconAndAmountFontSize() }]}>₹</Text>
+            <Text style={[addTransactionStyles.rupeesText]}>₹</Text>
             <TextInput
               placeholder='0.00'
-              keyboardType='numeric'
-              autoFocus={true}
+              keyboardType='phone-pad'
+              autoFocus={!editTransaction}
               onChangeText={(text) => onChange('amount', text)}
               value={formData.amount}
-              style={[addTransactionStyles.amountInput, { fontSize: rupeesIconAndAmountFontSize() }]}
+              style={[addTransactionStyles.amountInput]}
               placeholderTextColor={Colors.white}
               maxLength={10}
             />
           </View>
-          <View style={addTransactionStyles.paymentModeContainer}>
-            <Text style={{ color: Colors.white }}>Payment Mode</Text>
-            <TouchableOpacity
-              style={addTransactionStyles.paymentModeWrapper}
-              onPress={() => setVisiblePaymentModePopup(true)}
-            >
-              {selectedPaymentMode?.icon}
-              <Text style={{ color: Colors.white }}>{selectedPaymentMode?.label}</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
-      <TransactionPaymentModePopup visiblePaymentModePopup={visiblePaymenetModePopup} setVisiblePaymentModePopup={setVisiblePaymentModePopup} setSelectedPaymentMode={setSelectedPaymentMode} setFormData={setFormData} />
+      <TransactionPaymentModePopup visiblePaymentModePopup={visiblePaymenetModePopup} setVisiblePaymentModePopup={setVisiblePaymentModePopup} setSelectedPaymentMode={setSelectedPaymentMode} setFormData={setFormData} formData={formData} />
     </>
   );
 };

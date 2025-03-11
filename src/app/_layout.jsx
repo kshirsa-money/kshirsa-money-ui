@@ -13,7 +13,7 @@ import { setupInterceptors } from "../api/api";
 import { AlertNotificationRoot } from "react-native-alert-notification";
 import AlertComponent from "../small-components/KshirsaAlert";
 import KshirsaFloatingBtn from "../small-components/KshirsaFloatingBtn";
-import apiRoutes from "../constants/apiRoutes";
+import uiRoutes from "../constants/uiRoutes";
 import { setButtonState } from "../redux/reducers/floatingBtnReducer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ErrorFallback from "../components/errorBoundary/fallbackUi";
@@ -23,7 +23,7 @@ import GetStartedScreen from "./(auth)";
 export default function RootLayout() {
   const router = useRouter();
   const pathname = usePathname();
-  const visibleFloatingBtn = pathname === apiRoutes.main;
+  const visibleFloatingBtn = pathname === uiRoutes.main;
 
   useEffect(() => {
     setupInterceptors(router);
@@ -37,8 +37,8 @@ export default function RootLayout() {
       <AlertNotificationRoot>
       <StatusBar backgroundColor={Colors.secondary} />
       <Slot />
+      {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(uiRoutes.addTransaction)}/>}
       <AlertComponent />
-      {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(apiRoutes.addTransaction)}/>}
       </AlertNotificationRoot>
       </GestureHandlerRootView>
     </Provider>

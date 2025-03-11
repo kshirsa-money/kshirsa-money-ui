@@ -10,6 +10,14 @@ const kshirsaButtonStyles = StyleSheet.create({
         // width: 200,
         borderRadius: 50,
     },
+    disabledContainer: {
+        backgroundColor: Colors.black,
+        // paddingVertical: 10,
+        // paddingHorizontal: 40,
+        // alignItems: 'center',
+        // // width: 200,
+        // borderRadius: 50,
+    },
     text: {
         color: Colors.white,
         fontSize: 20,

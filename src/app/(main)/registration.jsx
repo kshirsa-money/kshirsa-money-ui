@@ -27,7 +27,7 @@ import {KshirsaAlert} from '../../small-components/KshirsaAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetailsAction } from '../../redux/actions/userDetailsAction';
 import  KshirsaLoadingScreen  from '../../small-components/KshirsaLoading';
-import apiRoutes from '../../constants/apiRoutes';
+import uiRoutes from '../../constants/uiRoutes';
 import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
 import KshirsaRadioButton from '../../small-components/KshirsaRadioButton';
 
@@ -184,10 +184,10 @@ const RegisterForm = () => {
               title: `${res?.data?.userDetails?.name} Welcome to Kshirsa!`,
               textBody: 'Start tracking your expenses effortlessly and take control of your finances today.',
               button: 'Start!!',
-              // onClose: () => router.replace(apiRoutes.main)
+              // onClose: () => router.replace(uiRoutes.main)
             })
 
-            router.replace(apiRoutes.main)
+            router.replace(uiRoutes.main)
           })
         }
         break;

@@ -44,6 +44,8 @@ const transactionCardStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    // borderColor: Colors.lightGrey,
+    // borderWidth: 1,
   },
   leftContainer: {
     flexDirection: "row",

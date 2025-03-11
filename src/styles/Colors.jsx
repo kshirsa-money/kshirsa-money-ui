@@ -7,6 +7,7 @@ export default {
     primary: '#00ad79',
     secondary: '#00f0a4',
     buttonLinearGradient: ['#00f0a4', '#00ad79'],
+    disabledButtonLinearGradient: ['rgb(151, 151, 150)', 'rgb(131, 133, 129)'],
     moodyBlack: 'rgb(27, 27, 27)',
     normalInputBg: 'rgb(85, 85, 85)',
     infoBlue: 'rgb(0, 122, 255)',

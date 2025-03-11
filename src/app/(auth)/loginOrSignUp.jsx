@@ -20,7 +20,7 @@ import KshirsaInput from '../../small-components/KshirsaInput';
 import { STANDARD_EMAIL_REGEX } from '../../constants/utils';
 import { INVALID_FORMAT_EMAIL } from '../../constants/validationMessage';
 import { router, useRouter } from 'expo-router';
-import apiRoutes from '../../constants/apiRoutes';
+import uiRoutes from '../../constants/uiRoutes';
 import Colors from '../../styles/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import generateOtpAction from '../../redux/actions/generateOtpAction';
@@ -49,7 +49,7 @@ const LoginOrSignUp = () => {
         textBody: uiText.OTP_SEND_SUCCESS,
         titleStyle: { color: Colors.secondary },
         })
-      router.navigate(apiRoutes.otp)
+      router.navigate(uiRoutes.otp)
     }
     if(!success && error) {
       Toast.show({

@@ -15,8 +15,11 @@ export const buildQueryString = (params) => {
 };
 
 
-export const fetchData = async (endpoint, queryParams = {}) => {
+export const fetchData = async ({endpoint, pathParams='', queryParams = {}}) => {
   try {
+    if (pathParams) {
+      endpoint = `${endpoint}/${pathParams}`;
+    }
     const queryString = buildQueryString(queryParams);
     const formattedUrl = `${endpoint}${queryString}`;
     const response = await api.get(formattedUrl);

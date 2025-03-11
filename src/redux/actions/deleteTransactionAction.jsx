@@ -12,6 +12,7 @@ const deleteTransactionAction = createAsyncThunk(
               queryParams,
               method: 'delete',
             }); 
+            console.log('delete-transaction-action: ', response);
             return response;
           } catch (error) {
             return rejectWithValue(error.response?.data || error.message); 

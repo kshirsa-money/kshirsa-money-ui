@@ -7,7 +7,9 @@ const getUserDetailsAction = createAsyncThunk(
     GET_USER_DETAILS,
     async (_, { rejectWithValue }) => {
         try {
-          const response = await fetchData(urls.getUserDetails); 
+          const response = await fetchData({
+            endpoint: urls.getUserDetails
+          }); 
           return response;
         } catch (error) {
           console.log(error, 'error from user details')
