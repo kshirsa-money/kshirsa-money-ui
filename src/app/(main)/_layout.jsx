@@ -7,7 +7,7 @@ export default function TabLayout() {
   return (
   <Tabs tabBar={(props) => <KshirsaTabbar {...props} />}>
     <Tabs.Screen name='HomeScreen' options={{ title: 'Home', headerShown: false}} />
-    <Tabs.Screen name='registration' options={{ title: 'Registration', headerShown: false}} />
+    <Tabs.Screen name='profileScreen' options={{ title: 'Profile', headerShown: false}} />
   </Tabs>
   );
 }

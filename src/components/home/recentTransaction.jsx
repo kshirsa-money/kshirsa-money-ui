@@ -18,6 +18,8 @@ import { useRouter } from 'expo-router';
 import uiRoutes from '../../constants/uiRoutes';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import Colors from '../../styles/Colors';
+import KshirsaLoadingScreen from '../../small-components/KshirsaLoading';
+import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage';
 
 const RecentTransaction = () => {
   const dispatch = useDispatch();
@@ -79,7 +81,8 @@ const RecentTransaction = () => {
 
       {/* Skeleton Loader */}
       {recentTransactionLoading ? (
-        <KshirsaSkeletonLoader count={3} />
+        // <KshirsaSkeletonLoader count={3} />
+        <KshirsaMoneyLoadingImg />
       ) : recentTransactionData?.length > 0 ? (
         // Transaction List
         <Animated.FlatList

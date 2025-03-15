@@ -99,3 +99,7 @@ export const createDuplicateTransactionPayload = (transaction) => {
       transactionType: transaction.transactionType, // Keep the same transaction type
     };
   };
+
+  export const checkIsModifiedFormData = (formData, initialFormData) => {
+    return JSON.stringify(formData) !== JSON.stringify(initialFormData);
+  }

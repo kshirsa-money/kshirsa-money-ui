@@ -9,6 +9,7 @@ import getRecentTransactionsReducer from "./reducers/getRecentTransactionsReduce
 import deleteTransactionReducer from "./reducers/deleteTransactionReducer";
 import getTransactionReducer from "./reducers/getTransactionReducer";
 import updateTransactionReducer from "./reducers/updateTransactionReducer";
+import viewCategoriesReducer from "./reducers/viewCategoriesReducer";
 
 const KshirsaStore = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ const KshirsaStore = configureStore({
       deleteTransactionReducer: deleteTransactionReducer,
       getTransactionReducer: getTransactionReducer,
       updateTransactionReducer: updateTransactionReducer,
+      viewCategoriesReducer: viewCategoriesReducer,
     },
   });
 

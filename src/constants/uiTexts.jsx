@@ -9,6 +9,7 @@ const uiText ={
     VERIFY_EMAIL_SUB_TEXT: ' Kshirsa will be verifying your email for a secure experience.',
     ENTER_EMAIL_BEGIN: 'Track your money like a pro! Enter your email to begin.',
     NO_RECENT_TRANSACTION: 'Your wallet’s waiting! Log your first transaction now. 💳',
+    NO_CATEGORY_FOUND: 'No category found, please add a category',
 
     // toast messages--------
     OTP_SEND_SUCCESS: 'OTP has been sent successfully',
@@ -22,6 +23,8 @@ const uiText ={
 
     //input placeholders--------
     PHONE_NUMBER: 'Enter your phone number',
+    CATEGORY_NAME: 'category name',
+    CATEGORY_DESC: 'category description',
 }
 
 export default uiText;

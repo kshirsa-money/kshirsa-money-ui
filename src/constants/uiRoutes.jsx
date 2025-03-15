@@ -6,4 +6,5 @@ export default uiRoutes = {
     registration: '/(main)/registration',
     addTransaction: '/AddTransaction',
     editTransaction: '/editTransaction',
+    categories: '/categories',
 } 

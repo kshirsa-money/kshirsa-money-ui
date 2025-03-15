@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import uiRoutes from '../constants/uiRoutes';
 import { useRouter } from 'expo-router';
 import KshirsaFloatingBtn from './KshirsaFloatingBtn';
+import KshirsaUserAnimation from '../../assets/animatedImage/KshirsaUserAnimation';
+import KshirsaHomeAnimation from '../../assets/animatedImage/KshirsaHomeAnimated';
 export default function KshirsaTabbar({ state, descriptors, navigation }) {
     const router = useRouter();
     const { buildHref } = useLinkBuilder();
@@ -26,9 +28,15 @@ export default function KshirsaTabbar({ state, descriptors, navigation }) {
     }
 
     const icon = {
-        HomeScreen: (props) => <AntDesign name="home" size={24} color={props.color} />,
-        registration: (props) => <EvilIcons name="user" size={30} color={props.color} />,
-    }
+        HomeScreen: {
+            unfocused: (props) => <AntDesign name="home" size={24} color={props.color} />,
+            focused: (props) => <KshirsaHomeAnimation />,
+        },
+        profileScreen: {
+            unfocused: (props) => <EvilIcons name="user" size={30} color={props.color} />,
+            focused: (props) => <KshirsaUserAnimation />,
+        },
+    };
     return (
         <View style={KshirsaTabbarStyles.container} onLayout={onTabbarLayout}>
             {/* <Animated.View style={[animatedTabPositionStyle, {
@@ -73,7 +81,7 @@ export default function KshirsaTabbar({ state, descriptors, navigation }) {
                 })
                 const animatedIconStyle = useAnimatedStyle(() => {
                     const scaleValue = interpolate(scale.value, [0, 1], [1, 1.5])
-                    const topValue = interpolate(scale.value, [0, 1], [0, index === 0 ? 9 : 5])
+                    const topValue = interpolate(scale.value, [0, 1], [0, 9])
                     return {
                         transform: [{ scale: scaleValue }],
                         top: topValue,
@@ -113,7 +121,7 @@ export default function KshirsaTabbar({ state, descriptors, navigation }) {
                         key={route.key}
                     >
                         <Animated.View style={[animatedIconStyle]}>
-                            {icon[route.name] && icon[route.name]({
+                            {icon[route.name] && icon[route.name][isFocused ? 'focused' : 'unfocused']({
                                 focused: isFocused,
                                 color: isFocused ? Colors.primary : Colors.primaryText,
                             })}
@@ -157,22 +165,23 @@ const KshirsaTabbarStyles = StyleSheet.create({
     },
     tabbarItemFocused: {
         backgroundColor: Colors.secondary,
+        // top: -10,
     },
     floatingButton: {
-    position: 'absolute',
-    top: -30, // Adjust this value to position the button above the tab bar
-    left: '50%',
-    transform: [{ translateX: -25 }], // Center the button horizontally
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 5,
-}
+        position: 'absolute',
+        top: -30, // Adjust this value to position the button above the tab bar
+        left: '50%',
+        transform: [{ translateX: -25 }], // Center the button horizontally
+        width: 60,
+        height: 60,
+        borderRadius: 50,
+        backgroundColor: Colors.primary,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3.84,
+        elevation: 5,
+    }
 })

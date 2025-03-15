@@ -37,15 +37,16 @@ import { KshirsaAlert } from '../../small-components/KshirsaAlert';
 import updateTransactionAction from '../../redux/actions/updateTransactionAction';
 import { resetUpdateTransactionAction } from '../../redux/reducers/updateTransactionReducer';
 import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransactionReducer';
+import { checkIsModifiedFormData } from '../../utils/helper';
+import viewCategoriesAction from '../../redux/actions/viewCategoriesAction';
 
-const AddTransaction = ({editTransaction=false, transactionId}) => {
+const AddTransaction = ({ editTransaction = false, transactionId }) => {
   const dispatch = useDispatch();
   const router = useRouter()
   const addTransactionResponse = useSelector((state) => state.addTransactionReducer);
-  const {data: viewTransactionData, loading: viewTransactionLoading} = useSelector((state) => state.getTransactionReducer);
-  const {success: updateTransactionSuccess, loading: updateTransactionLoading, data: updateTransactionData} = useSelector((state) => state.updateTransactionReducer);
+  const { data: viewTransactionData, loading: viewTransactionLoading } = useSelector((state) => state.getTransactionReducer);
+  const { success: updateTransactionSuccess, loading: updateTransactionLoading, data: updateTransactionData } = useSelector((state) => state.updateTransactionReducer);
   const deleteTransactionReducer = useSelector((state) => state.deleteTransactionReducer);
-
 
   const [formData, setFormData] = useState({
     amount: '',
@@ -54,6 +55,7 @@ const AddTransaction = ({editTransaction=false, transactionId}) => {
     transactionType: 'EXPENSE',
     transactionTime: '',
     categoryId: 'Default-1',
+    categoryName: 'Others',
     isRecurring: false,
     tags: [],
   });
@@ -64,31 +66,33 @@ const AddTransaction = ({editTransaction=false, transactionId}) => {
     transactionType: 'EXPENSE',
     transactionTime: '',
     categoryId: 'Default-1',
+    categoryName: 'Others',
     isRecurring: false,
     tags: [],
   });
   const [isFormModified, setIsFormModified] = useState(false);
   const [errors, setErrors] = useState('');
-  console.log(updateTransactionSuccess, updateTransactionLoading, updateTransactionData, 'hello world')
+
   useEffect(() => {
-    if(editTransaction) {
-        const initialData = {
-          amount: String(viewTransactionData?.amount),
-          paymentMode: viewTransactionData?.paymentMode,
-          note: viewTransactionData?.note,
-          transactionType: viewTransactionData?.transactionType,
-          transactionTime: new Date(viewTransactionData?.transactionTime),
-          categoryId: viewTransactionData?.category?.categoryId,
-          isRecurring: viewTransactionData?.isRecurring,
-          tags: viewTransactionData?.tags,
-        };
-        setFormData(initialData);
-        setInitialFormData(initialData);
+    if (editTransaction) {
+      const initialData = {
+        amount: String(viewTransactionData?.amount),
+        paymentMode: viewTransactionData?.paymentMode,
+        note: viewTransactionData?.note,
+        transactionType: viewTransactionData?.transactionType,
+        transactionTime: new Date(viewTransactionData?.transactionTime),
+        categoryId: viewTransactionData?.category?.categoryId,
+        categoryName: viewTransactionData?.category?.categoryName,
+        isRecurring: viewTransactionData?.isRecurring,
+        tags: viewTransactionData?.tags,
+      };
+      setFormData(initialData);
+      setInitialFormData(initialData);
     }
   }, [editTransaction, viewTransactionData]);
 
   useEffect(() => {
-    if((addTransactionResponse.success && !addTransactionResponse.loading) || updateTransactionSuccess || deleteTransactionReducer.success) {
+    if ((addTransactionResponse.success && !addTransactionResponse.loading) || updateTransactionSuccess || deleteTransactionReducer.success) {
       setFormData({
         amount: '',
         paymentMode: 'CASH',
@@ -116,9 +120,13 @@ const AddTransaction = ({editTransaction=false, transactionId}) => {
   }, [addTransactionResponse.success, addTransactionResponse.loading, updateTransactionSuccess, deleteTransactionReducer.success]);
 
   useEffect(() => {
-    const isModified = JSON.stringify(formData) !== JSON.stringify(initialFormData);
+    const isModified = checkIsModifiedFormData(formData, initialFormData);
     setIsFormModified(isModified);
   }, [formData, initialFormData]);
+
+  useEffect(() => {
+    dispatch(viewCategoriesAction())
+  }, [])
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -145,14 +153,14 @@ const AddTransaction = ({editTransaction=false, transactionId}) => {
       return;
     }
     setErrors('');
-    if(editTransaction) {
+    if (editTransaction) {
       const updateTransactionBody = {
         ...formData,
         transactionId: transactionId
       }
       dispatch(updateTransactionAction(updateTransactionBody));
     } else {
-    dispatch(addTransactionAction(formData))
+      dispatch(addTransactionAction(formData))
     }
   }, [formData]);
 
@@ -172,68 +180,67 @@ const AddTransaction = ({editTransaction=false, transactionId}) => {
       }
       return false; // Allow default back action
     };
-  
+
     const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-  
+
     return () => {
       backHandler.remove(); // Cleanup the event listener
     };
   }, [isFormModified]);
-  
 
   return (
     <>
- <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
-    >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={addTransactionStyles.container}>
-          <TransactionCard
-            onChange={handleInputChange}
-            formData={formData}
-            errors={errors}
-            setFormData={setFormData}
-            editTransaction={editTransaction}
-          />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
+        >
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={addTransactionStyles.container}>
+              <TransactionCard
+                onChange={handleInputChange}
+                formData={formData}
+                errors={errors}
+                setFormData={setFormData}
+                editTransaction={editTransaction}
+              />
 
-          {errors ? (
-            <Text style={{ color: Colors.red, paddingHorizontal: 10 }}>{errors}</Text>
-          ) : null}
+              {errors ? (
+                <Text style={{ color: Colors.red, paddingHorizontal: 10 }}>{errors}</Text>
+              ) : null}
 
-          <TransactionDateTime
-            onChange={handleInputChange}
-            formData={formData}
-            setFormData={setFormData}
-            setInitialFormData={setInitialFormData}
-          />
-
+              <TransactionDateTime
+                onChange={handleInputChange}
+                formData={formData}
+                setFormData={setFormData}
+                setInitialFormData={setInitialFormData}
+              />
+              {/* 
           <TransactionCategory
             onChange={handleInputChange}
             formData={formData}
             setFormData={setFormData}
-          />
-          <TransactionTags 
-            onChange={handleInputChange}
-            formData={formData}
-            setFormData={setFormData} />
-          <TransactionNotes
-            onChange={handleInputChange}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <View style={addTransactionStyles.buttonContainer}>
-          <KshirsaButton icon={<AntDesign name="save" size={30} color={Colors.white} />} onPress={handleSaveTransaction} disabled={editTransaction ? !isFormModified : false} />
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
-    {(addTransactionResponse.loading || viewTransactionLoading) && <KshirsaLoadingScreen />}
+          /> */}
+              <TransactionTags
+                onChange={handleInputChange}
+                formData={formData}
+                setFormData={setFormData} />
+              <TransactionNotes
+                onChange={handleInputChange}
+                formData={formData}
+                setFormData={setFormData}
+              />
+              <View style={addTransactionStyles.buttonContainer}>
+                <KshirsaButton icon={<AntDesign name="save" size={30} color={Colors.white} />} onPress={handleSaveTransaction} disabled={editTransaction ? !isFormModified : false} loading={addTransactionResponse.loading} />
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+      {(addTransactionResponse.loading || viewTransactionLoading) && <KshirsaLoadingScreen />}
     </>
   );
 };

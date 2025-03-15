@@ -10,10 +10,15 @@ import TransactionPaymentModePopup from './transactionPaymentModePopup';
 import CashIcon from '../../../assets/icons/cashIcon';
 import UpiIcon from '../../../assets/icons/upiIcon';
 import paymentModeOptions from '../../constants/paymentModeOptions';
+import CategoriesPopup from '../category/categoriesPopup';
+import { useSelector } from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) => {
   const [visiblePaymenetModePopup, setVisiblePaymentModePopup] = useState(false);
   const [selectedPaymentMode, setSelectedPaymentMode] = useState(paymentModeOptions[0]);
+  const [visibleCategoryPopup, setVisibleCategoryPopup] = useState(false);
+  const { loading, data: categoryData, success } = useSelector((state) => state.viewCategoriesReducer)
 
   const handleTypeChange = (type) => {
     setFormData((prev) => ({
@@ -32,7 +37,7 @@ const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) =
   };
 
   useEffect(() => {
-    if(formData?.paymentMode) {
+    if (formData?.paymentMode) {
       const selectedPaymentMode = paymentModeOptions.find((option) => option.value === formData.paymentMode);
       setSelectedPaymentMode(selectedPaymentMode);
     }
@@ -40,6 +45,7 @@ const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) =
 
   return (
     <>
+      <CategoriesPopup visibleCategoryPopup={visibleCategoryPopup} setVisibleCategoryPopup={setVisibleCategoryPopup} categoryData={categoryData} categoryType={formData.transactionType} setFormData={setFormData} />
       <View style={addTransactionStyles.transactionCardContainer}>
         <View style={addTransactionStyles.transactionType}>
           <TouchableOpacity onPress={() => handleTypeChange('EXPENSE')} style={{ flex: 1 }}>
@@ -75,7 +81,21 @@ const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) =
         </View>
         <View style={addTransactionStyles.cardBody}>
           <View style={addTransactionStyles.cardRowBody}>
-            <View style={addTransactionStyles.blankView}></View>
+            <View style={addTransactionStyles.blankView}>
+              <Text style={{ color: Colors.white }}>Category</Text>
+              <TouchableOpacity
+                onPress={() => setVisibleCategoryPopup(true)}
+              >
+              <LinearGradient
+                colors={[Colors.black, Colors.generalCardBg, Colors.black]} // Subtle gradient colors
+                start={{ x: 0, y: 0.5 }} // Top-left
+                end={{ x: 1, y: 0.5 }}
+                style={addTransactionStyles.categoryWrapper}
+              >
+                  <Text style={addTransactionStyles.categoryName}>{formData.categoryName}</Text>
+              </LinearGradient>
+                </TouchableOpacity>
+            </View>
             <View style={addTransactionStyles.paymentModeContainer}>
               <Text style={{ color: Colors.white }}>Payment Mode</Text>
               <TouchableOpacity
