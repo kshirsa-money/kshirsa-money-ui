@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import Colors from '../styles/Colors';
+import KshirsaButton from './KshirsaButton';
+import cssUtils from '../constants/cssUtils';
 
 const KshirsaModal = ({
   isVisible,
@@ -14,6 +16,7 @@ const KshirsaModal = ({
   children,
   confirmDisabled = false,
   closeDisabled = false,
+  confirmLoading = false,
 }) => {
   return (
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
@@ -29,19 +32,17 @@ const KshirsaModal = ({
             <Text style={styles.buttonText}>{closeText}</Text>
           </TouchableOpacity>
           {onConfirm && (
-            <TouchableOpacity
-              style={[styles.button, styles.confirmButton, confirmDisabled && styles.disabledBtn]}
-              onPress={onConfirm}
-              disabled={confirmDisabled}
-            >
-              <Text style={styles.buttonText}>{confirmText}</Text>
-            </TouchableOpacity>
+              <KshirsaButton title={confirmText} loading={confirmLoading} onPress={onConfirm} disabled={confirmDisabled} />
           )}
         </View>
       </View>
     </Modal>
   );
 };
+
+// style={[styles.button, styles.confirmButton, confirmDisabled && styles.disabledBtn]}
+// onPress={onConfirm}
+// disabled={confirmDisabled}
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -66,13 +67,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingTop: 20,
+    gap: 40,
+    borderColor: Colors.buttonLoadingGradient[0],
+    borderTopWidth: 1,
   },
   button: {
     flex: 1,
-    padding: 10,
-    borderRadius: 5,
-    marginHorizontal: 5,
+    // padding: 10,
+    borderRadius: 50,
+    // marginHorizontal: 5,
     alignItems: 'center',
+    // paddingHorizontal: 20,
+    justifyContent: 'center',
   },
   closeButton: {
     backgroundColor: Colors.red,
@@ -83,6 +89,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: cssUtils.smallTextSize,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   disabledBtn: {
     opacity: 0.4,

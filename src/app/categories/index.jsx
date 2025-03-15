@@ -1,16 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, LayoutAnimation, ScrollView } from 'react-native'
+import { Text, View, TouchableOpacity, LayoutAnimation, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { transactionTypes, TransactionTypesToMap } from '../../constants/utils'
 import categoryStyles from '../../styles/stylesCategory'
 import Colors from '../../styles/Colors'
-import { use } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import viewCategoriesAction from '../../redux/actions/viewCategoriesAction'
-import recentTransactionStyles from '../../styles/stylesRecentTransaction'
-import KshirsaNoDataImage from '../../../assets/animatedImage/noDataImage'
-import uiText from '../../constants/uiTexts'
-import KshirsaLoadingScreen from '../../small-components/KshirsaLoading'
-import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage'
 import { FontAwesome6 } from '@expo/vector-icons'
 import CategoryList from '../../components/category/categoryList'
 import AddEditCategoryModal from '../../components/category/addEditCategoryModal'
@@ -18,15 +12,18 @@ import AddEditCategoryModal from '../../components/category/addEditCategoryModal
 const ViewCategories = () => {
   const dispatch = useDispatch();
   const { loading, data, success } = useSelector((state) => state.viewCategoriesReducer)
+   const {success: updateCategorySuccess } = useSelector((state) => state.updateCategoryReducer) || {}
+  const { success: addCategorySuccess } = useSelector((state) => state.addCategoryReducer) || {}
   const [selectedType, setSelectedType] = useState(transactionTypes.EXPENSE)
   const [openCategoryModal, setOpenCategoryModal] = useState(false)
   const [clickedCategory, setClickedCategory] = useState(null)
-  const [clickAddCategory, setClickAddCategory] = useState(false)
 
   useEffect(() => {
     dispatch(viewCategoriesAction())
   }
-  , [])
+  , [addCategorySuccess, updateCategorySuccess])
+
+  console.log(updateCategorySuccess, addCategorySuccess)
   const handlePress = (types) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setSelectedType(types)
@@ -35,6 +32,7 @@ const ViewCategories = () => {
 
   const handleClickCategory = (category) => {
   console.log('category', category)
+  if(category?.isDefault || category?.isInUse) return;
   setOpenCategoryModal(true)
   if(category) {
     setClickedCategory(category)
@@ -45,7 +43,7 @@ const ViewCategories = () => {
 
   return (
     <ScrollView style={categoryStyles.container}>
-       {openCategoryModal && <AddEditCategoryModal setOpenCategoryModal={setOpenCategoryModal} openCategoryModal={openCategoryModal} editCategoryData={clickedCategory}  />}
+       {openCategoryModal && <AddEditCategoryModal setOpenCategoryModal={setOpenCategoryModal} openCategoryModal={openCategoryModal} editCategoryData={clickedCategory} dispatch={dispatch} transactionType={selectedType}  />}
       <View style={categoryStyles.transactionTypeContainer}>
         {TransactionTypesToMap.map((types, index) => (
           <TouchableOpacity

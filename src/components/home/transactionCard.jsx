@@ -79,10 +79,10 @@ const animatedActionStyle = useAnimatedStyle(() => ({
       style={[transactionCardStyles.actionContainer, animatedActionStyle]} 
       pointerEvents={translateX.value < -10 ? "auto" : "none"} // Allow clicks only when visible
     >
-      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)}>
+      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)} disabled={translateX.value < -10}>
         <Ionicons name="duplicate" size={24} color="white" />
       </Pressable>
-      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)}>
+      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)} disabled={translateX.value < -10}>
         <Ionicons name="trash" size={22} color="white" />
       </Pressable>
     </Animated.View>
@@ -96,7 +96,7 @@ const animatedActionStyle = useAnimatedStyle(() => ({
           </View>
           <View style={transactionCardStyles.leftVerticleContainer}>
             <Text style={transactionCardStyles.amount}>{transactionData?.categoryName}</Text>
-            <Text style={transactionCardStyles.subtitle}>{transactionData?.note || 'Not Specified'}</Text>
+            <Text style={transactionCardStyles.subtitle} ellipsizeMode='tail' numberOfLines={1}>{transactionData?.note || 'Not Specified'}</Text>
           </View>
         </View>
         <View style={transactionCardStyles.rightContainer}>

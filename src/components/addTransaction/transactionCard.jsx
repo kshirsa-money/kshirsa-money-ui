@@ -14,7 +14,7 @@ import CategoriesPopup from '../category/categoriesPopup';
 import { useSelector } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) => {
+const TransactionCard = ({ formData, onChange, setFormData, editTransaction, handleNavigateToCategories }) => {
   const [visiblePaymenetModePopup, setVisiblePaymentModePopup] = useState(false);
   const [selectedPaymentMode, setSelectedPaymentMode] = useState(paymentModeOptions[0]);
   const [visibleCategoryPopup, setVisibleCategoryPopup] = useState(false);
@@ -45,7 +45,7 @@ const TransactionCard = ({ formData, onChange, setFormData, editTransaction }) =
 
   return (
     <>
-      <CategoriesPopup visibleCategoryPopup={visibleCategoryPopup} setVisibleCategoryPopup={setVisibleCategoryPopup} categoryData={categoryData} categoryType={formData.transactionType} setFormData={setFormData} />
+      <CategoriesPopup visibleCategoryPopup={visibleCategoryPopup} setVisibleCategoryPopup={setVisibleCategoryPopup} categoryData={categoryData} categoryType={formData.transactionType} setFormData={setFormData} handleNavigateToCategories={handleNavigateToCategories} />
       <View style={addTransactionStyles.transactionCardContainer}>
         <View style={addTransactionStyles.transactionType}>
           <TouchableOpacity onPress={() => handleTypeChange('EXPENSE')} style={{ flex: 1 }}>

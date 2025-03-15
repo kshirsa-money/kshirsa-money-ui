@@ -41,9 +41,6 @@ const categoryStyles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         marginHorizontal: 20,
-        padding: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.transactionCardBg,
     },
     categoryText: {
         color: Colors.white,
@@ -55,11 +52,10 @@ const categoryStyles = StyleSheet.create({
         fontSize: cssUtils.smallTextSize,
     },
     categoryContainer: {
-        // marginTop: 80,
-        // width: '100%',
-        // flex: 1,
         height: screenHeight* 0.6,
-        // marginRight: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
     },
     noDataContainer: {
         flex: 1,
@@ -103,8 +99,17 @@ const categoryStyles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        // borderColor: Colors.darkGrey,
-        // borderWidth: 1,
+
+    },
+    categoryItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.transactionCardBg,
     }
 });
 

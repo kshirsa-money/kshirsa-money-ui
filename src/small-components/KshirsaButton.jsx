@@ -1,71 +1,81 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import React, { useRef, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../styles/Colors';
 import KshirsaButtonLoadingAnimation from '../../assets/animatedImage/KshirsaButtonLoading';
+import cssUtils from '../constants/cssUtils';
 
 const KshirsaButton = ({
     title = 'Button',
-    buttonStyle,
+    buttonStyle = {},
     titleStyle,
     onPress,
     icon = null,
     disabled = false,
     loading = false
 }) => {
-    const buttonWidthRef = useRef(0);
-    const [widthMeasured, setWidthMeasured] = useState(false);
+    const [buttonSize, setButtonSize] = useState({ width: 'fit-content', height:'fit-content' }); // Default size
 
-    // Measure button width only once
     const handleLayout = (event) => {
-        if (event?.nativeEvent?.layout && !widthMeasured) {
-            buttonWidthRef.current = event.nativeEvent.layout.width;
-            setWidthMeasured(true);
+        const { width, height } = event.nativeEvent.layout;
+        if (width && height && (width !== buttonSize.width || height !== buttonSize.height)) {
+            setButtonSize({ width, height });
         }
     };
 
-    // Determine what to render inside the button
-    const renderContent = () => {
-        if (loading) return <KshirsaButtonLoadingAnimation width={buttonWidthRef.current} />;
-        if (icon) return icon;
-        return <Text style={[styles.text, titleStyle]}>{title}</Text>;
-    };
-
     return (
-        <LinearGradient
-            colors={disabled ? Colors.disabledButtonLinearGradient : loading ? Colors.buttonLoadingGradient : Colors.buttonLinearGradient}
-            style={[styles.container, buttonStyle]}
-            onLayout={handleLayout}
-        >
-            <TouchableOpacity 
-                onPress={onPress} 
-                activeOpacity={disabled ? 1 : 0.7} 
-                disabled={disabled || loading} 
-                style={styles.touchable}
+        <TouchableOpacity style={[ buttonStyle]}
+        onPress={onPress}
+        disabled={disabled || loading}>
+            <LinearGradient
+                colors={disabled ? Colors.disabledButtonLinearGradient : loading ? Colors.buttonLoadingGradient : Colors.buttonLinearGradient}
+                style={styles.container}
             >
-                {renderContent()}
-            </TouchableOpacity>
-        </LinearGradient>
+                <View
+                    onLayout={handleLayout}
+                    style={[styles.touchable, { width: buttonSize.width, height: buttonSize.height }]}
+                >
+                    {loading ? (
+                        <KshirsaButtonLoadingAnimation width={buttonSize.width} height={buttonSize.height} />
+                    ) : icon ? (
+                        icon
+                    ) : (
+                        <Text style={[disabled ? styles.disabledText : styles.text, titleStyle]}>{title}</Text>
+                    )}
+                </View>
+            </LinearGradient>
+        </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        borderRadius: 50, // Ensures the gradient has smooth corners
-        overflow: 'hidden', // Prevents touch effect from going outside
+    wrapper: {
+        minWidth: 100, // Ensure the button has a measurable size
+        minHeight: 45,
     },
-    touchable: {
-        paddingVertical: 12,
-        paddingHorizontal: 16,
+    container: {
+        borderRadius: 50,
+        overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%', // Ensures proper sizing
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    touchable: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     text: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: Colors.white,
+        fontSize: cssUtils.smallTextSize,
+        fontWeight: cssUtils.bold,
+    },
+    disabledText: {
+        color: Colors.lightGrey,
+        fontSize: cssUtils.smallTextSize,
+        fontWeight: cssUtils.bold,
     }
+
 });
 
 export default KshirsaButton;

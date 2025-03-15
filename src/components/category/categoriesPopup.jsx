@@ -8,7 +8,7 @@ import Colors from '../../styles/Colors'
 import { useRouter } from 'expo-router'
 import uiRoutes from '../../constants/uiRoutes'
 
-const CategoriesPopup = ({ visibleCategoryPopup, setVisibleCategoryPopup, categoryData, categoryType, setFormData }) => {
+const CategoriesPopup = ({ visibleCategoryPopup, setVisibleCategoryPopup, categoryData, categoryType, setFormData, handleNavigateToCategories }) => {
   const router = useRouter()
   const handleClickCategory = (category) => {
     setFormData((prev) => ({
@@ -25,7 +25,7 @@ const CategoriesPopup = ({ visibleCategoryPopup, setVisibleCategoryPopup, catego
       header={`Select a ${categoryType?.toLowerCase()} category`}
     >
       <View style={categoryStyles.popupContainer}>
-        <TouchableOpacity style={categoryStyles.categoryBtn} onPress={() => router.push(uiRoutes.categories)}>
+        <TouchableOpacity style={categoryStyles.categoryBtn} onPress={handleNavigateToCategories}>
           <FontAwesome6 name="add" size={24} color={Colors.white} />
         </TouchableOpacity>
         <CategoryList data={categoryData} categoryType={categoryType} handleClickCategory={handleClickCategory} />

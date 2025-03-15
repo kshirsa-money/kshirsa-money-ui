@@ -50,6 +50,7 @@ const transactionCardStyles = StyleSheet.create({
   leftContainer: {
     flexDirection: "row",
     alignItems: "center",
+    width: '60%'
   },
   rightContainer: {
     alignItems: "flex-end",
@@ -87,8 +88,7 @@ const transactionCardStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "flex-start",
-    // borderColor: Colors.lightGrey,
-    // borderWidth: 1,
+    width: '100%',
     gap: 10,
   }
 });

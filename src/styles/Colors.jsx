@@ -7,7 +7,7 @@ export default {
     primary: '#00ad79',
     secondary: '#00f0a4',
     buttonLinearGradient: ['#00f0a4', '#00ad79'],
-    disabledButtonLinearGradient: ['rgb(151, 151, 150)', 'rgb(131, 133, 129)'],
+    disabledButtonLinearGradient: ['rgb(63, 65, 64)', 'rgb(45, 49, 41)', 'rgb(63, 65, 64)'],
     buttonLoadingGradient: ['rgb(42, 131, 91)', 'rgb(11, 73, 43)'],
     moodyBlack: 'rgb(27, 27, 27)',
     normalInputBg: 'rgb(85, 85, 85)',

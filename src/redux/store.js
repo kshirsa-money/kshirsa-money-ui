@@ -10,6 +10,10 @@ import deleteTransactionReducer from "./reducers/deleteTransactionReducer";
 import getTransactionReducer from "./reducers/getTransactionReducer";
 import updateTransactionReducer from "./reducers/updateTransactionReducer";
 import viewCategoriesReducer from "./reducers/viewCategoriesReducer";
+import savedFormDataReducer from "./reducers/savedFormDataReducer";
+import updateCategoryReducer from "./reducers/updateCategoryReducer";
+import addCategoryReducer from "./reducers/addCategoryReducer";
+import deleteCategoryReducer from "./reducers/deleteCategoryReducer";
 
 const KshirsaStore = configureStore({
     reducer: {
@@ -23,7 +27,11 @@ const KshirsaStore = configureStore({
       deleteTransactionReducer: deleteTransactionReducer,
       getTransactionReducer: getTransactionReducer,
       updateTransactionReducer: updateTransactionReducer,
+      savedFormDataReducer: savedFormDataReducer,
       viewCategoriesReducer: viewCategoriesReducer,
+      updateCategoryReducer: updateCategoryReducer,
+      addCategoryReducer: addCategoryReducer,
+      deleteCategoryReducer: deleteCategoryReducer,
     },
   });
 

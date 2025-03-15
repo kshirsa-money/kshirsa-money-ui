@@ -1,12 +1,20 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import KshirsaModal from '../../small-components/KshirsaModal'
 import KshirsaInput from '../../small-components/KshirsaInput'
 import categoryStyles from '../../styles/stylesCategory'
 import uiText from '../../constants/uiTexts'
 import { checkIsModifiedFormData } from '../../utils/helper'
+import updateCategoryAction from '../../redux/actions/updateCategoryAction'
+import { useSelector } from 'react-redux'
+import { resetAddCategoryAction } from '../../redux/reducers/addCategoryReducer'
+import { resetUpdateCategoryAction } from '../../redux/reducers/updateCategoryReducer'
+import addCategoryAction from '../../redux/actions/addCategoryAction'
 
-const AddEditCategoryModal = ({setOpenCategoryModal, openCategoryModal, editCategoryData}) => {
+const AddEditCategoryModal = ({setOpenCategoryModal, openCategoryModal, editCategoryData, dispatch, transactionType}) => {
+    const {success: updateCategorySuccess, loading: updateCategoryLoading} = useSelector((state) => state.updateCategoryReducer) || {}
+    const { success: addCategorySuccess, loading: addCategoryLoading } = useSelector((state) => state.addCategoryReducer) || {}
+
     const [formData, setFormData] = useState({
         categoryName: editCategoryData?.category?.categoryName || '',
         description: editCategoryData?.category?.description || ''
@@ -21,17 +29,48 @@ const AddEditCategoryModal = ({setOpenCategoryModal, openCategoryModal, editCate
         setOpenCategoryModal(false)
     }
 
+    useEffect(() => {
+        if(updateCategorySuccess || addCategorySuccess) {
+            onClose()
+        }
+
+        return () => {
+            dispatch(resetAddCategoryAction());
+            dispatch(resetUpdateCategoryAction());
+        }
+    }, [updateCategorySuccess, addCategorySuccess])
+
     const handleChange = (text, field) => {
-        setFormData({
+        const updatedFormData = {
             ...formData,
             [field]: text
-        })
-        if(!checkIsModifiedFormData(formData, initialData) || formData.categoryName === '') {
-            setDisabledConfirm(false)
-        } else {
+        }
+        setFormData(updatedFormData)
+    
+        const isModified = Object.keys(updatedFormData).some(key => 
+            checkIsModifiedFormData(updatedFormData[key], initialData[key])
+        )
+    
+        if (
+            !isModified ||
+            (field === 'categoryName' && text === '') ||
+            (updatedFormData.categoryName === '')
+        ) {
             setDisabledConfirm(true)
+        } else {
+            setDisabledConfirm(false)
         }
     }
+
+    const handleConfirm = () => {
+        if(editCategoryData) {
+            dispatch(updateCategoryAction({...formData, categoryId: editCategoryData?.category?.categoryId}))
+        }
+        else {
+            dispatch(addCategoryAction({...formData, transactionType}))
+        }
+    }
+
 
   return (
     <KshirsaModal
@@ -40,8 +79,9 @@ const AddEditCategoryModal = ({setOpenCategoryModal, openCategoryModal, editCate
     title={editCategoryData ? 'Edit Category' : 'Add Category'}
     confirmText={editCategoryData ? 'Edit Category' : 'Add Category'}
     closeText='Close'
-    onConfirm={() => console.log('Add Category')}
+    onConfirm={handleConfirm}
     confirmDisabled={disabledConfirm}
+    confirmLoading={updateCategoryLoading || addCategoryLoading}
     >
         <View style={categoryStyles.modalContainer}>
             <KshirsaInput placeholder={uiText.CATEGORY_NAME} onChangeText={(text) => handleChange(text, 'categoryName')} value={formData.categoryName} needErrorMsg={false} />

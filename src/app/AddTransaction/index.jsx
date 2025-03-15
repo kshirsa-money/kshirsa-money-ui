@@ -2,22 +2,15 @@ import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
-  Button,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  Alert,
   BackHandler,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  resetButtonState,
-  setButtonState,
-} from '../../redux/reducers/floatingBtnReducer';
 import TransactionCard from '../../components/addTransaction/transactionCard';
 import TransactionDateTime from '../../components/addTransaction/transactionDateTime';
-import TransactionCategory from '../../components/addTransaction/transactionCategory';
 import TransactionNotes from '../../components/addTransaction/transactionNotes';
 import Colors from '../../styles/Colors';
 import { addTransactionStyles } from '../../styles/stylesAddTransaction';
@@ -31,7 +24,6 @@ import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { resetaddTransactionAction } from '../../redux/reducers/addTransactionReducer';
 import uiText from '../../constants/uiTexts';
 import { TouchableWithoutFeedback } from 'react-native-web';
-import KshirsaCalculator from '../../small-components/KshirsaCalculator';
 import TransactionTags from '../../components/addTransaction/transactionTags';
 import { KshirsaAlert } from '../../small-components/KshirsaAlert';
 import updateTransactionAction from '../../redux/actions/updateTransactionAction';
@@ -39,11 +31,14 @@ import { resetUpdateTransactionAction } from '../../redux/reducers/updateTransac
 import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransactionReducer';
 import { checkIsModifiedFormData } from '../../utils/helper';
 import viewCategoriesAction from '../../redux/actions/viewCategoriesAction';
+import { useFocusEffect } from '@react-navigation/native';
+import { resetSavedFormDataAction, setSavedFormDataAction } from '../../redux/reducers/savedFormDataReducer';
 
 const AddTransaction = ({ editTransaction = false, transactionId }) => {
   const dispatch = useDispatch();
   const router = useRouter()
   const addTransactionResponse = useSelector((state) => state.addTransactionReducer);
+  const savedFormData = useSelector((state) => state.savedFormDataReducer.data);
   const { data: viewTransactionData, loading: viewTransactionLoading } = useSelector((state) => state.getTransactionReducer);
   const { success: updateTransactionSuccess, loading: updateTransactionLoading, data: updateTransactionData } = useSelector((state) => state.updateTransactionReducer);
   const deleteTransactionReducer = useSelector((state) => state.deleteTransactionReducer);
@@ -72,6 +67,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
   });
   const [isFormModified, setIsFormModified] = useState(false);
   const [errors, setErrors] = useState('');
+
 
   useEffect(() => {
     if (editTransaction) {
@@ -110,6 +106,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
         textBody: deleteTransactionReducer.success ? uiText.DELETE_TRANSACTION_SUCCESS : editTransaction ? uiText.UPDATE_TRANSACTION_SUCCESS : uiText.ADD_TRANSACTION_SUCCESS,
         titleStyle: { color: Colors.secondary },
       });
+      dispatch(resetSavedFormDataAction());
     }
 
     return () => {
@@ -128,6 +125,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     dispatch(viewCategoriesAction())
   }, [])
 
+//------------------------------input change function---------------------
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
@@ -142,6 +140,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     }
   }
 
+//------------------------------save transaction function---------------------
   const handleSaveTransaction = useCallback(() => {
     if (!formData.amount) {
       setErrors('Amount cannot be empty!');
@@ -164,6 +163,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     }
   }, [formData]);
 
+//------------------------------backhandler functions---------------------
   useEffect(() => {
     const handleBackPress = () => {
       if (isFormModified) {
@@ -172,7 +172,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
           'You have unsaved changes. Are you sure you want to discard?',
           [
             { text: 'Stay', style: 'cancel' },
-            { text: 'Discard', onPress: () => router.back() },
+            { text: 'Discard', onPress: () => {router.back(); dispatch(resetSavedFormDataAction())} },
           ],
           // { cancelable: false }
         );
@@ -185,8 +185,24 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
 
     return () => {
       backHandler.remove(); // Cleanup the event listener
+
     };
   }, [isFormModified]);
+
+//------------------------------focus effect function---------------------
+  useFocusEffect(
+    useCallback(() => {
+      if (savedFormData) {
+        setFormData(savedFormData);
+      }
+    }, [])
+  );
+
+//------------------------------navigate to categories function---------------------
+  const handleNavigateToCategories = () => {
+    dispatch(setSavedFormDataAction(formData))
+    router.push(uiRoutes.categories);
+  };
 
   return (
     <>
@@ -206,6 +222,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
                 errors={errors}
                 setFormData={setFormData}
                 editTransaction={editTransaction}
+                handleNavigateToCategories={handleNavigateToCategories}
               />
 
               {errors ? (
