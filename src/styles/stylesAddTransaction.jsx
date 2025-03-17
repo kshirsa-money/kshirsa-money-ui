@@ -49,7 +49,21 @@ export const addTransactionStyles = StyleSheet.create({
         // borderWidth: 1,
     },
     blankView: {
-        width: '45%'
+        width: '45%',
+        padding: 10,
+        alignItems: 'center',
+    },
+    categoryWrapper: {
+        paddingHorizontal: 20,
+        paddingVertical: 25,
+        marginTop: 10,
+        // backgroundColor: Colors.generalFocusBg,
+        borderRadius: 10,
+        minWidth: 80,
+    },
+    categoryName: {
+        color: Colors.white,
+        fontSize: cssUtils.mediumTextSize,
     },
     cardBody: {
         // alignItems: 'center',
@@ -150,7 +164,7 @@ export const addTransactionStyles = StyleSheet.create({
     },
     transactionNotesContainer: {
         backgroundColor: Colors.generalCardBg,
-        height: 150,
+        height: 80,
         marginHorizontal: 10,
         borderRadius: 10,
         paddingHorizontal: 10,
@@ -200,7 +214,7 @@ export const addTransactionStyles = StyleSheet.create({
         justifyContent: 'flex-end',
         marginBottom: 10,
         position: 'absolute',
-        bottom: 0,
+        bottom: 50,
         right: 30,
     }
     });

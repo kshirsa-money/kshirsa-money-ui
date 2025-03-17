@@ -10,5 +10,9 @@ const urls = {
    deleteTransaction: '/api/v1/track/delete/transaction',
    getTransaction: '/api/v1/track/get/transaction',
    updateTransaction: '/api/v1/track/update/transaction',
+   getCategories: '/api/v1/track/get/category',
+   addCategory: '/api/v1/track/add/category',
+   updateCategory: '/api/v1/track/update/category',
+   deleteCategory: '/api/v1/track/delete/category',
 }
 export default urls;

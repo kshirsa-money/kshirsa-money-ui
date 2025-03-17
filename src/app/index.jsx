@@ -24,7 +24,6 @@ export default  function  Index() {
     const initializeApp = async () => {
       const existToken = await getStorageData(ACCESS_TOKEN);
       // Check network status
-      console.log(existToken, 'existToken')
       const networkState = await NetInfo.fetch();
       if (networkState.isConnected) {
         if (existToken) {
@@ -67,7 +66,6 @@ export default  function  Index() {
     initializeApp();
   }, []);
 
-  console.log(initialRoute, 'initialroute')
   return (
   !initialRoute ? <SplashScreen /> :
     <Redirect href={initialRoute} />

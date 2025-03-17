@@ -89,13 +89,16 @@ export const formatLocalDateTime = (utcDateTime) => {
 
 export const createDuplicateTransactionPayload = (transaction) => {
     return {
-      amount: transaction.amount.toString(), // Convert amount to string
-      categoryId: `Default-1`, // Use "Default-1" as categoryId (you can modify this logic as needed)
-      isRecurring: false, // Assuming the transaction is not recurring, you can adjust this logic as needed
-      note: transaction.note || "", // Default note if empty
-      paymentMode: transaction.paymentMode, // Keep the same payment mode
-      tags: transaction.tags || [""], // If tags are empty, default to an array with an empty string
-      transactionTime: transaction.transactionTime, // Keep the same transaction time
-      transactionType: transaction.transactionType, // Keep the same transaction type
+      amount: transaction?.amount?.toString(),
+      categoryId: transaction?.categoryId,
+      isRecurring: false,
+      paymentMode: transaction?.paymentMode,
+      tags: transaction?.tags || [],
+      transactionTime: transaction?.transactionTime,
+      transactionType: transaction?.transactionType,
     };
   };
+
+  export const checkIsModifiedFormData = (formData, initialFormData) => {
+    return JSON.stringify(formData) !== JSON.stringify(initialFormData);
+  }

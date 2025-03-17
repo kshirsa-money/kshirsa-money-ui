@@ -36,7 +36,8 @@ const KshirsaPopup = ({ visible, onClose, header = "Popup Header", children }) =
             <AntDesign name="close" size={20} color={Colors.white} />
           </TouchableOpacity>
         </View>
-        <View style={styles.popupContent}>{children}</View>
+        {children}
+        {/* <View style={styles.popupContent}>{children}</View> */}
       </Animated.View>
     </>
   );

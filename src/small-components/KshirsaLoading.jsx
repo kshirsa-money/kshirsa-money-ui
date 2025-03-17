@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Animated, Text } from 'react-native';
 import imagePath from '../constants/imagePath';
 import Colors from '../styles/Colors';
+import KshirsaMoneyLoadingImg from '../../assets/animatedImage/moneyLoadingImage';
 
 const KshirsaLoadingScreen = () => {
   const fadeValue = useRef(new Animated.Value(0)).current; // For fading
@@ -62,12 +63,13 @@ const KshirsaLoadingScreen = () => {
     <View style={styles.overlayContainer}>
       <View style={styles.loadingContainer}>
         {/* Logo with Fade and Scale Animation */}
-        <Animated.Image
+        {/* <Animated.Image
           source={imagePath.logoPath} // Replace with your logo path
           style={[styles.logo, { opacity: fadeValue, transform: [{ scale: scaleValue }] }]}
           resizeMode="contain"
-        />
-
+        /> */}
+        <KshirsaMoneyLoadingImg />
+          {/* Logo with Fade and Scale Animation */}
         {/* Line Loading Animation */}
         {/* <Animated.View
           style={[styles.loadingLine, { width: lineWidth }]} // Line width animated

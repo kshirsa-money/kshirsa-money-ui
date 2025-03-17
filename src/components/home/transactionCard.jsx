@@ -65,6 +65,7 @@ const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, sw
 
   // Apply same animation to the background buttons
 // Apply same animation to the background buttons
+// Apply same animation to the background buttons
 const animatedActionStyle = useAnimatedStyle(() => ({
   opacity: translateX.value < -10 ? 1 : 0, // Only show when swiping left
   transform: [{ translateY: translateY.value }],
@@ -96,7 +97,7 @@ const animatedActionStyle = useAnimatedStyle(() => ({
           </View>
           <View style={transactionCardStyles.leftVerticleContainer}>
             <Text style={transactionCardStyles.amount}>{transactionData?.categoryName}</Text>
-            <Text style={transactionCardStyles.subtitle}>{transactionData?.note || 'Not Specified'}</Text>
+            <Text style={transactionCardStyles.subtitle} ellipsizeMode='tail' numberOfLines={1}>{transactionData?.note || 'Not Specified'}</Text>
           </View>
         </View>
         <View style={transactionCardStyles.rightContainer}>

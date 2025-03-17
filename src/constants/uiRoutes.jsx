@@ -3,7 +3,8 @@ export default uiRoutes = {
     loginOrSignup: '/loginOrSignUp',
     otp: '/otp',
     main: '/HomeScreen',
-    registration: '/(main)/registration',
+    registration: '/(auth)/registration',
     addTransaction: '/AddTransaction',
     editTransaction: '/editTransaction',
+    categories: '/categories',
 } 

@@ -18,6 +18,11 @@ import { useRouter } from 'expo-router';
 import uiRoutes from '../../constants/uiRoutes';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import Colors from '../../styles/Colors';
+import KshirsaLoadingScreen from '../../small-components/KshirsaLoading';
+import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage';
+import { KshirsaAlert } from '../../small-components/KshirsaAlert';
+import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransactionReducer';
+import { resetaddTransactionAction } from '../../redux/reducers/addTransactionReducer';
 
 const RecentTransaction = () => {
   const dispatch = useDispatch();
@@ -51,16 +56,36 @@ const RecentTransaction = () => {
         textBody: deleteTransactionSuccess ? uiText.DELETE_TRANSACTION_SUCCESS : uiText.ADD_DUPLICATE_TRANSACTION_SUCCESS,
         titleStyle: { color: Colors.secondary },
       });
+      dispatch(resetDeleteTransactionAction());
+      dispatch(resetaddTransactionAction());
     }
   }, [deleteTransactionSuccess, addDuplicateTransactionSuccess]);
 
   const onEdit = (transactionData) => {
-    console.log('editKing')
-    dispatch(addTransactionAction(createDuplicateTransactionPayload(transactionData)))
+    KshirsaAlert.alert(
+              'Duplicate Transaction',
+              'Are you sure you want to add duplicate this transaction?',
+              [
+                { text: 'Cancel', style: 'secondary' },
+                { text: 'Add Duplicate', onPress: () => dispatch(addTransactionAction(createDuplicateTransactionPayload(transactionData))) },
+              ]
+            );
+    // dispatch(addTransactionAction(createDuplicateTransactionPayload(transactionData)))
   };
 
   const onDelete = (transactionData) => {
-    dispatch(deleteTransactionAction({ transactionId: String(transactionData?.transactionId) }));
+    KshirsaAlert.alert(
+      'Delete Transaction',
+      'Are you sure you want to delete this transaction?',
+      [
+        { text: 'Cancel', style: 'secondary' },
+        { text: 'Delete!',
+          onPress: () => dispatch(deleteTransactionAction({ transactionId: String(transactionData?.transactionId) })),
+          loading: deletetransactionLoading,
+          close: deleteTransactionSuccess
+         }
+      ]
+    );
   };
 
   const onPress = (transactionData) => {
@@ -79,7 +104,8 @@ const RecentTransaction = () => {
 
       {/* Skeleton Loader */}
       {recentTransactionLoading ? (
-        <KshirsaSkeletonLoader count={3} />
+        // <KshirsaSkeletonLoader count={3} />
+        <KshirsaMoneyLoadingImg />
       ) : recentTransactionData?.length > 0 ? (
         // Transaction List
         <Animated.FlatList
