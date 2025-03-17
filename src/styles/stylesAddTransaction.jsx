@@ -59,6 +59,7 @@ export const addTransactionStyles = StyleSheet.create({
         marginTop: 10,
         // backgroundColor: Colors.generalFocusBg,
         borderRadius: 10,
+        minWidth: 80,
     },
     categoryName: {
         color: Colors.white,

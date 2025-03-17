@@ -146,6 +146,10 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
       setErrors('Amount cannot be empty!');
       return;
     }
+    if(!formData.categoryId) {
+      setErrors('Please select a category!');
+      return;
+    }
 
     if (formData.amount.length > 10) {
       setErrors('Amount cannot be more than 10000000!');
@@ -201,9 +205,12 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
 //------------------------------navigate to categories function---------------------
   const handleNavigateToCategories = () => {
     dispatch(setSavedFormDataAction(formData))
-    router.push(uiRoutes.categories);
+    router.push({
+      pathname: uiRoutes.categories,
+      params: { transactionType: formData.transactionType },
+    });
   };
-
+  console.log(formData?.transactionType, 'transactionType')
   return (
     <>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>

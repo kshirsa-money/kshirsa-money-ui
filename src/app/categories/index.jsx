@@ -8,13 +8,15 @@ import viewCategoriesAction from '../../redux/actions/viewCategoriesAction'
 import { FontAwesome6 } from '@expo/vector-icons'
 import CategoryList from '../../components/category/categoryList'
 import AddEditCategoryModal from '../../components/category/addEditCategoryModal'
+import { useLocalSearchParams } from 'expo-router'
 
 const ViewCategories = () => {
   const dispatch = useDispatch();
+  const {transactionType } = useLocalSearchParams()
   const { loading, data, success } = useSelector((state) => state.viewCategoriesReducer)
    const {success: updateCategorySuccess } = useSelector((state) => state.updateCategoryReducer) || {}
   const { success: addCategorySuccess } = useSelector((state) => state.addCategoryReducer) || {}
-  const [selectedType, setSelectedType] = useState(transactionTypes.EXPENSE)
+  const [selectedType, setSelectedType] = useState(transactionType || transactionTypes.EXPENSE)
   const [openCategoryModal, setOpenCategoryModal] = useState(false)
   const [clickedCategory, setClickedCategory] = useState(null)
 
@@ -23,15 +25,18 @@ const ViewCategories = () => {
   }
   , [addCategorySuccess, updateCategorySuccess])
 
-  console.log(updateCategorySuccess, addCategorySuccess)
   const handlePress = (types) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setSelectedType(types)
   }
 
+  useEffect(() => {
+    if (transactionType) {
+      setSelectedType(transactionType);
+    }
+  }, [transactionType]);
 
   const handleClickCategory = (category) => {
-  console.log('category', category)
   if(category?.isDefault || category?.isInUse) return;
   setOpenCategoryModal(true)
   if(category) {

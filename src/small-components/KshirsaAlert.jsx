@@ -47,8 +47,14 @@ const AlertComponent = () => {
             {alertConfig.buttons.map((button, index) => (
                <KshirsaButton
                key={index}
-               onPress={() => {button.onPress(); closeModal()}}
-               title={button.text}
+               onPress={() => {
+                if (button.onPress) {
+                  button.onPress();
+                  closeModal();
+                } else {
+                  closeModal();
+                }
+              }}               title={button.text}
                customColor={button.style === "secondary" ? Colors.secondaryButtonLinearGradient : ""}
                loading={button.loading}
                disabled={button.disabled}
