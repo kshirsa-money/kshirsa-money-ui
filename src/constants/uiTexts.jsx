@@ -1,7 +1,7 @@
 
 const uiText ={
     ENTER_OTP: 'Enter OTP Code',
-    OTP_SENT: 'Code has been sent to',
+    OTP_SENT: 'Code has been sent to ',
     RESEND_OTP_BTN: 'Resend OTP',
     MAXIMUM_RESEND_ATTEMPTS: 'You have reached the maximum resend attempts',
     RESENT_OTP_IN: 'Resend OTP in',
@@ -20,6 +20,14 @@ const uiText ={
     UPDATE_TRANSACTION_SUCCESS: 'Transaction updated successfully',
     DELETE_TRANSACTION_SUCCESS: 'Transaction deleted successfully',
     ADD_DUPLICATE_TRANSACTION_SUCCESS: 'Transaction added as duplicate successfully',
+    ADD_CATEGORY_SUCCESS: 'Category added successfully',
+    UPDATE_CATEGORY_SUCCESS: 'Category updated successfully',
+    DELETE_CATEGORY_SUCCESS: 'Category deleted successfully',
+    ADD_DUPLICATE_CATEGORY_SUCCESS: 'Category added as duplicate successfully',
+    ADD_USER_SUCCESS: 'User added successfully',
+    UPDATE_USER_SUCCESS: 'User updated',
+    DELETE_USER_SUCCESS: 'User deleted',
+    LOGOUT_SUCCESS: 'User logged out successfully',
 
     //input placeholders--------
     PHONE_NUMBER: 'Enter your phone number',

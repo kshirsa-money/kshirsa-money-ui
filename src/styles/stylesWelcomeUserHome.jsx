@@ -18,7 +18,7 @@ const welcomeUserHomeStyles = StyleSheet.create({
         fontWeight: cssUtils.bold,
     },
     nameText: {
-        color: Colors.moodyBlack,
+        color: Colors.white,
         fontSize: cssUtils.averageBigTextSize,
         fontWeight: cssUtils.bold,
     },

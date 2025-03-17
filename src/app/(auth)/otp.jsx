@@ -20,6 +20,11 @@ import { ACCESS_TOKEN } from '../../utils/storageKeys';
 import useDeviceId from '../../hooks/useDeviceId';
 import uiRoutes from '../../constants/uiRoutes';
 import KshirsaLoading from '../../small-components/KshirsaLoading';
+import { setUserDetailsAction } from '../../redux/reducers/userDetailsReducer';
+import getUserDetailsAction from '../../redux/actions/userDetailsAction';
+import { resetGenerateOtpAction } from '../../redux/reducers/generateOtpReducer';
+import { resetValidateOtpAction } from '../../redux/reducers/validateOtpReducer';
+import { resetgetRecentTransactionsAction } from '../../redux/reducers/getRecentTransactionsReducer';
 
 const MAX_ATTEMPTS = 3;
 
@@ -35,6 +40,10 @@ const Otp =  () => {
 
   useEffect(() => {
     if (success && data) {
+      dispatch(getUserDetailsAction())
+      dispatch(resetGenerateOtpAction())
+      dispatch(resetValidateOtpAction())
+      dispatch(resetgetRecentTransactionsAction())
       if (data?.isSignUpFlowCompleted) {
       router.replace(uiRoutes.main);
       } else {

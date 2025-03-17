@@ -12,9 +12,11 @@ const KshirsaButton = ({
     onPress,
     icon = null,
     disabled = false,
-    loading = false
+    loading = false,
+    width = 'fit-content',
+    customColor = ''
 }) => {
-    const [buttonSize, setButtonSize] = useState({ width: 'fit-content', height:'fit-content' }); // Default size
+    const [buttonSize, setButtonSize] = useState({ width: {width}, height:'fit-content' }); // Default size
 
     const handleLayout = (event) => {
         const { width, height } = event.nativeEvent.layout;
@@ -28,7 +30,7 @@ const KshirsaButton = ({
         onPress={onPress}
         disabled={disabled || loading}>
             <LinearGradient
-                colors={disabled ? Colors.disabledButtonLinearGradient : loading ? Colors.buttonLoadingGradient : Colors.buttonLinearGradient}
+                colors={disabled ? Colors.disabledButtonLinearGradient : loading ? Colors.buttonLoadingGradient : customColor ? customColor : Colors.buttonLinearGradient}
                 style={styles.container}
             >
                 <View

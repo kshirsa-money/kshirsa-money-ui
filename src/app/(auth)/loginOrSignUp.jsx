@@ -32,7 +32,7 @@ import KshirsaLoadingScreen from '../../small-components/KshirsaLoading';
 
 const LoginOrSignUp = () => {
   const router = useRouter();
-  const generateOtp = useSelector((state) => state.generateOtpReducer);
+  const generateOtp = useSelector((state) => state.generateOtpReducer) || {};
   const { data, loading, success, error } = generateOtp;
   const dispatch = useDispatch();
   const [email, setEmail] = useState({

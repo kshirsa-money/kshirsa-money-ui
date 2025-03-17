@@ -121,7 +121,7 @@ const RegisterForm = () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, [step]);
-
+  
   const handleNextClick = () => {
     switch (step) {
       case 1:
@@ -181,9 +181,9 @@ const RegisterForm = () => {
           .then((res)=> {
             Dialog.show({
               type: ALERT_TYPE.SUCCESS,
-              title: `${res?.data?.userDetails?.name} Welcome to Kshirsa!`,
+              title: `Hey ${res?.data?.userDetails?.name}`,
               textBody: 'Start tracking your expenses effortlessly and take control of your finances today.',
-              button: 'Start!!',
+              button: 'Welcome to Kshirsa!',
               // onClose: () => router.replace(uiRoutes.main)
             })
 
@@ -282,7 +282,9 @@ const RegisterForm = () => {
         return null;
     }
   };
-
+const buttonStyle = {
+  width: 180,
+}
   return (
     <UseTouchableWithoutFeedback>
       <SafeAreaView style={registrationStyles.container}>
@@ -299,11 +301,16 @@ const RegisterForm = () => {
         </View>
         <View style={registrationStyles.buttonContainer}>
           {step < 3 ? (
-            <KshirsaButton title="Next" onPress={handleNextClick} />
+           <TouchableOpacity onPress={handleNextClick} style={registrationStyles.nextBtn}>
+              <Text style={registrationStyles.nextBtnLabel}>Next</Text>
+            </TouchableOpacity>
           ) : (
             <KshirsaButton
-              title="Submit"
+              title="Start your journey"
               onPress={handleNextClick}
+              buttonStyle={buttonStyle}
+              width='180'
+              loading={updateUserDetailsLoading}
             />
           )}
         </View>

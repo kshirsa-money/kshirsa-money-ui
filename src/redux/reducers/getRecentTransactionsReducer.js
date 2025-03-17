@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getRecentTransactionsAction from "../actions/getRecentTransactionAction";
-import { GET_RECENT_TRANSACTION } from "../actions/types";
+import { GET_RECENT_TRANSACTION, RESET_GET_RECENT_TRANSACTION } from "../actions/types";
 
 const initialState = {
   data: null,
@@ -13,6 +13,15 @@ const initialState = {
 const generateOtpReducer = createSlice({
   name: GET_RECENT_TRANSACTION,
   initialState,
+  reducers: {
+    [RESET_GET_RECENT_TRANSACTION]: (state) => {
+      state.data = null;
+      state.loading = false;
+      state.error = null;
+      state.success = null;
+      state.message = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRecentTransactionsAction.pending, (state) => {
@@ -38,7 +47,7 @@ const generateOtpReducer = createSlice({
   },
 });
 
-// export const { 
-//   RESET_GET_RECENT_TRANSACTION: resetgetRecentTransactionsAction
-//  } = generateOtpReducer.actions;
+export const { 
+  RESET_GET_RECENT_TRANSACTION: resetgetRecentTransactionsAction
+ } = generateOtpReducer.actions;
 export default generateOtpReducer.reducer;

@@ -65,6 +65,7 @@ const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, sw
 
   // Apply same animation to the background buttons
 // Apply same animation to the background buttons
+// Apply same animation to the background buttons
 const animatedActionStyle = useAnimatedStyle(() => ({
   opacity: translateX.value < -10 ? 1 : 0, // Only show when swiping left
   transform: [{ translateY: translateY.value }],
@@ -79,10 +80,10 @@ const animatedActionStyle = useAnimatedStyle(() => ({
       style={[transactionCardStyles.actionContainer, animatedActionStyle]} 
       pointerEvents={translateX.value < -10 ? "auto" : "none"} // Allow clicks only when visible
     >
-      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)} disabled={translateX.value < -10}>
+      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)}>
         <Ionicons name="duplicate" size={24} color="white" />
       </Pressable>
-      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)} disabled={translateX.value < -10}>
+      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)}>
         <Ionicons name="trash" size={22} color="white" />
       </Pressable>
     </Animated.View>

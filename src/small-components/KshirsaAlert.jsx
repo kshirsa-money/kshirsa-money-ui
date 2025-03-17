@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Pressable } from "react-native";
 import Colors from "../styles/Colors";
+import KshirsaButton from "./KshirsaButton";
 
 // Global function reference for triggering alert
 let alertHandler = null;
@@ -44,19 +45,14 @@ const AlertComponent = () => {
           
           <View style={styles.buttonContainer}>
             {alertConfig.buttons.map((button, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.button,
-                  button.style === "cancel" ? styles.cancelButton : styles.defaultButton,
-                ]}
-                onPress={() => {
-                  button.onPress && button.onPress();
-                  closeModal();
-                }}
-              >
-                <Text style={styles.buttonText}>{button.text}</Text>
-              </TouchableOpacity>
+               <KshirsaButton
+               key={index}
+               onPress={() => {button.onPress(); closeModal()}}
+               title={button.text}
+               customColor={button.style === "secondary" ? Colors.secondaryButtonLinearGradient : ""}
+               loading={button.loading}
+               disabled={button.disabled}
+             />
             ))}
           </View>
         </View>
