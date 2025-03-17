@@ -27,7 +27,7 @@ import {KshirsaAlert} from '../../small-components/KshirsaAlert';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserDetailsAction } from '../../redux/actions/userDetailsAction';
 import  KshirsaLoadingScreen  from '../../small-components/KshirsaLoading';
-import apiRoutes from '../../constants/apiRoutes';
+import uiRoutes from '../../constants/uiRoutes';
 import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
 import KshirsaRadioButton from '../../small-components/KshirsaRadioButton';
 
@@ -121,7 +121,7 @@ const RegisterForm = () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, [step]);
-
+  
   const handleNextClick = () => {
     switch (step) {
       case 1:
@@ -181,13 +181,13 @@ const RegisterForm = () => {
           .then((res)=> {
             Dialog.show({
               type: ALERT_TYPE.SUCCESS,
-              title: `${res?.data?.userDetails?.name} Welcome to Kshirsa!`,
+              title: `Hey ${res?.data?.userDetails?.name}`,
               textBody: 'Start tracking your expenses effortlessly and take control of your finances today.',
-              button: 'Start!!',
-              // onClose: () => router.replace(apiRoutes.main)
+              button: 'Welcome to Kshirsa!',
+              // onClose: () => router.replace(uiRoutes.main)
             })
 
-            router.replace(apiRoutes.main)
+            router.replace(uiRoutes.main)
           })
         }
         break;
@@ -282,7 +282,9 @@ const RegisterForm = () => {
         return null;
     }
   };
-
+const buttonStyle = {
+  width: 180,
+}
   return (
     <UseTouchableWithoutFeedback>
       <SafeAreaView style={registrationStyles.container}>
@@ -299,11 +301,16 @@ const RegisterForm = () => {
         </View>
         <View style={registrationStyles.buttonContainer}>
           {step < 3 ? (
-            <KshirsaButton title="Next" onPress={handleNextClick} />
+           <TouchableOpacity onPress={handleNextClick} style={registrationStyles.nextBtn}>
+              <Text style={registrationStyles.nextBtnLabel}>Next</Text>
+            </TouchableOpacity>
           ) : (
             <KshirsaButton
-              title="Submit"
+              title="Start your journey"
               onPress={handleNextClick}
+              buttonStyle={buttonStyle}
+              width='180'
+              loading={updateUserDetailsLoading}
             />
           )}
         </View>

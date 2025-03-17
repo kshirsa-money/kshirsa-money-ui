@@ -48,6 +48,23 @@ stepContainer: {
         primaryColor: Colors.secondary,
         backgroundColor: Colors.moodyBlack,
         onBackgroundTextColor: Colors.white 
+    },
+    nextBtn: {
+        width: 150,
+        borderColor: Colors.secondary,
+        borderWidth: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+    },
+    nextBtnLabel: {
+        color: Colors.white,
+        fontSize: cssUtils.smallTextSize,
+        fontWeight: cssUtils.bold,
     }
 })
 

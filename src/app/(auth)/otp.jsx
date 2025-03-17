@@ -18,8 +18,13 @@ import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ACCESS_TOKEN } from '../../utils/storageKeys';
 import useDeviceId from '../../hooks/useDeviceId';
-import apiRoutes from '../../constants/apiRoutes';
+import uiRoutes from '../../constants/uiRoutes';
 import KshirsaLoading from '../../small-components/KshirsaLoading';
+import { setUserDetailsAction } from '../../redux/reducers/userDetailsReducer';
+import getUserDetailsAction from '../../redux/actions/userDetailsAction';
+import { resetGenerateOtpAction } from '../../redux/reducers/generateOtpReducer';
+import { resetValidateOtpAction } from '../../redux/reducers/validateOtpReducer';
+import { resetgetRecentTransactionsAction } from '../../redux/reducers/getRecentTransactionsReducer';
 
 const MAX_ATTEMPTS = 3;
 
@@ -35,10 +40,14 @@ const Otp =  () => {
 
   useEffect(() => {
     if (success && data) {
+      dispatch(getUserDetailsAction())
+      dispatch(resetGenerateOtpAction())
+      dispatch(resetValidateOtpAction())
+      dispatch(resetgetRecentTransactionsAction())
       if (data?.isSignUpFlowCompleted) {
-      router.replace(apiRoutes.main);
+      router.replace(uiRoutes.main);
       } else {
-        router.replace(apiRoutes.registration);
+        router.replace(uiRoutes.registration);
     } 
   }
   if (error?.errorCode === 701) {

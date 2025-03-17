@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { getAllAuthData, getAuthData } from '../utils/database';
 import { ACCESS_TOKEN } from '../utils/storageKeys';
 import getUserDetailsAction from '../redux/actions/userDetailsAction';
@@ -7,18 +7,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import NetInfo from "@react-native-community/netinfo";
 import { errorCodes } from '../constants/utils';
 import SplashScreen from './SplashScreen';
-import apiRoutes from '../constants/apiRoutes';
+import uiRoutes from '../constants/uiRoutes';
 import { getStorageData } from '../utils/storage';
+import { setupInterceptors } from '../api/api';
 
 export default  function  Index() {
   const userDetails = useSelector((state) => state.userDetailsReducer?.data);
   const [initialRoute, setInitialRoute] = useState(null);
   const dispatch = useDispatch();
+  const router = useRouter();
+    // useEffect(() => {
+    //   setupInterceptors(router);
+    // }, []);
 
   useEffect(() => {
     const initializeApp = async () => {
       const existToken = await getStorageData(ACCESS_TOKEN);
-      console.log(existToken, 'existToken')
       // Check network status
       const networkState = await NetInfo.fetch();
       if (networkState.isConnected) {
@@ -29,39 +33,31 @@ export default  function  Index() {
             .then((res) => {
               setTimeout(() => {
                 if (res?.data?.isSignUpFlowCompleted) {
-                  setInitialRoute(apiRoutes.main);
+                  setInitialRoute(uiRoutes.main);
                 } else {
-                setInitialRoute(apiRoutes.registration);
+                setInitialRoute(uiRoutes.registration);
                 }  
               }, 3000);
             })
             .catch((error) => {
+                console.error('Error fetching user details:', error);
               const errorcode = error?.errorDetails?.errorCode;
-              // if (
-              //   errorcode === errorCodes.jwtExpired ||
-              //   errorcode === errorCodes.jwtMissing
-              // )
-              //  {
-                setInitialRoute(apiRoutes.auth);
-              // }
+                setInitialRoute(uiRoutes.auth);
             })
         } else {
-          // If connected but no token, go to auth flow
+          console.log('inside else')
           setTimeout(() => {
-            setInitialRoute(apiRoutes.auth);
+            setInitialRoute(uiRoutes.auth);
           }, 3000);
         }
       } else {
-        // If no network
         if (existToken) {
-          // Token exists, proceed to home
           setTimeout(() => {
-            setInitialRoute(apiRoutes.main);
+            setInitialRoute(uiRoutes.main);
           }, 3000);
         } else {
-          // No token, show no internet page
           setTimeout(() => {
-            setInitialRoute(apiRoutes.auth);
+            setInitialRoute(uiRoutes.auth);
           }, 3000);
         }
       }
@@ -69,7 +65,6 @@ export default  function  Index() {
 
     initializeApp();
   }, []);
-
 
   return (
   !initialRoute ? <SplashScreen /> :

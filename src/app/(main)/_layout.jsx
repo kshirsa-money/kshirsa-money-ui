@@ -1,11 +1,14 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Slot, Stack } from 'expo-router'
 
-const MainStack = () => {
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Tabs } from 'expo-router';
+import KshirsaTabbar from '../../small-components/KshiirsaTabbar';
+
+export default function TabLayout() {
   return (
-    <Slot />
-  )
+  <Tabs tabBar={(props) => <KshirsaTabbar {...props} />}>
+    <Tabs.Screen name='HomeScreen' options={{ title: 'Home', headerShown: false}} />
+    <Tabs.Screen name='profileScreen' options={{ title: 'Profile', headerShown: false}} />
+  </Tabs>
+  );
 }
 
-export default MainStack

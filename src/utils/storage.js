@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { ACCESS_TOKEN, IS_SIGNUPFLOW_COMPLETE, REFRESH_TOKEN, REFRESH_TOKEN_EXPIRY_TIME } from './storageKeys';
+import { ACCESS_TOKEN, DEVICE_ID, IS_SIGNUPFLOW_COMPLETE, REFRESH_TOKEN, REFRESH_TOKEN_EXPIRY_TIME } from './storageKeys';
 
 /**
  * Save data to SecureStore.
@@ -116,5 +116,30 @@ export const clearAuthTokens = async () => {
     console.log('Auth tokens cleared successfully.');
   } catch (error) {
     console.error('Error clearing auth tokens:', error);
+  }
+};
+
+export const setDeviceId = async (data) => {
+  try {
+    await SecureStore.setItemAsync(DEVICE_ID, data);
+    console.log('device id saved successfully.');
+  } catch (error) {
+    console.error('Error saving devoce id:', error);
+  }
+};
+
+export const getDeviceId = async () => {
+  try {
+    const value = await SecureStore.getItemAsync(DEVICE_ID); // Retrieve as a string
+    if (value) {
+      try {
+        return JSON.parse(value); // Attempt to parse JSON
+      } catch {
+        return value; // Return as string if not JSON
+      }
+    }
+    return null; // Return null if no value found
+  } catch (error) {
+    return null;
   }
 };

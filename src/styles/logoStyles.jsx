@@ -32,4 +32,11 @@ export default logoStyles = StyleSheet.create({
             textAlign: 'center',
             width: 200,
         },
+        smallLogo: {
+            width: 40,
+            height: 40,
+            resizeMode: 'contain',
+            alignItems: 'center',
+            textAlign: 'center',
+        },
 })

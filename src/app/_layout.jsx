@@ -1,47 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Redirect, Slot, useRouter } from "expo-router";
+import { Redirect, Slot, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import SplashScreen from "./SplashScreen";
 import AppProvider from ".";
 import { getAllAuthData, getAuthData, initializeDatabase } from "../utils/database";
 import { ACCESS_TOKEN } from "../utils/storageKeys";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import KshirsaStore from "../redux/store";
 import Colors from "../styles/Colors";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { setupInterceptors } from "../api/api";
 import { AlertNotificationRoot } from "react-native-alert-notification";
 import AlertComponent from "../small-components/KshirsaAlert";
-import useDeviceId from "../hooks/useDeviceId";
+import KshirsaFloatingBtn from "../small-components/KshirsaFloatingBtn";
+import uiRoutes from "../constants/uiRoutes";
+import { setButtonState } from "../redux/reducers/floatingBtnReducer";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ErrorFallback from "../components/errorBoundary/fallbackUi";
+import { ErrorBoundary } from "react-error-boundary";
+import GetStartedScreen from "./(auth)";
 
 export default function RootLayout() {
   const router = useRouter();
-  const deviceId = useDeviceId()
-  useEffect(() => {
-    // Initialize SQLite database
-     initializeDatabase();
+  const pathname = usePathname();
+  const visibleFloatingBtn = pathname === uiRoutes.main;
 
+  useEffect(() => {
+    setupInterceptors(router);
   }, []);
-
-  useEffect(() => {
-   setTimeout(() => {
-    getAllAuthData()
-   }, 4000);
-  }, []);
-
-  useEffect(() => {
-    setupInterceptors(router, deviceId);
-  }, [router]);
-
+  
   return (
-    <SafeAreaView style={{flex: 1, backgrounfColor: Colors.moodyBlack}}>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <SafeAreaView style={{flex: 1, backgroundColor: Colors.moodyBlack}}>
     <Provider store={KshirsaStore}>
+      <GestureHandlerRootView>
       <AlertNotificationRoot>
       <StatusBar backgroundColor={Colors.secondary} />
       <Slot />
+      {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(uiRoutes.addTransaction)}/>}
       <AlertComponent />
       </AlertNotificationRoot>
+      </GestureHandlerRootView>
     </Provider>
     </SafeAreaView>
+    </ErrorBoundary>
   )
 }

@@ -17,7 +17,10 @@ const KshirsaInput = ({
   needErrorStyle = false,
   name= '',
   onChangeText = () => {},
-  type = 'text', // New prop for input type
+  type = 'text', 
+  icon = null,
+  onKeyPress = () => {},
+  onSubmitEditing = () => {},
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
@@ -46,7 +49,7 @@ const KshirsaInput = ({
       case 'phone':
         return <Feather name="phone-call" size={24} color={labelColor} />;
       default:
-        return <Ionicons name="text" size={24} color={labelColor} />;
+        return icon;
     }
   };
 
@@ -93,6 +96,8 @@ const KshirsaInput = ({
             keyboardType={type === 'phone' ? 'phone-pad' : 'default'}
             name={name}
             maxLength={type === 'phone' ? 10 : 100}
+            onKeyPress={onKeyPress}
+            onSubmitEditing={onSubmitEditing}
           />
         )}
         <View style={kshirsaButtonStyles.checkWrapper}>
@@ -104,9 +109,9 @@ const KshirsaInput = ({
         <DateTimePicker
           value={date}
           mode="date"
-          display="default"
           onChange={handleDateChange}
           maximumDate={new Date()}
+          display="spinner"
         />
       )}
     </View>

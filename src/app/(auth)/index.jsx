@@ -4,7 +4,7 @@ import { GetStartedScreenStyles } from '../../styles/StylesGetStartedScreen'
 import Colors from '../../styles/Colors'
 import KshirsaButton from '../../small-components/KshirsaButton'
 import { useRouter } from 'expo-router'
-import apiRoutes from '../../constants/apiRoutes'
+import uiRoutes from '../../constants/uiRoutes'
 import imagePath from '../../constants/imagePath'
 import logoStyles from '../../styles/logoStyles'
 import { deleteAuthRow, getAllAuthData, saveAuthData } from '../../utils/database'
@@ -21,11 +21,12 @@ const GetStartedScreen = () => {
   //   tokenCheck();
   // }, [])
   const handleGetStarted =()=> {
-    router.push(apiRoutes.loginOrSignup)
+    router.push(uiRoutes.loginOrSignup)
   }
+  
   return (
     <SafeAreaView style={GetStartedScreenStyles.container}>
-      <View style={{}}></View>
+      <View />
       <View style={GetStartedScreenStyles.body}>
         <Image source={imagePath.logoPath} style={logoStyles.bigLogo} />
         <Text style={logoStyles.bigLogoText}>Kshirsa</Text>
