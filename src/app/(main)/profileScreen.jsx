@@ -15,6 +15,7 @@ import uiText from '../../constants/uiTexts'
 import { useNavigation, useRouter } from 'expo-router'
 import uiRoutes from '../../constants/uiRoutes'
 import { resetUserDetailsAction } from '../../redux/reducers/userDetailsReducer'
+import { renderLogoutSuccessToast } from '../../constants/ToastRender'
 
 const profileScreen = () => {
   const dispatch = useDispatch()
@@ -28,11 +29,7 @@ const profileScreen = () => {
   console.log(logoutSuccess, 'logoutSuccess', logoutLoading, 'logoutLoading')
   useEffect(() => {
     if(logoutSuccess) {
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Success',
-        textBody: uiText.LOGOUT_SUCCESS,
-        })
+      renderLogoutSuccessToast();
       dispatch(resetUserDetailsAction())
       router.replace(uiRoutes.auth)
     }

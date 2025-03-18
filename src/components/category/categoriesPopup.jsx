@@ -28,7 +28,7 @@ const CategoriesPopup = ({ visibleCategoryPopup, setVisibleCategoryPopup, catego
         <TouchableOpacity style={categoryStyles.categoryBtn} onPress={handleNavigateToCategories}>
           <FontAwesome6 name="add" size={24} color={Colors.white} />
         </TouchableOpacity>
-        <CategoryList data={categoryData} categoryType={categoryType} handleClickCategory={handleClickCategory} />
+        <CategoryList data={categoryData} categoryType={categoryType} handleClickCategory={handleClickCategory} fromPopup />
       </View>
     </KshirsaPopup>
   )

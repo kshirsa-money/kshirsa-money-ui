@@ -2,14 +2,16 @@ import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import Colors from '../../styles/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import { KshirsaAlert } from '../../small-components/KshirsaAlert';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import uiRoutes from '../../constants/uiRoutes';
 import deleteTransactionAction from '../../redux/actions/deleteTransactionAction';
+import { TouchableOpacity } from 'react-native';
 
 export default function EditTransactionLayout() {
   const dispatch = useDispatch();
+  const { loading: viewTransactionLoading, success: viewTransactionSuccess } = useSelector((state) => state.getTransactionReducer);
   const {transactionId} = useLocalSearchParams();
-
+  const disabledDelete = viewTransactionLoading || !viewTransactionSuccess;
   const handleDelete = () => {
     KshirsaAlert.alert(
       'Delete Transaction',
@@ -37,13 +39,14 @@ export default function EditTransactionLayout() {
           headerTintColor: Colors.white,
           headerTitleStyle: { fontWeight: 'bold' },
           headerRight: () => (
-            <AntDesign
-              name="delete"
-              size={24}
-              color={Colors.white}
-              onPress={handleDelete}
-              style={{ marginRight: 15 }}
-            />
+            <TouchableOpacity onPress={handleDelete} disabled={disabledDelete} style={disabledDelete && { opacity: 0.2 }}>
+              <AntDesign
+                name="delete"
+                size={24}
+                color={Colors.white}
+                style={{ marginRight: 15 }}
+              />
+            </TouchableOpacity>
           ),
         }}
       />

@@ -9,10 +9,11 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import CategoryList from '../../components/category/categoryList'
 import AddEditCategoryModal from '../../components/category/addEditCategoryModal'
 import { useLocalSearchParams } from 'expo-router'
+import { showToast } from '../../constants/toastUtils'
 
 const ViewCategories = () => {
   const dispatch = useDispatch();
-  const {transactionType } = useLocalSearchParams()
+  const { transactionType } = useLocalSearchParams()
   const { loading, data, success } = useSelector((state) => state.viewCategoriesReducer)
    const {success: updateCategorySuccess } = useSelector((state) => state.updateCategoryReducer) || {}
   const { success: addCategorySuccess } = useSelector((state) => state.addCategoryReducer) || {}
@@ -36,8 +37,17 @@ const ViewCategories = () => {
     }
   }, [transactionType]);
 
+  //---------------------- Function to handle click on category----------------------
   const handleClickCategory = (category) => {
-  if(category?.isDefault || category?.isInUse) return;
+  if(category?.isDefault || category?.isInUse) {
+   showToast({
+      message: 'Cannot delete default or in use category',
+      type: 'info',
+      duration: 3000,
+
+   })
+    return
+  };
   setOpenCategoryModal(true)
   if(category) {
     setClickedCategory(category)
@@ -45,7 +55,6 @@ const ViewCategories = () => {
     setClickedCategory(null)
   }
   }
-
   return (
     <ScrollView style={categoryStyles.container}>
        {openCategoryModal && <AddEditCategoryModal setOpenCategoryModal={setOpenCategoryModal} openCategoryModal={openCategoryModal} editCategoryData={clickedCategory} dispatch={dispatch} transactionType={selectedType}  />}

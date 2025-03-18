@@ -29,6 +29,7 @@ import uiText from '../../constants/uiTexts';
 import { saveAuthData } from '../../utils/database';
 import AlertComponent, { KshirsaAlert } from '../../small-components/KshirsaAlert';
 import KshirsaLoadingScreen from '../../small-components/KshirsaLoading';
+import { renderOtpSendErrorToast, renderOtpSendSuccessToast } from '../../constants/ToastRender';
 
 const LoginOrSignUp = () => {
   const router = useRouter();
@@ -43,23 +44,11 @@ const LoginOrSignUp = () => {
 
   useEffect(() => { 
     if (success && !loading) {
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Success',
-        textBody: uiText.OTP_SEND_SUCCESS,
-        titleStyle: { color: Colors.secondary },
-        })
-      router.navigate(uiRoutes.otp)
+      renderOtpSendSuccessToast();
+      router.navigate(uiRoutes.otp);
     }
     if(!success && error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: 'Error',
-        textBody: uiText.OTP_SEND_ERROR,
-        titleStyle: { color: Colors.red },
-        toastStyle: { backgroundColor: Colors.moodyBlack },
-        autoClose: false,
-        })
+     renderOtpSendErrorToast();
     }
   }, [success])
  

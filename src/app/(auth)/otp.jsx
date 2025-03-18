@@ -25,6 +25,7 @@ import getUserDetailsAction from '../../redux/actions/userDetailsAction';
 import { resetGenerateOtpAction } from '../../redux/reducers/generateOtpReducer';
 import { resetValidateOtpAction } from '../../redux/reducers/validateOtpReducer';
 import { resetgetRecentTransactionsAction } from '../../redux/reducers/getRecentTransactionsReducer';
+import { renderLoginSuccessToast, renderOtpSendSuccessToast, renderOtpValidationFailedToast } from '../../constants/ToastRender';
 
 const MAX_ATTEMPTS = 3;
 
@@ -51,11 +52,7 @@ const Otp =  () => {
     } 
   }
   if (error?.errorCode === 701) {
-    Toast.show({
-      type: ALERT_TYPE.DANGER,
-      title: 'Error',
-      textBody: error?.errorMessage || uiText.OTP_VALIDATION_FAILED,
-    });
+    renderOtpValidationFailedToast();
   }
   }, [data, loading, error, success])
   
@@ -69,16 +66,11 @@ const Otp =  () => {
     }
     dispatch(validateOtpAction({ body, headers})).unwrap()
 	  .then((res) => {
-		Toast.show({
-			type: ALERT_TYPE.SUCCESS,
-			title: 'Success',
-			textBody: uiText.LOGIN_SUCCESS,
-		  })
+		renderLoginSuccessToast();
 	  })
 	  .catch(() => {
     })
   }
-  // console.log(await AsyncStorage.getItem(ACCESS_TOKEN), 'token') // eslint-disable-line
 
   const handleResendBtn = () => {
     if (attempts >= MAX_ATTEMPTS) {
@@ -87,11 +79,7 @@ const Otp =  () => {
     dispatch(generateOtpAction({ queryParams: { email } }))
       .unwrap()
       .then(() => {
-		Toast.show({
-			type: ALERT_TYPE.SUCCESS,
-			title: 'Success',
-			textBody: uiText.OTP_SEND_SUCCESS,
-		  })
+		    renderOtpSendSuccessToast();
         setAttempts(attempts + 1);
         const newDuration = timerDuration * 2;
         setTimerDuration(newDuration);

@@ -5,11 +5,11 @@ import urls from "../../api/url";
 
 const deleteCategoryAction = createAsyncThunk(
   DELETE_CATEGORY,
-    async (body, { rejectWithValue }) => {
+    async (queryParams, { rejectWithValue }) => {
         try {
             const response = await sendData({
               endpoint: urls.deleteCategory,
-              body,
+              queryParams,
               method: 'delete',
   
             }); 
