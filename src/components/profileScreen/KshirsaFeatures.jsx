@@ -14,7 +14,7 @@ const KshirsaFeatures = () => {
      <MaterialIcons name="category" size={24} color={Colors.secondary} />
         <Text style={kshirsaFeturesStyles.cardTitle}>Categories</Text>
      </TouchableOpacity>
-     <TouchableOpacity style={kshirsaFeturesStyles.card} onPress={() => router.push(uiRoutes.categories)}>
+     <TouchableOpacity style={kshirsaFeturesStyles.card} onPress={() => router.push(uiRoutes.allTransactions)}>
      <FontAwesome6 name="money-bill-transfer" size={24} color={Colors.secondary} />
         <Text style={kshirsaFeturesStyles.cardTitle}>Transactions</Text>
      </TouchableOpacity>

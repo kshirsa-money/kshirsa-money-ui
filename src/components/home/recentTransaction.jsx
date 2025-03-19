@@ -1,4 +1,4 @@
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Animated, {
   useSharedValue,
@@ -7,7 +7,6 @@ import Animated, {
 import { useDispatch, useSelector } from 'react-redux';
 import recentTransactionStyles from '../../styles/stylesRecentTransaction';
 import TransactionCard from './transactionCard';
-import KshirsaSkeletonLoader from '../../small-components/KshirsaSkeletonLoader';
 import getRecentTransactionsAction from '../../redux/actions/getRecentTransactionAction';
 import KshirsaNoDataImage from '../../../assets/animatedImage/noDataImage';
 import uiText from '../../constants/uiTexts';
@@ -16,9 +15,6 @@ import addTransactionAction from '../../redux/actions/addTransactionAction';
 import { createDuplicateTransactionPayload } from '../../utils/helper';
 import { useRouter } from 'expo-router';
 import uiRoutes from '../../constants/uiRoutes';
-import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
-import Colors from '../../styles/Colors';
-import KshirsaLoadingScreen from '../../small-components/KshirsaLoading';
 import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage';
 import { KshirsaAlert } from '../../small-components/KshirsaAlert';
 import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransactionReducer';
@@ -44,7 +40,7 @@ const RecentTransaction = () => {
       scrollY.value = event.contentOffset.y;
     },
   });
-  //-----------------------------
+  //-----------------------------call recent transaction when no data or add transaction success or update transaction success-----------------------------
   useEffect(() => {
     if(!recentTransactionData || addTransactionResponse.success || updateTransactionSuccess) dispatch(getRecentTransactionsAction());
 
@@ -106,7 +102,7 @@ const RecentTransaction = () => {
 
       {/* Skeleton Loader */}
       {recentTransactionLoading ? (
-        // <KshirsaSkeletonLoader count={3} />
+        // <KshirsaSkeletonLoader count=\{3} />
         <KshirsaMoneyLoadingImg />
       ) : recentTransactionData?.length > 0 ? (
         // Transaction List

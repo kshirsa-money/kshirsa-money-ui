@@ -23,10 +23,11 @@ const profileScreen = () => {
   const { logoutSuccess, logoutLoading } = useSelector(state => state.userDetailsReducer)
   const handleLogout = async () => {
     const refreshToken = await getStorageData(REFRESH_TOKEN)
-    console.log(refreshToken, 'token')
     dispatch(logoutAction({token: refreshToken}))
   }
-  console.log(logoutSuccess, 'logoutSuccess', logoutLoading, 'logoutLoading')
+
+
+  //----------------------------logoutsucess toast and redirect to login screen-----------------------------
   useEffect(() => {
     if(logoutSuccess) {
       renderLogoutSuccessToast();

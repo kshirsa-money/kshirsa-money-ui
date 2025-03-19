@@ -33,6 +33,6 @@ const KshirsaTopBgStyles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         borderBottomRightRadius: 350,
-        // borderBottomLeftRadius: 350,
+        borderBottomLeftRadius: 150,
     }
     });
