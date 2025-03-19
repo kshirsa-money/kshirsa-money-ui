@@ -5,15 +5,11 @@ import { useSelector } from "react-redux";
 import Colors from "../styles/Colors";
 import KshirsaPlusAnimation from "../../assets/animatedImage/KshirsaPlusAnimation";
 
-export default function KshirsaFloatingBtn() {
-    const { visible, icon, btnStyles, onPress } = useSelector(
-        (state) => state.floatingButtonReducer
-    );
-    if (!visible) return null; // Don't render if the button is not visible
+export default function KshirsaFloatingBtn({buttonStyles, onPress}) {
 
     return (
         <TouchableOpacity
-            style={[styles.button, btnStyles]}
+            style={[styles.button, buttonStyles]}
             onPress={onPress}
         >
             {/* <FontAwesome6 name={icon} size={24} color="white" /> */}

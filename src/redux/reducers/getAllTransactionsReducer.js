@@ -10,6 +10,7 @@ const initialState = {
   message: null,
   transactionList: [],
   currentPage: 1,
+  infinityLoading: false
 };
 
 const getAllTransactionsReducer = createSlice({
@@ -27,17 +28,21 @@ const getAllTransactionsReducer = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllTransactionsAction.pending, (state) => {
+        if(state.currentPage === 1) {
         state.loading = true;
+        }
         state.error = null;
         state.success = null;
         state.message = null;
+        state.infinityLoading = true;
       })
       .addCase(getAllTransactionsAction.fulfilled, (state, action) => {
         const { data, success, message } = action.payload;
         state.loading = false;
+        state.infinityLoading = false;
         state.data = data;
+        console.log(data?.currentPage, ' reducerPage')
         state.currentPage = data?.currentPage || 1;
-        state.transactionList = data?.transactionList || [];
         if (data?.currentPage === 1) {
           state.transactionList = data?.transactionList || [];
         } else {

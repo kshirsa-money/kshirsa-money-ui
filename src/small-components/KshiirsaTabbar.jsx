@@ -6,11 +6,13 @@ import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useEffect, useState } from 'react';
 import uiRoutes from '../constants/uiRoutes';
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import KshirsaFloatingBtn from './KshirsaFloatingBtn';
 import KshirsaUserAnimation from '../../assets/animatedImage/KshirsaUserAnimation';
 import KshirsaHomeAnimation from '../../assets/animatedImage/KshirsaHomeAnimated';
 export default function KshirsaTabbar({ state, descriptors, navigation }) {
+    const pathname = usePathname();
+    const visibleFloatingBtn = pathname === uiRoutes.main;
     const router = useRouter();
     const { buildHref } = useLinkBuilder();
     const [dimensions, setDimensions] = useState({ height: 20, width: 300 })
@@ -47,13 +49,12 @@ export default function KshirsaTabbar({ state, descriptors, navigation }) {
                 borderRadius: 50,
                 flexDirection: 'row',
                 height: dimensions.height - 10,
-            }]} /> */}
-            {/* <Pressable
-                style={KshirsaTabbarStyles.floatingButton}
-                onPress={() => router.push(uiRoutes.addTransaction)}
-            >
-                <AntDesign name="plus" size={24} color={Colors.white} />
-            </Pressable> */}
+            // }]} /> */}
+            {visibleFloatingBtn &&
+            <KshirsaFloatingBtn
+               buttonStyles={KshirsaTabbarStyles.floatingButton}
+             onPress={() => router.push(uiRoutes.addTransaction)}
+             />}
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label =

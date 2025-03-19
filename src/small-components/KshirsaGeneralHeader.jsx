@@ -4,12 +4,14 @@ import { FontAwesome } from '@expo/vector-icons'
 import Colors from '../styles/Colors'
 import kshirsaHeaderStyles from '../styles/stylesKshirsaHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from 'expo-router'
 
 const KshirsaGeneralHeader = ({pageTitle = 'Kshirsa', headerRight}) => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={kshirsaHeaderStyles.container}>
       <View style={kshirsaHeaderStyles.headerLeft}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={kshirsaHeaderStyles.headerLeft}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={kshirsaHeaderStyles.back}>
         <FontAwesome name="chevron-left" size={20} color={Colors.white} />
         </TouchableOpacity>
         <Text style={kshirsaHeaderStyles.headerTitle}>{pageTitle}</Text>

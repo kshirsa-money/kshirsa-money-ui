@@ -1,5 +1,5 @@
 import { ScrollView, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import KshirsaGeneralHeader from '../../small-components/KshirsaGeneralHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import allTransactionsStyle from '../../styles/stylesAllTransactions'
@@ -7,30 +7,37 @@ import AllTransactionsList from '../../components/all-transactions/allTransactio
 import { screenHeight } from '../../constants/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import getAllTransactionsAction from '../../redux/actions/getAllTransactionsAction'
+import { usePathname } from 'expo-router'
 
 const AllTransactions = () => {
   const allTransactionData = useSelector((state) => state.allTransactionsReducer);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllTransactionsAction());
-  }
-, [dispatch]);
+  const pathName = usePathname();
+  const [currentPage, setCurrentPage] = useState(1);
 
-console.log(allTransactionData, 'kingotask')
+  console.log(pathName, 'pathName');
+  useEffect(() => {
+    dispatch(getAllTransactionsAction({
+      pageNumber: currentPage,
+      transactionPerPage: 10
+    }));
+  }
+    , [dispatch, currentPage]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {/* <ScrollView contentContainerStyle={{ paddingVertical: screenHeight * 0.13, paddingHorizontal: 20 }}> */}
       // ----------------------------------------------general header ----------------------------------------
-      <KshirsaGeneralHeader headerRight={() => {
-        return (
+      <KshirsaGeneralHeader
+        pageTitle='Transactions History'
+        headerRight={() => (
           <View style={allTransactionsStyle.headerRight}>
             <Text style={allTransactionsStyle.filterText}>Filter</Text>
           </View>
-        )
-      }} />
+        )} />
       // -----------------------------------------------all Transactions-------------------------------------------------------
-      <ScrollView contentContainerStyle={{ paddingVertical: screenHeight * 0.13, paddingHorizontal: 20 }}>
-        <AllTransactionsList allTransactionData={allTransactionData} />
-      </ScrollView>
+      <AllTransactionsList allTransactionData={allTransactionData} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      {/* </ScrollView> */}
     </SafeAreaView>
   )
 }

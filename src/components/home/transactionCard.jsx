@@ -14,7 +14,7 @@ import { transactionTypes } from '../../constants/utils';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, swipeIndex, setSwipeIndex }) => {
+const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, swipeIndex, setSwipeIndex, fromAllTransaction }) => {
   const translateX = useSharedValue(0);
   const threshold = -SCREEN_WIDTH * 0.3; // When the swipe menu should appear
 
@@ -23,10 +23,11 @@ const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, sw
   const opacity = useSharedValue(0);
 
   useEffect(() => {
-    const delay = index * 150; // Staggered animation delay
+    const delay = fromAllTransaction ? 0 : index * 150; // Remove delay if fromAllTransaction is true
     translateY.value = withDelay(delay, withTiming(0, { duration: 500 }));
     opacity.value = withDelay(delay, withTiming(1, { duration: 500 }));
-  }, []);
+  }, [fromAllTransaction, index]);
+  
 
   useEffect(() => {
     if (swipeIndex !== index) {
@@ -65,13 +66,10 @@ const TransactionCard = ({ transactionData, onDelete, onEdit, onPress, index, sw
 
   // Apply same animation to the background buttons
 // Apply same animation to the background buttons
-// Apply same animation to the background buttons
 const animatedActionStyle = useAnimatedStyle(() => ({
   opacity: translateX.value < -10 ? 1 : 0, // Only show when swiping left
   transform: [{ translateY: translateY.value }],
 }));
-
-
   return (
 <GestureDetector gesture={panGesture}>
   <View style={{ position: 'relative', overflow: 'hidden' }}>
@@ -80,10 +78,10 @@ const animatedActionStyle = useAnimatedStyle(() => ({
       style={[transactionCardStyles.actionContainer, animatedActionStyle]} 
       pointerEvents={translateX.value < -10 ? "auto" : "none"} // Allow clicks only when visible
     >
-      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)}>
+      <Pressable style={[transactionCardStyles.editButton]} onPress={() => onEdit(transactionData)} disabled={translateX.value < -10}>
         <Ionicons name="duplicate" size={24} color="white" />
       </Pressable>
-      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)}>
+      <Pressable style={[transactionCardStyles.deleteButton]} onPress={() => onDelete(transactionData)} disabled={translateX.value < -10}>
         <Ionicons name="trash" size={22} color="white" />
       </Pressable>
     </Animated.View>

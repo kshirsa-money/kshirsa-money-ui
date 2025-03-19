@@ -20,7 +20,13 @@ const kshirsaHeaderStyles = StyleSheet.create({
     headerLeft: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 30,
+        gap: 10,
+        justifyContent: 'center',
+    },
+    back: {
+        padding: 10,
+        borderRadius: 50,
+        alignItems: 'center',
         justifyContent: 'center',
     },
     headerTitle: {

@@ -5,10 +5,11 @@ import urls from "../../api/url";
 
 const getAllTransactionsAction = createAsyncThunk(
     GET_ALL_TRANSACTIONS,
-    async (_, { rejectWithValue }) => {
+    async (queryParams, { rejectWithValue }) => {
         try {
           const response = await fetchData({
             endpoint: urls.getAllTransactions,
+            queryParams
           }); 
           console.log('get-all-transactions-action: ', response);
           return response;
