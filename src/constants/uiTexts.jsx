@@ -28,6 +28,7 @@ const uiText ={
     UPDATE_USER_SUCCESS: 'User updated',
     DELETE_USER_SUCCESS: 'User deleted',
     LOGOUT_SUCCESS: 'User logged out successfully',
+    DEFAULT_CATEGORY_NOT_dELETE: 'Cannot delete default or in use category',
 
     //input placeholders--------
     PHONE_NUMBER: 'Enter your phone number',

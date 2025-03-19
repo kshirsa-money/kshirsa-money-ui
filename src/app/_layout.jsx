@@ -19,6 +19,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ErrorFallback from "../components/errorBoundary/fallbackUi";
 import { ErrorBoundary } from "react-error-boundary";
 import GetStartedScreen from "./(auth)";
+import ToastContainer from "../constants/toastContainer";
 
 export default function RootLayout() {
   const router = useRouter();
@@ -39,6 +40,7 @@ export default function RootLayout() {
       <Slot />
       {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(uiRoutes.addTransaction)}/>}
       <AlertComponent />
+      <ToastContainer />
       </AlertNotificationRoot>
       </GestureHandlerRootView>
     </Provider>

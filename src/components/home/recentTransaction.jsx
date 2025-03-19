@@ -23,17 +23,19 @@ import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingIm
 import { KshirsaAlert } from '../../small-components/KshirsaAlert';
 import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransactionReducer';
 import { resetaddTransactionAction } from '../../redux/reducers/addTransactionReducer';
+import { resetUpdateTransactionAction } from '../../redux/reducers/updateTransactionReducer';
+import { renderDeleteOrDuplicateSuccessToast } from '../../constants/ToastRender';
 
 const RecentTransaction = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [swipeIndex, setSwipeIndex] = useState(null);
-  const { loading: recentTransactionLoading, data: recentTransactionData } =
-    useSelector((state) => state.getRecentTransactionsReducer) || {};
+  const { loading: recentTransactionLoading, data: recentTransactionData } = useSelector((state) => state.getRecentTransactionsReducer) || {};
+    const addTransactionResponse = useSelector((state) => state.addTransactionReducer);
   const { loading: deletetransactionLoading, data: deleteTransactionData, success: deleteTransactionSuccess } =
     useSelector((state) => state.deleteTransactionReducer) || {};
     const {success: addDuplicateTransactionSuccess} = useSelector((state) => state.addTransactionReducer);
-
+      const { success: updateTransactionSuccess } = useSelector((state) => state.updateTransactionReducer);
 
   const scrollY = useSharedValue(0);
 
@@ -42,20 +44,21 @@ const RecentTransaction = () => {
       scrollY.value = event.contentOffset.y;
     },
   });
-
+  //-----------------------------
   useEffect(() => {
-    dispatch(getRecentTransactionsAction());
-  }, [dispatch]);
+    if(!recentTransactionData || addTransactionResponse.success || updateTransactionSuccess) dispatch(getRecentTransactionsAction());
+
+    return () => {
+      dispatch(resetaddTransactionAction());
+      dispatch(resetUpdateTransactionAction());
+      dispatch(resetDeleteTransactionAction());
+    };
+  }, [dispatch, recentTransactionData, addTransactionResponse.success, updateTransactionSuccess]);
 
   useEffect(() => {
     if(deleteTransactionSuccess || addDuplicateTransactionSuccess) {
       dispatch(getRecentTransactionsAction());
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Success',
-        textBody: deleteTransactionSuccess ? uiText.DELETE_TRANSACTION_SUCCESS : uiText.ADD_DUPLICATE_TRANSACTION_SUCCESS,
-        titleStyle: { color: Colors.secondary },
-      });
+      renderDeleteOrDuplicateSuccessToast(deleteTransactionSuccess);
       dispatch(resetDeleteTransactionAction());
       dispatch(resetaddTransactionAction());
     }
@@ -70,7 +73,6 @@ const RecentTransaction = () => {
                 { text: 'Add Duplicate', onPress: () => dispatch(addTransactionAction(createDuplicateTransactionPayload(transactionData))) },
               ]
             );
-    // dispatch(addTransactionAction(createDuplicateTransactionPayload(transactionData)))
   };
 
   const onDelete = (transactionData) => {

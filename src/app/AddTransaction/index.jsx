@@ -7,6 +7,7 @@ import {
   Platform,
   Keyboard,
   BackHandler,
+  SafeAreaView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import TransactionCard from '../../components/addTransaction/transactionCard';
@@ -33,6 +34,8 @@ import { checkIsModifiedFormData } from '../../utils/helper';
 import viewCategoriesAction from '../../redux/actions/viewCategoriesAction';
 import { useFocusEffect } from '@react-navigation/native';
 import { resetSavedFormDataAction, setSavedFormDataAction } from '../../redux/reducers/savedFormDataReducer';
+import { renderTransactionSuccessToast } from '../../constants/ToastRender';
+import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage';
 
 const AddTransaction = ({ editTransaction = false, transactionId }) => {
   const dispatch = useDispatch();
@@ -100,20 +103,10 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
         tags: [],
       });
       router.replace(uiRoutes.main)
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Success',
-        textBody: deleteTransactionReducer.success ? uiText.DELETE_TRANSACTION_SUCCESS : editTransaction ? uiText.UPDATE_TRANSACTION_SUCCESS : uiText.ADD_TRANSACTION_SUCCESS,
-        titleStyle: { color: Colors.secondary },
-      });
+      renderTransactionSuccessToast(deleteTransactionReducer, editTransaction);
       dispatch(resetSavedFormDataAction());
     }
 
-    return () => {
-      dispatch(resetaddTransactionAction());
-      dispatch(resetUpdateTransactionAction());
-      dispatch(resetDeleteTransactionAction());
-    };
   }, [addTransactionResponse.success, addTransactionResponse.loading, updateTransactionSuccess, deleteTransactionReducer.success]);
 
   useEffect(() => {
@@ -125,7 +118,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     dispatch(viewCategoriesAction())
   }, [])
 
-//------------------------------input change function---------------------
+  //------------------------------input change function---------------------
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
@@ -140,13 +133,13 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     }
   }
 
-//------------------------------save transaction function---------------------
+  //------------------------------save transaction function---------------------
   const handleSaveTransaction = useCallback(() => {
     if (!formData.amount) {
       setErrors('Amount cannot be empty!');
       return;
     }
-    if(!formData.categoryId) {
+    if (!formData.categoryId) {
       setErrors('Please select a category!');
       return;
     }
@@ -167,7 +160,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     }
   }, [formData]);
 
-//------------------------------backhandler functions---------------------
+  //------------------------------backhandler functions---------------------
   useEffect(() => {
     const handleBackPress = () => {
       if (isFormModified) {
@@ -175,8 +168,8 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
           'Unsaved Changes',
           'You have unsaved changes. Are you sure you want to discard?',
           [
-            { text: 'Stay', style: 'cancel' },
-            { text: 'Discard', onPress: () => {router.back(); dispatch(resetSavedFormDataAction())} },
+            { text: 'Stay', style: 'secondary' },
+            { text: 'Discard', onPress: () => { router.back(); dispatch(resetSavedFormDataAction()) } },
           ],
           // { cancelable: false }
         );
@@ -193,7 +186,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     };
   }, [isFormModified]);
 
-//------------------------------focus effect function---------------------
+  //------------------------------focus effect function---------------------
   useFocusEffect(
     useCallback(() => {
       if (savedFormData) {
@@ -202,7 +195,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     }, [])
   );
 
-//------------------------------navigate to categories function---------------------
+  //------------------------------navigate to categories function---------------------
   const handleNavigateToCategories = () => {
     dispatch(setSavedFormDataAction(formData))
     router.push({
@@ -210,62 +203,64 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
       params: { transactionType: formData.transactionType },
     });
   };
-  console.log(formData?.transactionType, 'transactionType')
+
   return (
-    <>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
-        >
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
+      {editTransaction && viewTransactionLoading ? <KshirsaMoneyLoadingImg />
+        :
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
           >
-            <View style={addTransactionStyles.container}>
-              <TransactionCard
-                onChange={handleInputChange}
-                formData={formData}
-                errors={errors}
-                setFormData={setFormData}
-                editTransaction={editTransaction}
-                handleNavigateToCategories={handleNavigateToCategories}
-              />
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              keyboardShouldPersistTaps="handled"
+            >
+              <View style={addTransactionStyles.container}>
+                <TransactionCard
+                  onChange={handleInputChange}
+                  formData={formData}
+                  errors={errors}
+                  setFormData={setFormData}
+                  editTransaction={editTransaction}
+                  handleNavigateToCategories={handleNavigateToCategories}
+                />
 
-              {errors ? (
-                <Text style={{ color: Colors.red, paddingHorizontal: 10 }}>{errors}</Text>
-              ) : null}
+                {errors ? (
+                  <Text style={{ color: Colors.red, paddingHorizontal: 10 }}>{errors}</Text>
+                ) : null}
 
-              <TransactionDateTime
-                onChange={handleInputChange}
-                formData={formData}
-                setFormData={setFormData}
-                setInitialFormData={setInitialFormData}
-              />
-              {/* 
+                <TransactionDateTime
+                  onChange={handleInputChange}
+                  formData={formData}
+                  setFormData={setFormData}
+                  setInitialFormData={setInitialFormData}
+                />
+                {/* 
           <TransactionCategory
             onChange={handleInputChange}
             formData={formData}
             setFormData={setFormData}
           /> */}
-              <TransactionTags
-                onChange={handleInputChange}
-                formData={formData}
-                setFormData={setFormData} />
-              <TransactionNotes
-                onChange={handleInputChange}
-                formData={formData}
-                setFormData={setFormData}
-              />
-              <View style={addTransactionStyles.buttonContainer}>
-                <KshirsaButton icon={<AntDesign name="save" size={30} color={Colors.white} />} onPress={handleSaveTransaction} disabled={editTransaction ? !isFormModified : false} loading={addTransactionResponse.loading} />
+                <TransactionTags
+                  onChange={handleInputChange}
+                  formData={formData}
+                  setFormData={setFormData} />
+                <TransactionNotes
+                  onChange={handleInputChange}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+                <View style={addTransactionStyles.buttonContainer}>
+                  <KshirsaButton icon={<AntDesign name="save" size={30} color={Colors.white} />} onPress={handleSaveTransaction} disabled={editTransaction ? !isFormModified : false} loading={addTransactionResponse.loading} />
+                </View>
               </View>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-      {(addTransactionResponse.loading || viewTransactionLoading) && <KshirsaLoadingScreen />}
-    </>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      }
+    </SafeAreaView>
   );
 };
 

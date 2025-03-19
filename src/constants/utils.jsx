@@ -21,5 +21,12 @@ export const TransactionTypesToMap = [
 'LOAN',
 ]
 
+export const toastTypes = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+    INFO: 'info',
+    WARNING: 'warning'
+}
+
 export const screenHeight = Dimensions.get('window').height
 export const screenWidth = Dimensions.get('window').width
