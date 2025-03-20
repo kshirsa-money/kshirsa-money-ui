@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getAllTransactionsAction from "../actions/getAllTransactionsAction";
-import { GET_ALL_TRANSACTIONS } from "../actions/types";
+import { GET_ALL_TRANSACTIONS, RESET_GET_ALL_TRANSACTIONS } from "../actions/types";
 
 const initialState = {
   data: null,
@@ -16,15 +16,18 @@ const initialState = {
 const getAllTransactionsReducer = createSlice({
   name: GET_ALL_TRANSACTIONS,
   initialState,
-//   reducers: {
-//     [RESET_GET_RECENT_TRANSACTION]: (state) => {
-//       state.data = null;
-//       state.loading = false;
-//       state.error = null;
-//       state.success = null;
-//       state.message = null;
-//     }
-//   },
+  reducers: {
+    [RESET_GET_ALL_TRANSACTIONS]: (state) => {
+      state.data = null;
+      state.loading = false;
+      state.error = null;
+      state.success = null;
+      state.message = null;
+      state.transactionList = [];
+      state.currentPage = 1;
+      state.infinityLoading = false;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllTransactionsAction.pending, (state) => {
@@ -61,7 +64,7 @@ const getAllTransactionsReducer = createSlice({
   },
 });
 
-// export const { 
-//   RESET_GET_RECENT_TRANSACTION: resetgetAllTransactionsAction
-//  } = getAllTransactionsReducer.actions;
+export const { 
+  RESET_GET_ALL_TRANSACTIONS: resetGetAllTransactionsAction
+ } = getAllTransactionsReducer.actions;
 export default getAllTransactionsReducer.reducer;

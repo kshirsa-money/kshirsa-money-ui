@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import KshirsaGeneralHeader from '../../small-components/KshirsaGeneralHeader'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,6 +8,7 @@ import { screenHeight } from '../../constants/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import getAllTransactionsAction from '../../redux/actions/getAllTransactionsAction'
 import { usePathname } from 'expo-router'
+import { resetGetAllTransactionsAction } from '../../redux/reducers/getAllTransactionsReducer'
 
 const AllTransactions = () => {
   const allTransactionData = useSelector((state) => state.allTransactionsReducer);
@@ -21,8 +22,14 @@ const AllTransactions = () => {
       pageNumber: currentPage,
       transactionPerPage: 10
     }));
-  }
-    , [dispatch, currentPage]);
+  }, [dispatch, currentPage]);
+
+// reset the state when the component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(resetGetAllTransactionsAction());
+    }
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -31,9 +38,9 @@ const AllTransactions = () => {
       <KshirsaGeneralHeader
         pageTitle='Transactions History'
         headerRight={() => (
-          <View style={allTransactionsStyle.headerRight}>
+          <TouchableOpacity style={allTransactionsStyle.headerRight} onPress={() => console.log('filter')}>
             <Text style={allTransactionsStyle.filterText}>Filter</Text>
-          </View>
+          </TouchableOpacity>
         )} />
       // -----------------------------------------------all Transactions-------------------------------------------------------
       <AllTransactionsList allTransactionData={allTransactionData} currentPage={currentPage} setCurrentPage={setCurrentPage} />

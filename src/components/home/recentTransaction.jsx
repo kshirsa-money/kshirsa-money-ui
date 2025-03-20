@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -25,6 +25,7 @@ import { renderDeleteOrDuplicateSuccessToast } from '../../constants/ToastRender
 const RecentTransaction = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const swipeableRef = useRef(null);
   const [swipeIndex, setSwipeIndex] = useState(null);
   const { loading: recentTransactionLoading, data: recentTransactionData } = useSelector((state) => state.getRecentTransactionsReducer) || {};
     const addTransactionResponse = useSelector((state) => state.addTransactionReducer);
@@ -110,10 +111,11 @@ const RecentTransaction = () => {
           data={recentTransactionData}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
-            <TransactionCard transactionData={item} index={index} swipeIndex={swipeIndex} setSwipeIndex={setSwipeIndex} onEdit={onEdit} onDelete={onDelete} onPress={onPress} />
+            <TransactionCard transactionData={item} index={index} swipeIndex={swipeIndex} setSwipeIndex={setSwipeIndex} onDuplicate={onEdit} onDelete={onDelete} onPress={onPress} swipeableRef={swipeableRef} />
           )}
           onScroll={handleScroll}
           scrollEventThrottle={16}
+          contentContainerStyle={{gap: 20}}
           showsVerticalScrollIndicator={false}
         />
       ) : (
