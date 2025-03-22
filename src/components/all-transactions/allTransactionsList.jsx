@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import moment from 'moment';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, withDelay } from 'react-native-reanimated';
@@ -6,8 +6,10 @@ import TransactionCard from '../home/transactionCard';
 import { screenHeight } from '../../constants/utils';
 import allTransactionsStyle from '../../styles/stylesAllTransactions';
 import Colors from '../../styles/Colors';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 
-const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage }) => {
+const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage, onRefresh }) => {
   const swipeableRef = useRef(null);
   const allTransactions = allTransactionData?.transactionList || [];
   const hasNextPage = allTransactionData?.data?.hasNextPage || false;
@@ -36,11 +38,12 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage }
 
     return grouped;
   }, [allTransactions]);
-
+  console.log(currentPage, 'currentKing')
   // 🟢 Load More Function
   const handleLoadMore = () => {
+    console.log('loadKing')
     if (allTransactions && hasNextPage && !infinityLoading) {
-      setCurrentPage((prev) => prev + 1);
+      setCurrentPage(currentPage + 1);
     }
   };
 
@@ -54,7 +57,7 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage }
       <TransactionCard
         transactionData={item.data}
         index={index}
-        onEdit={() => {}}
+        onDelete={() => {}}
         onDuplicate={() => {}}
         onPress={() => {}}
         fromAllTransaction={true}
@@ -65,7 +68,7 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage }
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, position: 'relative', zIndex: 99 }}>
       <FlatList
         data={groupedTransactions}
         keyExtractor={(item, index) => index.toString()}
@@ -76,6 +79,16 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage }
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={<RenderInfinityLoader enabledLoading={infinityLoading} />}
+        refreshControl={
+          <RefreshControl
+          onRefresh={onRefresh}
+          refreshing={allTransactionData?.loading}
+          tintColor={Colors.white}
+          colors={[Colors.secondary]}
+          progressBackgroundColor={Colors.moodyBlack}
+          zIndex={1002}
+          />
+        }
       />
     </View>
   );

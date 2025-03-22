@@ -8,7 +8,7 @@ const KshirsaProfileAnimation = () => {
       <LottieView
         source={require('./KshirsaProfileAnimation.json')}
         autoPlay
-        loop={false}
+        loop={true}
         style={styles.animation}
         
       />

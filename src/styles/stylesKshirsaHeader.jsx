@@ -15,7 +15,7 @@ const kshirsaHeaderStyles = StyleSheet.create({
         position: 'absolute',
         top: 10, 
         width: '100%',
-        zIndex: 1000,
+        zIndex: 100,
     },
     headerLeft: {
         flexDirection: 'row',

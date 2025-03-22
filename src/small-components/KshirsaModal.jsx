@@ -17,12 +17,14 @@ const KshirsaModal = ({
   confirmDisabled = false,
   closeDisabled = false,
   confirmLoading = false,
+  isFooterNeeded = true,
 }) => {
   return (
-    <Modal isVisible={isVisible} onBackdropPress={onClose}>
+    <Modal isVisible={isVisible} onBackdropPress={onClose} animationOut={'lightSpeedOut'} animationIn={'lightSpeedIn'}>
       <View style={styles.modalContainer}>
         {title && <Text style={styles.modalTitle}>{title}</Text>}
         {children || <Text style={styles.modalMessage}>{message}</Text>}
+        {isFooterNeeded &&
         <View style={[styles.buttonContainer, closeDisabled && styles.disabledBtn]}>
           <TouchableOpacity
             style={[styles.button, styles.closeButton]}
@@ -34,7 +36,7 @@ const KshirsaModal = ({
           {onConfirm && (
               <KshirsaButton title={confirmText} loading={confirmLoading} onPress={onConfirm} disabled={confirmDisabled} />
           )}
-        </View>
+        </View>}
       </View>
     </Modal>
   );

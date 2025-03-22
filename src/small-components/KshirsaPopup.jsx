@@ -1,18 +1,24 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView, BackHandler } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { AntDesign } from '@expo/vector-icons';
 import Colors from '../styles/Colors';
 import cssUtils from '../constants/cssUtils';
+import { screenWidth } from '../constants/utils';
 
 const { height } = Dimensions.get('window');
 
-const KshirsaPopup = ({ visible, onClose, header = "Popup Header", children }) => {
+const KshirsaPopup = ({ visible, onClose, header = "Popup Header", children, popupHeight = height * 0.5, footer, additionalZindex = 0, isChildPopupOpen = false, isSecondaryDesign = false }) => {
   const translateY = useSharedValue(height);
 
   useEffect(() => {
     if (visible) {
       translateY.value = withTiming(0, { duration: 300 });
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        onClose();
+        return true;
+      });
+      return () => backHandler.remove();
     } else {
       translateY.value = withTiming(height, { duration: 300 });
     }
@@ -25,19 +31,24 @@ const KshirsaPopup = ({ visible, onClose, header = "Popup Header", children }) =
   return (
     <>
       {visible && (
-        <TouchableOpacity style={styles.overlay} onPress={onClose} activeOpacity={1}>
+        <TouchableOpacity style={[styles.overlay, {zIndex: 1000 + additionalZindex}]} onPress={onClose} activeOpacity={1}>
           <View />
         </TouchableOpacity>
       )}
-      <Animated.View style={[styles.popupContainer, animatedStyle]}>
+      <Animated.View
+        style={[styles.popupContainer, animatedStyle, { height: popupHeight, zIndex: 1001 + additionalZindex, backgroundColor: isSecondaryDesign && Colors.secondaryModalBg }]}
+      >
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>{header}</Text>
           <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
             <AntDesign name="close" size={20} color={Colors.white} />
           </TouchableOpacity>
         </View>
-        {children}
-        {/* <View style={styles.popupContent}>{children}</View> */}
+        <ScrollView style={{ flex: 1, paddingVertical: 20}} showsVerticalScrollIndicator={false}>
+          {children}
+        </ScrollView>
+        {(!isChildPopupOpen && footer) && 
+        <View style={{position:'absolute' , bottom: 0, flex: 1, width: screenWidth,backgroundColor: Colors.moodyBlack }}>{footer}</View>}
       </Animated.View>
     </>
   );
@@ -51,7 +62,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 1,
   },
   popupContainer: {
     position: 'absolute',
@@ -61,17 +71,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.moodyBlack,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
-    zIndex: 2,
+    paddingBottom: 0,
+    width: screenWidth
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#ddd',
-    paddingBottom: 10,
-    marginBottom: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   headerText: {
     fontSize: cssUtils.mediumTextSize,

@@ -9,7 +9,7 @@ import { formatDate, formatTime, formatTransactionDate, getCombinedDateTime, get
 const TransactionDateTime = ({ formData, onChange, setFormData, setInitialFormData }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const initialDate = formData.transactionTime ? new Date(formData.transactionTime) : new Date();
+  const initialDate = formData?.transactionTime ? new Date(formData?.transactionTime) : new Date();
   const [date, setDate] = useState(initialDate);
   const [time, setTime] = useState(initialDate);
   useEffect(() => {
@@ -27,7 +27,7 @@ const TransactionDateTime = ({ formData, onChange, setFormData, setInitialFormDa
   }, [date, time]);
 
   useEffect(() => {
-    if (formData.transactionTime) {
+    if (formData?.transactionTime) {
       const newDate = new Date(formData.transactionTime);
       if (newDate.getTime() !== date.getTime() || newDate.getTime() !== time.getTime()) {
         setDate(newDate);
@@ -49,7 +49,6 @@ const TransactionDateTime = ({ formData, onChange, setFormData, setInitialFormDa
       setTime(selectedTime);
     }
   };
-  console.log(time, 'date')
   return (
     <>
     <View style={addTransactionStyles.transactionDateTimeContainer}>
@@ -70,6 +69,8 @@ const TransactionDateTime = ({ formData, onChange, setFormData, setInitialFormDa
          onChange={handleDateChange}
          maximumDate={new Date()}
          display="spinner"
+         positiveButton={{label: 'OK', textColor: Colors.secondary}}
+         negativeButton={{label: 'Cancel', textColor: Colors.lightGrey}}
        />
     )}
     {showTimePicker && (
@@ -78,6 +79,8 @@ const TransactionDateTime = ({ formData, onChange, setFormData, setInitialFormDa
           mode="time"
           onChange={handleTimeChange}
           display="spinner"
+          positiveButton={{label: 'OK', textColor: Colors.secondary}}
+          negativeButton={{label: 'Cancel', textColor: Colors.lightGrey}}
         />
       )}
     </>

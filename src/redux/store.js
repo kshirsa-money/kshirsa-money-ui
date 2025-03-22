@@ -14,6 +14,7 @@ import updateCategoryReducer from "./reducers/updateCategoryReducer";
 import addCategoryReducer from "./reducers/addCategoryReducer";
 import deleteCategoryReducer from "./reducers/deleteCategoryReducer";
 import getAllTransactionsReducer from "./reducers/getAllTransactionsReducer";
+import getAllTransactionsFilterReducer from "./reducers/getAllTransactionsFilterReducer";
 
 const KshirsaStore = configureStore({
     reducer: {
@@ -32,6 +33,7 @@ const KshirsaStore = configureStore({
       addCategoryReducer: addCategoryReducer,
       deleteCategoryReducer: deleteCategoryReducer,
       allTransactionsReducer: getAllTransactionsReducer,
+      transactionsFilterReducer: getAllTransactionsFilterReducer,
     },
   });
 

@@ -14,6 +14,7 @@ const urls = {
    addCategory: '/api/v1/track/add/category',
    updateCategory: '/api/v1/track/update/category',
    deleteCategory: '/api/v1/track/delete/category',
-   getAllTransactions: '/api/v1/track/get/transaction'
+   getAllTransactions: '/api/v1/track/get/transaction',
+   getTransactionsFilter: '/api/v1/track/get/transaction/filters',
 }
 export default urls;

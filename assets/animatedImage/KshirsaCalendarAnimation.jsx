@@ -2,13 +2,13 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-const KshirsaNoDataImage = () => {
+const KshirsaCalendarAnimation = () => {
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('./noDataLottie.json')} // Path to JSON file
+        source={require('./calendarAnimation.json')}
         autoPlay
-        loop={false}
+        loop={true}
         style={styles.animation}
       />
     </View>
@@ -17,15 +17,17 @@ const KshirsaNoDataImage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: '#fff',
   },
   animation: {
-    width: 200,
-    height: 200,
+    width: 35,
+    height: 35,
+    transform: [{ scale: 2.5 }],
+    alignSelf: 'flex-end',
   },
 });
 
-export default KshirsaNoDataImage;
+export default KshirsaCalendarAnimation;

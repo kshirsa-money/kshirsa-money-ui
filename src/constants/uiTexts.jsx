@@ -10,6 +10,8 @@ const uiText ={
     ENTER_EMAIL_BEGIN: 'Track your money like a pro! Enter your email to begin.',
     NO_RECENT_TRANSACTION: 'Your wallet’s waiting! Log your first transaction now. 💳',
     NO_CATEGORY_FOUND: 'No category found, please add a category',
+    NO_TRANSACTION_FOUND: 'No transaction found',
+    NO_USER_FOUND: 'No user found, please add a user',
 
     // toast messages--------
     OTP_SEND_SUCCESS: 'OTP has been sent successfully',

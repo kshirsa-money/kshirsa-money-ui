@@ -8,11 +8,12 @@ import viewCategoriesAction from '../../redux/actions/viewCategoriesAction'
 import { FontAwesome6 } from '@expo/vector-icons'
 import CategoryList from '../../components/category/categoryList'
 import AddEditCategoryModal from '../../components/category/addEditCategoryModal'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, usePathname } from 'expo-router'
 import { showToast } from '../../constants/toastUtils'
 
 const ViewCategories = () => {
   const dispatch = useDispatch();
+  const pathName = usePathname();
   const { transactionType } = useLocalSearchParams()
   const { loading, data, success } = useSelector((state) => state.viewCategoriesReducer)
    const {success: updateCategorySuccess } = useSelector((state) => state.updateCategoryReducer) || {}
@@ -20,7 +21,7 @@ const ViewCategories = () => {
   const [selectedType, setSelectedType] = useState(transactionType || transactionTypes.EXPENSE)
   const [openCategoryModal, setOpenCategoryModal] = useState(false)
   const [clickedCategory, setClickedCategory] = useState(null)
-
+  console.log(pathName, 'path')
   useEffect(() => {
     dispatch(viewCategoriesAction())
   }

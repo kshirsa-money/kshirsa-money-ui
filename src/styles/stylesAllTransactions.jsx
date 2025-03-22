@@ -17,11 +17,24 @@ const allTransactionsStyle = StyleSheet.create({
     flatList: {
         borderTopLeftRadius: 50,
         borderTopRightRadius: 50,
-        // backgroundColor: Colors.generalFocusBg,
-        // flex: 1,
+        position: 'relative',
+        zIndex: 10,
         paddingHorizontal: 20,
-        // paddingBottom: 0,
         paddingTop: screenHeight * 0.13
+    },
+    noDataContainer: {
+        // height: screenHeight,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        gap: 20,
+        paddingHorizontal: 20
+    },
+    noDataText: {
+        fontSize: cssUtils.smallTextSize,
+        color: Colors.black,
+        textAlign: 'center'
     }
 })
 
