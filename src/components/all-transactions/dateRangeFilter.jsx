@@ -91,7 +91,7 @@ const DateRangeFilter = ({ formDateRange, setFormDateRange, customDateRangeOpen,
             }
             <View style={allTransactionFilterStyles.dateRangeWrapper}>
                 <DatePickerModal
-                    locale="en"
+                    locale='en'
                     mode="range"
                     visible={customDateRangeOpen}
                     onDismiss={onDismiss}
@@ -102,9 +102,13 @@ const DateRangeFilter = ({ formDateRange, setFormDateRange, customDateRangeOpen,
                     calendarIcon='hello world'
                     dateMode='end'
                     ScrollModeType='horizontal'
-                    calendarStyle={{
-                        backgroundColor: 'red',
-                    }}
+                    presentationStyle='pageSheet'
+                    withDateFormatInLabel={false}
+                    label="Select date range"
+                    startLabel="From"
+                    endLabel="To"
+                    animationType="slide"
+                    disableStatusBar={false}
                 />
             </View>
         </>

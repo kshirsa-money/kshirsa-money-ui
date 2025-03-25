@@ -112,7 +112,7 @@ const AnimatedLetter = ({ char, delay }) => {
 
   useEffect(() => {
     // Opacity repeats infinitely, with a slower duration
-    opacity.value = withDelay(delay, withRepeat(withTiming(1, { duration: 3000 }), 0, true)); // Slower opacity repetition
+    opacity.value = withDelay(delay, withRepeat(withTiming(1, { duration: 3000 }), 0.3, true)); // Slower opacity repetition
     // TranslateY animation does not repeat
     translateY.value = withDelay(delay, withTiming(0, { duration: 500 })); // Normal translateY animation
   }, []);
