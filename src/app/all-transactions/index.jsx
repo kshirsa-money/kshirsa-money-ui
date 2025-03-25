@@ -48,6 +48,7 @@ const AllTransactions = () => {
   console.log(countFilter, 'countFilter');
   useEffect(() => {
     if (params && JSON.stringify(prevParamsRef.current) !== JSON.stringify(params)) {
+      console.log('insideIf')
       setSortByForm(params.sortBy || 'Latest');      
       setFilterFormData({
         hashTag: params.hashTag ? (params.hashTag || '')?.split(', ') : [],
@@ -63,16 +64,23 @@ const AllTransactions = () => {
       });
       prevParamsRef.current = params;
     }
-  }, [params]);
+  }, [JSON.stringify(params)]);
 
   useEffect(() => {
-    dispatch(getAllTransactionsAction({
-      pageNumber: currentPage,
-      transactionPerPage: 10,
-      ...params
-    }));
-  }, [dispatch, currentPage, refreshPage]);
-
+    // const paramsString = JSON.stringify(params);
+    // if (prevParamsRef.current !== paramsString) {
+      // prevParamsRef.current = paramsString; // Update the reference
+      // setCurrentPage(1); // Reset to first page on filter change
+  
+      dispatch(getAllTransactionsAction({
+        pageNumber: currentPage,
+        transactionPerPage: 10,
+        ...params
+      }));
+    // }
+  }, [dispatch,currentPage, refreshPage, JSON.stringify(params)]);  // ✅ Using stringified params to prevent unnecessary re-renders
+  
+  console.log(currentPage, 'kingshuk')
 
   // reset the state when the component unmounts
   useEffect(() => {

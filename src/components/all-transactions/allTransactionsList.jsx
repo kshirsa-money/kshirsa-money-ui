@@ -38,10 +38,9 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage, 
 
     return grouped;
   }, [allTransactions]);
-  console.log(currentPage, 'currentKing')
+
   // 🟢 Load More Function
   const handleLoadMore = () => {
-    console.log('loadKing')
     if (allTransactions && hasNextPage && !infinityLoading) {
       setCurrentPage(currentPage + 1);
     }
@@ -132,7 +131,7 @@ const AnimatedLetter = ({ char, delay }) => {
 
 // 🟢 Footer Loading Indicator
 const RenderInfinityLoader = ({ enabledLoading }) => (
-  <View style={{ paddingVertical: 40, justifyContent: 'center', alignItems: 'center' }}>
+  <View style={{ paddingBottom: 80, justifyContent: 'center', alignItems: 'center' }}>
     {enabledLoading ? <ActivityIndicator size="large" color="white" /> : null}
   </View>
 );

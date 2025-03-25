@@ -10,7 +10,7 @@ import RNDateTimePicker from '@react-native-community/datetimepicker'
 import Colors from '../../styles/Colors'
 import { checkIsModifiedFormData, formatFilterDate, formattedPaymentModes, formatTransactionDate, getDateRanges } from '../../utils/helper'
 import KshirsaCalendarAnimation from '../../../assets/animatedImage/KshirsaCalendarAnimation'
-import { useRouter } from 'expo-router'
+import { useNavigation, useRouter } from 'expo-router'
 import uiRoutes from '../../constants/uiRoutes'
 import DateRangeFilter from './dateRangeFilter'
 import { KshirsaAlert } from '../../small-components/KshirsaAlert'
@@ -19,6 +19,7 @@ import { Ionicons } from '@expo/vector-icons'
 const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData, setFilterFormData, urlParams, sortByForm }) => {
   const { data: transactionFilterData } = useSelector(state => state.transactionsFilterReducer)
   const router = useRouter()
+  const navigation = useNavigation()
   const [minAmount, setMinAmount] = useState(defaultamountRange.MIN)
   const [maxAmount, setMaxAmount] = useState(defaultamountRange.MAX)
   const [formDateRange, setFormDateRange] = useState({
@@ -32,7 +33,6 @@ const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData
   const [customDateRangeOpen, setCustomDateRangeOpen] = useState(false)
   const [initialFilterData, setInitialFilterData] = useState({})
   const [selectedPaymentMode, setSelectedPaymentMode] = useState([])
-
   const currentFilter = {
     transactionType: selectedTransactionType,
     category: selectedTransactionCategory,
@@ -46,48 +46,48 @@ const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData
   }
   const isFilterChanged = checkIsModifiedFormData(currentFilter, initialFilterData)
 
- // ...existing code...
+  // ...existing code...
 
-useEffect(() => {
-  setSelectedTransactionType(filterFormData.transactionType || '')
-  setSelectedTransactionCategory(filterFormData.category || '')
-  setSelectedTransactionTags(filterFormData.hashTag || '')
-  setMinAmount(filterFormData.amountMin || defaultamountRange.MIN)
-  setMaxAmount(filterFormData.amountMax || defaultamountRange.MAX)
-  setSelectedPaymentMode(filterFormData.paymentMode || '')
-  setFormDateRange({
-    label: filterFormData.dateLabel || '',
-    fromDate: filterFormData.fromDate ? new Date(filterFormData.fromDate) : '',
-    toDate: filterFormData.toDate ? new Date(filterFormData.toDate) : ''
-  })
-  if(filterVisible) {
-    const initialFilter = {
-      transactionType: filterFormData.transactionType || '',
-      category: filterFormData.category || '',
-      hashTag: filterFormData.hashTag || '',
-      paymentMode: filterFormData.paymentMode || '',
-      amountMin: filterFormData.amountMin || defaultamountRange.MIN,
-      amountMax: filterFormData.amountMax || defaultamountRange.MAX,
-      dateLabel: filterFormData.dateLabel || '',
-      fromDate: filterFormData.fromDate || '',
-      toDate: filterFormData.toDate || ''
-    }
-    setInitialFilterData(initialFilter)
-  }
-}, [filterFormData, filterVisible])
-
-useEffect(() => {
-  if (isNaN(formDateRange.fromDate) || isNaN(formDateRange.toDate)) {
+  useEffect(() => {
+    setSelectedTransactionType(filterFormData.transactionType || '')
+    setSelectedTransactionCategory(filterFormData.category || '')
+    setSelectedTransactionTags(filterFormData.hashTag || '')
+    setMinAmount(filterFormData.amountMin || defaultamountRange.MIN)
+    setMaxAmount(filterFormData.amountMax || defaultamountRange.MAX)
+    setSelectedPaymentMode(filterFormData.paymentMode || '')
     setFormDateRange({
-      label: '',
-      fromDate: '',
-      toDate: ''
+      label: filterFormData.dateLabel || '',
+      fromDate: filterFormData.fromDate ? new Date(filterFormData.fromDate) : '',
+      toDate: filterFormData.toDate ? new Date(filterFormData.toDate) : ''
     })
-  }
-}, [filterFormData, formDateRange])
+    if (filterVisible) {
+      const initialFilter = {
+        transactionType: filterFormData.transactionType || '',
+        category: filterFormData.category || '',
+        hashTag: filterFormData.hashTag || '',
+        paymentMode: filterFormData.paymentMode || '',
+        amountMin: filterFormData.amountMin || defaultamountRange.MIN,
+        amountMax: filterFormData.amountMax || defaultamountRange.MAX,
+        dateLabel: filterFormData.dateLabel || '',
+        fromDate: filterFormData.fromDate || '',
+        toDate: filterFormData.toDate || ''
+      }
+      setInitialFilterData(initialFilter)
+    }
+  }, [filterFormData, filterVisible])
+
+  useEffect(() => {
+    if (isNaN(formDateRange.fromDate) || isNaN(formDateRange.toDate)) {
+      setFormDateRange({
+        label: '',
+        fromDate: '',
+        toDate: ''
+      })
+    }
+  }, [filterFormData, formDateRange])
 
 
-const onClose = () => {
+  const onClose = () => {
     if (isFilterChanged) {
       KshirsaAlert.alert(
         'Discard Changes?',
@@ -112,29 +112,34 @@ const onClose = () => {
   }
 
   const handleApplyFilter = () => {
-    setFilterVisible(false)
     const params = {
-      hashTag: selectedTransactionTags?.join(', ') || '',
-      transactionType: selectedTransactionType?.join(', ') || '',
-      category: selectedTransactionCategory?.join(', ') || '',
-      paymentMode: selectedPaymentMode?.join(', ') || '',
-      fromDate: formDateRange.fromDate ? new Date(formDateRange.fromDate).toISOString() : '',
-      toDate: formDateRange.toDate ? new Date(formDateRange.toDate).toISOString() : '',
-      dateLabel: formDateRange.label,
-      amountMax: maxAmount !== defaultamountRange.MAX ? maxAmount : undefined,
-      amountMin: minAmount !== defaultamountRange.MIN ? minAmount : undefined,
-      sortBy: sortByForm || 'Latest'
-    }
+      hashTag: selectedTransactionTags?.length ? selectedTransactionTags.join(", ") : null,
+      transactionType: selectedTransactionType?.length ? selectedTransactionType.join(", ") : null,
+      category: selectedTransactionCategory?.length ? selectedTransactionCategory.join(", ") : null,
+      paymentMode: selectedPaymentMode?.length ? selectedPaymentMode.join(", ") : null,
+      fromDate: formDateRange?.fromDate ? new Date(formDateRange.fromDate).toISOString() : null,
+      toDate: formDateRange?.toDate ? new Date(formDateRange.toDate).toISOString() : null,
+      dateLabel: formDateRange?.label || null,
+      amountMax: maxAmount !== defaultamountRange.MAX ? maxAmount : null,
+      amountMin: minAmount !== defaultamountRange.MIN ? minAmount : null,
+      sortBy: sortByForm || "Latest",
+    };
   
-    // Filter out empty values
-    const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value))
-    if(isFilterChanged) {
-      router.replace({
-        pathname: uiRoutes.allTransactions,
-        params: filteredParams
-      })
-    }
-  }
+    const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null));
+  
+    console.log(filteredParams, "Final filteredParams");
+    setFilterVisible(false);
+    router.replace({
+      pathname: uiRoutes.allTransactions,
+      params: filteredParams,
+    })
+  };
+  
+  
+  
+  
+
+
 
   const handleReset = () => {
     setSelectedTransactionType([])
@@ -164,8 +169,8 @@ const onClose = () => {
   const renderRightHeader = () => (
     <TouchableOpacity style={allTransactionFilterStyles.resetBtn} onPress={handleReset}>
       <Ionicons name="refresh-outline" size={20} color="black" />
-    <Text style={allTransactionFilterStyles.resetTxt} >Reset Filter</Text>
-  </TouchableOpacity>
+      <Text style={allTransactionFilterStyles.resetTxt} >Reset Filter</Text>
+    </TouchableOpacity>
   )
   return (
     <KshirsaPopup visible={filterVisible} onClose={onClose} header="Transaction Filter" popupHeight={screenHeight} footer={renderFooter()} isChildPopupOpen={customDateRangeOpen} transactionFilterPopup headerRight={renderRightHeader()}>
@@ -195,8 +200,8 @@ const onClose = () => {
               />
             </View>
           </View>
-            {/* transaction payment mode */}
-            <View style={allTransactionFilterStyles.transactionTypeWrapper}>
+          {/* transaction payment mode */}
+          <View style={allTransactionFilterStyles.transactionTypeWrapper}>
             <View style={allTransactionFilterStyles.transactionType}>
               <KshirsaDropdownWithSearch
                 name='Payment Mode'
@@ -227,8 +232,8 @@ const onClose = () => {
               </View>
             </View>
           </View>
-           {/* transaction tags */}
-           <View style={allTransactionFilterStyles.transactionTypeWrapper}>
+          {/* transaction tags */}
+          <View style={allTransactionFilterStyles.transactionTypeWrapper}>
             <View style={allTransactionFilterStyles.transactionType}>
               <KshirsaDropdownWithSearch
                 name='Transaction Tags'
