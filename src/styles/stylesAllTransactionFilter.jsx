@@ -10,6 +10,7 @@ const allTransactionFilterStyles = StyleSheet.create({
     transactionTypeWrapper: {
         flexDirection: "column",
         justifyContent: "space-between",
+        paddingHorizontal: 20,
         // borderColor: Colors.darkGrey,
         // borderWidth: 1,
     },
@@ -58,22 +59,26 @@ const allTransactionFilterStyles = StyleSheet.create({
     dateRangeWrapper: {
         flexDirection: "row",
         justifyContent: "space-between",
+        paddingHorizontal: 20
     },
     dateBtn: {
         padding: 10,
         paddingHorizontal: 20,
         // backgroundColor: Colors.darkGrey,
-        borderRadius: 50,
+        borderRadius: 10,
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center",   
         borderColor: Colors.normalInputBg,
         borderWidth: 1,
+        gap: 20,
         flexDirection: "row",
-        width: screenWidth * 0.40
+        // width: screenWidth * 0.40
     },
     dateText: {
         color: Colors.white,
-        fontSize: cssUtils.smallTextSize
+        fontSize: cssUtils.smallTextSize,
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
     footer: {
         flexDirection: "row",
@@ -108,7 +113,8 @@ const allTransactionFilterStyles = StyleSheet.create({
     dateRangeBtnWrapper: {
         flexDirection: "row",
         justifyContent: "flex-start",
-        gap: 20
+        gap: 20,
+        paddingHorizontal: 20
     },
     dateRangeBtn: {
         padding: 10,
@@ -133,7 +139,7 @@ const allTransactionFilterStyles = StyleSheet.create({
     yearMonthWrapper: {
         flexDirection: "row",
         justifyContent: "center",
-        gap: 20
+        gap: 10
     },
     yearMonthWrapper: {
         flexDirection: "row",
@@ -162,6 +168,22 @@ const allTransactionFilterStyles = StyleSheet.create({
     },
     selectedYearMonthText: {
         color: Colors.black
+    },
+    resetBtn: {
+        backgroundColor:Colors.secondary, 
+        padding:10, 
+        borderRadius:10, 
+        alignSelf:'flex-end', 
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 5
+    },
+    resetTxt: {
+        color:Colors.moodyBlack, 
+        alignSelf: 'center', 
+        fontWeight: cssUtils.bold,
+        fontSize: cssUtils.textSize10
     }
 });
 

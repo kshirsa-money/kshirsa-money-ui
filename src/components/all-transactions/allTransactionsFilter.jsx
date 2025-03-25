@@ -1,53 +1,106 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import KshirsaPopup from '../../small-components/KshirsaPopup'
-import { screenHeight, TransactionTypesToMap } from '../../constants/utils'
+import { defaultamountRange, screenHeight, TransactionTypesToMap } from '../../constants/utils'
 import allTransactionFilterStyles from '../../styles/stylesAllTransactionFilter'
 import { useSelector } from 'react-redux'
 import KshirsaRange from '../../small-components/KshirsaRange'
 import KshirsaDropdownWithSearch from '../../small-components/KshirsaDropdownWithSearch'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import Colors from '../../styles/Colors'
-import { formatFilterDate, formatTransactionDate, getDateRanges } from '../../utils/helper'
+import { checkIsModifiedFormData, formatFilterDate, formattedPaymentModes, formatTransactionDate, getDateRanges } from '../../utils/helper'
 import KshirsaCalendarAnimation from '../../../assets/animatedImage/KshirsaCalendarAnimation'
 import { useRouter } from 'expo-router'
 import uiRoutes from '../../constants/uiRoutes'
 import DateRangeFilter from './dateRangeFilter'
+import { KshirsaAlert } from '../../small-components/KshirsaAlert'
+import { Ionicons } from '@expo/vector-icons'
 
-const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData, setFilterFormData }) => {
+const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData, setFilterFormData, urlParams, sortByForm }) => {
   const { data: transactionFilterData } = useSelector(state => state.transactionsFilterReducer)
   const router = useRouter()
-  const [fromValue, setFromValue] = useState(0)
-  const [toValue, setToValue] = useState(200)
+  const [minAmount, setMinAmount] = useState(defaultamountRange.MIN)
+  const [maxAmount, setMaxAmount] = useState(defaultamountRange.MAX)
   const [formDateRange, setFormDateRange] = useState({
     label: '',
     fromDate: '',
     toDate: ''
   })
-
   const [selectedTransactionType, setSelectedTransactionType] = useState([])
   const [selectedTransactionCategory, setSelectedTransactionCategory] = useState([])
   const [selectedTransactionTags, setSelectedTransactionTags] = useState([])
   const [customDateRangeOpen, setCustomDateRangeOpen] = useState(false)
+  const [initialFilterData, setInitialFilterData] = useState({})
+  const [selectedPaymentMode, setSelectedPaymentMode] = useState([])
 
-
-  useEffect(() => {
-    setSelectedTransactionType(filterFormData.transactionType.length > 0 ? filterFormData.transactionType?.split(', ') : [])
-    setSelectedTransactionCategory(filterFormData.category.length > 0 ? filterFormData.category?.split(', ') : [])
-    setSelectedTransactionTags(filterFormData.hashTag.length > 0 ? filterFormData.hashTag?.split(', ') : [])
-    setFromValue(filterFormData.amountMin || 0)
-    setToValue(filterFormData.amountMax || 200)
-    setFormDateRange({
-      label: filterFormData.dateLabel,
-      fromDate: filterFormData.transactionAfter,
-      toDate: filterFormData.transactionBefore
-    })
-  }, [filterFormData]
-  )
-  const onClose = () => {
-    setFilterVisible(false)
+  const currentFilter = {
+    transactionType: selectedTransactionType,
+    category: selectedTransactionCategory,
+    hashTag: selectedTransactionTags,
+    paymentMode: selectedPaymentMode,
+    amountMin: minAmount,
+    amountMax: maxAmount,
+    dateLabel: formDateRange.label || '',
+    fromDate: formDateRange.fromDate || '',
+    toDate: formDateRange.toDate || ''
   }
+  const isFilterChanged = checkIsModifiedFormData(currentFilter, initialFilterData)
 
+ // ...existing code...
+
+useEffect(() => {
+  setSelectedTransactionType(filterFormData.transactionType || '')
+  setSelectedTransactionCategory(filterFormData.category || '')
+  setSelectedTransactionTags(filterFormData.hashTag || '')
+  setMinAmount(filterFormData.amountMin || defaultamountRange.MIN)
+  setMaxAmount(filterFormData.amountMax || defaultamountRange.MAX)
+  setSelectedPaymentMode(filterFormData.paymentMode || '')
+  setFormDateRange({
+    label: filterFormData.dateLabel || '',
+    fromDate: filterFormData.fromDate ? new Date(filterFormData.fromDate) : '',
+    toDate: filterFormData.toDate ? new Date(filterFormData.toDate) : ''
+  })
+  if(filterVisible) {
+    const initialFilter = {
+      transactionType: filterFormData.transactionType || '',
+      category: filterFormData.category || '',
+      hashTag: filterFormData.hashTag || '',
+      paymentMode: filterFormData.paymentMode || '',
+      amountMin: filterFormData.amountMin || defaultamountRange.MIN,
+      amountMax: filterFormData.amountMax || defaultamountRange.MAX,
+      dateLabel: filterFormData.dateLabel || '',
+      fromDate: filterFormData.fromDate || '',
+      toDate: filterFormData.toDate || ''
+    }
+    setInitialFilterData(initialFilter)
+  }
+}, [filterFormData, filterVisible])
+
+useEffect(() => {
+  if (isNaN(formDateRange.fromDate) || isNaN(formDateRange.toDate)) {
+    setFormDateRange({
+      label: '',
+      fromDate: '',
+      toDate: ''
+    })
+  }
+}, [filterFormData, formDateRange])
+
+
+const onClose = () => {
+    if (isFilterChanged) {
+      KshirsaAlert.alert(
+        'Discard Changes?',
+        'You have unsaved changes. Do you want to discard them?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Discard', onPress: () => setFilterVisible(false) }
+        ]
+      )
+    } else {
+      setFilterVisible(false)
+    }
+  }
   const handleTransactionTypeSelection = (type) => {
     setSelectedTransactionType(prevSelected => {
       if (prevSelected.includes(type)) {
@@ -64,37 +117,62 @@ const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData
       hashTag: selectedTransactionTags?.join(', ') || '',
       transactionType: selectedTransactionType?.join(', ') || '',
       category: selectedTransactionCategory?.join(', ') || '',
-      transactionAfter: formDateRange.fromDate ? new Date(formDateRange.fromDate).toISOString() : '',
-      transactionBefore: formDateRange.toDate ? new Date(formDateRange.toDate).toISOString() : '',
+      paymentMode: selectedPaymentMode?.join(', ') || '',
+      fromDate: formDateRange.fromDate ? new Date(formDateRange.fromDate).toISOString() : '',
+      toDate: formDateRange.toDate ? new Date(formDateRange.toDate).toISOString() : '',
       dateLabel: formDateRange.label,
-      amountMin: fromValue,
-      amountMax: toValue,
-      sortBy: 'Latest'
+      amountMax: maxAmount !== defaultamountRange.MAX ? maxAmount : undefined,
+      amountMin: minAmount !== defaultamountRange.MIN ? minAmount : undefined,
+      sortBy: sortByForm || 'Latest'
     }
   
     // Filter out empty values
     const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value))
-  
-    router.replace({
-      pathname: uiRoutes.allTransactions,
-      params: filteredParams
+    if(isFilterChanged) {
+      router.replace({
+        pathname: uiRoutes.allTransactions,
+        params: filteredParams
+      })
+    }
+  }
+
+  const handleReset = () => {
+    setSelectedTransactionType([])
+    setSelectedTransactionCategory([])
+    setSelectedTransactionTags([])
+    setSelectedPaymentMode([])
+    setMinAmount(defaultamountRange.MIN)
+    setMaxAmount(defaultamountRange.MAX)
+    setFormDateRange({
+      label: '',
+      fromDate: '',
+      toDate: ''
     })
   }
 
   const renderFooter = () => (
     <View style={allTransactionFilterStyles.footer}>
-      <TouchableOpacity style={allTransactionFilterStyles.clearBtn}>
-        <Text style={allTransactionFilterStyles.clearText}>Clear</Text>
+      <TouchableOpacity style={allTransactionFilterStyles.clearBtn} onPress={onClose}>
+        <Text style={allTransactionFilterStyles.clearText}>Close</Text>
       </TouchableOpacity>
       <TouchableOpacity style={allTransactionFilterStyles.applyBtn} onPress={handleApplyFilter}>
         <Text style={allTransactionFilterStyles.applyText}>Apply</Text>
       </TouchableOpacity>
     </View>
   )
+
+  const renderRightHeader = () => (
+    <TouchableOpacity style={allTransactionFilterStyles.resetBtn} onPress={handleReset}>
+      <Ionicons name="refresh-outline" size={20} color="black" />
+    <Text style={allTransactionFilterStyles.resetTxt} >Reset Filter</Text>
+  </TouchableOpacity>
+  )
   return (
-    <KshirsaPopup visible={filterVisible} onClose={onClose} header="Transaction Filter" popupHeight={screenHeight} footer={renderFooter()} isChildPopupOpen={customDateRangeOpen}>
+    <KshirsaPopup visible={filterVisible} onClose={onClose} header="Transaction Filter" popupHeight={screenHeight} footer={renderFooter()} isChildPopupOpen={customDateRangeOpen} transactionFilterPopup headerRight={renderRightHeader()}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ gap: 40, paddingBottom: 100 }}>
+        <View style={{ gap: 25, paddingBottom: 100 }}>
+          {/* date range */}
+          <DateRangeFilter formDateRange={formDateRange} setFormDateRange={setFormDateRange} customDateRangeOpen={customDateRangeOpen} setCustomDateRangeOpen={setCustomDateRangeOpen} />
           {/* transaction types */}
           <View style={allTransactionFilterStyles.transactionTypeWrapper}>
             <Text style={allTransactionFilterStyles.transactionText}>Transaction Type</Text>
@@ -106,17 +184,6 @@ const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData
               ))}
             </View>
           </View>
-          {/* transaction Categories
-          <View style={allTransactionFilterStyles.transactionTypeWrapper}>
-            <Text style={allTransactionFilterStyles.transactionText}>Transaction Category</Text>
-            <ScrollView contentContainerStyle={allTransactionFilterStyles.transactionType} horizontal>
-              {transactionFilterData?.categories?.map((type, index) => (
-                <TouchableOpacity key={index} style={allTransactionFilterStyles.transactionTypeMap}>
-                  <Text style={allTransactionFilterStyles.transactionText}>{type?.toLowerCase()}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View> */}
           {/* transaction category  */}
           <View style={allTransactionFilterStyles.transactionTypeWrapper}>
             <View style={allTransactionFilterStyles.transactionType}>
@@ -128,23 +195,15 @@ const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData
               />
             </View>
           </View>
-          <View style={allTransactionFilterStyles.transactionTypeWrapper}>
+            {/* transaction payment mode */}
+            <View style={allTransactionFilterStyles.transactionTypeWrapper}>
             <View style={allTransactionFilterStyles.transactionType}>
               <KshirsaDropdownWithSearch
-                name='Transaction Tags'
-                data={transactionFilterData?.hashtags || []}
-                selectedItems={selectedTransactionTags}
-                setSelectedItems={setSelectedTransactionTags}
-              />
-            </View>
-          </View>
-          <View style={allTransactionFilterStyles.transactionTypeWrapper}>
-            <View style={allTransactionFilterStyles.transactionType}>
-              <KshirsaDropdownWithSearch
-                name='Transaction Tags'
-                data={transactionFilterData?.hashtags || []}
-                selectedItems={selectedTransactionTags}
-                setSelectedItems={setSelectedTransactionTags}
+                name='Payment Mode'
+                data={transactionFilterData?.paymentModes}
+                selectedItems={selectedPaymentMode}
+                setSelectedItems={setSelectedPaymentMode}
+                isPaymentMode
               />
             </View>
           </View>
@@ -153,28 +212,32 @@ const AllTransactionsFilter = ({ filterVisible, setFilterVisible, filterFormData
             <Text style={allTransactionFilterStyles.transactionText}>Transaction Amount</Text>
             <View style={{ flexDirection: 'column', gap: 20, paddingRight: 80, paddingLeft: 20, paddingTop: 20 }}>
               <View style={{ flexDirection: 'row', gap: 20 }}>
-                <Text style={allTransactionFilterStyles.transactionTypeText}>₹{fromValue} - ₹{toValue}</Text>
+                <Text style={allTransactionFilterStyles.transactionTypeText}>₹{minAmount} - ₹{maxAmount}</Text>
               </View>
               <View style={{ flex: 1, width: 200 }}>
                 <KshirsaRange
-                  min={0}
-                  max={200}
-                  fromValue={fromValue}
-                  toValue={toValue}
-                  setFromValue={setFromValue}
-                  setToValue={setToValue}
+                  min={defaultamountRange.MIN}
+                  max={defaultamountRange.MAX}
+                  fromValue={minAmount}
+                  toValue={maxAmount}
+                  setFromValue={setMinAmount}
+                  setToValue={setMaxAmount}
                   width='200'
                 />
               </View>
             </View>
           </View>
-          <DateRangeFilter formDateRange={formDateRange} setFormDateRange={setFormDateRange} customDateRangeOpen={customDateRangeOpen} setCustomDateRangeOpen={setCustomDateRangeOpen} />
-          {/* transaction tags 
+           {/* transaction tags */}
            <View style={allTransactionFilterStyles.transactionTypeWrapper}>
             <View style={allTransactionFilterStyles.transactionType}>
-              <KshirsaDropdownWithSearch name='Transaction Tags' data={transactionFilterData?.hashtags} />
+              <KshirsaDropdownWithSearch
+                name='Transaction Tags'
+                data={transactionFilterData?.hashtags || []}
+                selectedItems={selectedTransactionTags}
+                setSelectedItems={setSelectedTransactionTags}
+              />
             </View>
-          </View> */}
+          </View>
         </View>
       </ScrollView>
     </KshirsaPopup>

@@ -87,6 +87,7 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage, 
           colors={[Colors.secondary]}
           progressBackgroundColor={Colors.moodyBlack}
           zIndex={1002}
+          progressViewOffset={screenHeight * 0.1}
           />
         }
       />

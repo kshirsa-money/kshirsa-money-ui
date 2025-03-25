@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, runOnJS } from 'react-native-reanimated';
 import { GestureDetector, GestureHandlerRootView, Gesture } from 'react-native-gesture-handler';
@@ -20,6 +20,11 @@ const KshirsaRange = ({ min, max, fromValue, toValue, setFromValue, setToValue, 
 
   const fromThumbScale = useSharedValue(1);
   const toThumbScale = useSharedValue(1);
+
+  useEffect(() => {
+    fromX.value = ((fromValue - min) / (max - min)) * sliderWidth;
+    toX.value = ((toValue - min) / (max - min)) * sliderWidth;
+  }, [fromValue, toValue]);
 
   const updateValue = (thumb, newX) => {
     const value = Math.round(min + ((newX / sliderWidth) * (max - min)));

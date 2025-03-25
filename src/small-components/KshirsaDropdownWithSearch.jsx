@@ -5,15 +5,16 @@ import KshirsaSearchIconAnimated from '../../assets/animatedImage/KshirsaSearchI
 import { AntDesign } from '@expo/vector-icons'
 import cssUtils from '../constants/cssUtils'
 import KshirsaModal from './KshirsaModal'
+import paymentModeOptions from '../constants/paymentModeOptions'
 
-const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelection = false, selectedItems = [], setSelectedItems = () => {} }) => {
+const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelection = false, selectedItems = [], setSelectedItems = () => { }, isPaymentMode=false }) => {
     const [searchText, setSearchText] = useState('')
     const [searchResults, setSearchResults] = useState(data || [])
     const [showResults, setShowResults] = useState(false)
 
     useEffect(() => {
         if (searchText === '') {
-            setSearchResults([...data]) 
+            setSearchResults([...data])
         } else {
             const filteredResults = data.filter(item =>
                 item.toLowerCase().includes(searchText.toLowerCase())
@@ -24,8 +25,8 @@ const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelecti
 
     const handleSelection = (item) => {
         if (singleSelection) {
-            setSelectedItems([item]) 
-            setShowResults(false) 
+            setSelectedItems([item])
+            setShowResults(false)
         } else {
             setSelectedItems(prevSelected => {
                 if (prevSelected.includes(item)) {
@@ -44,12 +45,21 @@ const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelecti
         return 0
     })
 
+    const selectedPaymentModes = isPaymentMode && selectedItems?.length > 0 ? selectedItems?.map(item => paymentModeOptions.find(option => option.value === item)?.label || item) : []
+    console.log(selectedItems, 'paymentKing')
     return (
         <>
             <TouchableOpacity style={styles.container} onPress={() => setShowResults(!showResults)}>
-                <View style={{ flexDirection: 'column', justifyContent: 'center'}}>
+                <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
                     <Text style={styles.text}>{name}</Text>
-                    {!singleSelection && selectedItems.length > 0 && (
+                    {isPaymentMode ? 
+                        selectedPaymentModes.length > 0 && (
+                            <Text style={styles.selectedItemsMultiple}>
+                                {selectedPaymentModes.join(', ')}
+                            </Text>
+                        )
+                        :
+                    !singleSelection && selectedItems.length > 0 && (
                         <Text style={styles.selectedItemsMultiple}>
                             {selectedItems.join(', ')}
                         </Text>
@@ -74,7 +84,9 @@ const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelecti
                     </View>
                     <ScrollView style={styles.scrollView}>
                         <View style={{ flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
-                            {sortedResults?.map((result, index) => (
+                            {sortedResults?.map((result, index) => {
+                                const resultObj = isPaymentMode ? paymentModeOptions.find(option => option.value === result) || result : null
+                            return (
                                 <TouchableOpacity
                                     key={index}
                                     style={[
@@ -83,6 +95,17 @@ const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelecti
                                     ]}
                                     onPress={() => handleSelection(result)}
                                 >
+                                    {isPaymentMode ? (
+                                        <>
+                                            <Text
+                                                style={{
+                                                    color: selectedItems.includes(resultObj.value) ? Colors.selectedText : Colors.white
+                                                }}
+                                            >
+                                                {resultObj.label}
+                                            </Text>
+                                        </>
+                                     ) :
                                     <Text
                                         style={{
                                             color: selectedItems.includes(result) ? Colors.selectedText : Colors.white
@@ -90,8 +113,9 @@ const KshirsaDropdownWithSearch = ({ name = 'dropdown', data = [], singleSelecti
                                     >
                                         {result}
                                     </Text>
+                            }
                                 </TouchableOpacity>
-                            ))}
+                            )})}
                         </View>
                     </ScrollView>
                 </View>

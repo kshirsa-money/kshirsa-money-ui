@@ -36,7 +36,7 @@ if(timeCheck) {
 };
 
 export const formatFilterDate = (date) => {
-  date = new Date(date);
+  // date = new Date(date);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
@@ -153,4 +153,24 @@ for (let i = 1; i <= 3; i++) {
   
     return ranges;
   };
-  
+
+  export const countFilters = (params) => {
+    let count = 0;
+    if (params.hashTag && params.hashTag.length > 0) count++;
+    if (params.transactionType && params.transactionType.length > 0) count++;
+    if (params.paymentMode && params.paymentMode.length > 0) count++;
+    if (params.category && params.category.length > 0) count++;
+    if (params.fromDate) count++;
+    if (params.toDate) count++;
+    // if (params.dateLabel) count++;
+    if (params.amountMin) count++;
+    if (params.amountMax) count++;
+    return count;
+  };
+
+  export const formattedPaymentModes = (paymentModes) => {
+    return paymentModes?.map(mode => ({
+      label: mode.replace(/_/g, ' ').toLowerCase(),
+      value: mode
+    }));
+  };

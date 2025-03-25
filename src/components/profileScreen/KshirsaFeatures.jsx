@@ -12,18 +12,18 @@ const KshirsaFeatures = () => {
   const handleNavigateTransactions = () => {
     router.push({
      pathname: uiRoutes.allTransactions,
-    //  params: {
-    //     hashTag: 'Hello',
-    //     // transactionType: 'EXPENSE, INCOME',
-    //     // paymentMode: [],
-    //     category: 'Shopping',
-    //     transactionBefore: getDateRanges()[2].toDate,
-    //     transactionAfter: getDateRanges()[2].fromDate,
-    //     dateLabel: 'customDate',
-    //     // amountMin: 100,
-    //     // amountMax: 400,
-    //     sortBy: 'Latest'
-    //   }
+     params: {
+        // hashTag: 'Hello',
+        // transactionType: 'EXPENSE, INCOME',
+        // paymentMode: [],
+        // category: 'Shopping',
+        // fromDate: getDateRanges()[2].fromDate,
+        // toDate: getDateRanges()[2].toDate,
+        // dateLabel: 'customDate',
+        // amountMin: 100,
+        // amountMax: 400,
+        // sortBy: 'Latest'
+      }
 
     })
   }

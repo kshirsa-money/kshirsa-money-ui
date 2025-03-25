@@ -15,7 +15,10 @@ import KshirsaLoadingScreen from '../../small-components/KshirsaLoading'
 import recentTransactionStyles from '../../styles/stylesRecentTransaction'
 import uiText from '../../constants/uiTexts'
 import KshirsaNoDataImage from '../../../assets/animatedImage/noDataImage'
-import { getDateRanges } from '../../utils/helper'
+import { countFilters, getDateRanges } from '../../utils/helper'
+import { FontAwesome5, FontAwesome6 } from '@expo/vector-icons'
+import TransactionSortBy from '../../components/all-transactions/transactionSortBy'
+import Colors from '../../styles/Colors'
 
 const AllTransactions = () => {
   const allTransactionData = useSelector((state) => state.allTransactionsReducer);
@@ -26,28 +29,33 @@ const AllTransactions = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterVisible, setFilterVisible] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
+  const [visibleSortPopup, setVisibleSortPopup] = useState(false);
+  const [sortByForm, setSortByForm] = useState('Latest');
   const [filterFormData, setFilterFormData] = useState({
-    hashTag: [],
-    transactionType: [],
-    paymentMode: [],
-    category: [],
-    transactionBefore: '',
-    transactionAfter: '',
+    hashTag: '',
+    transactionType: '',
+    paymentMode: '',
+    category: '',
+    fromDate: '',
+    toDate: '',
     dateLabel: '',
     amountMin: '',
     amountMax: '',
     sortBy: 'Latest'
   });
 
+  const countFilter = countFilters(params);
+  console.log(countFilter, 'countFilter');
   useEffect(() => {
-    if (JSON.stringify(prevParamsRef.current) !== JSON.stringify(params)) {
+    if (params && JSON.stringify(prevParamsRef.current) !== JSON.stringify(params)) {
+      setSortByForm(params.sortBy || 'Latest');      
       setFilterFormData({
-        hashTag: params.hashTag || [],
-        transactionType: params.transactionType || [],
-        paymentMode: params.paymentMode || [],
-        category: params.category || [],
-        transactionBefore: params.transactionBefore,
-        transactionAfter: params.transactionAfter,
+        hashTag: params.hashTag ? (params.hashTag || '')?.split(', ') : [],
+        transactionType: params.transactionType ? (params.transactionType || '')?.split(', ') : [],
+        paymentMode: params.paymentMode ? (params.paymentMode || '')?.split(', ') : [],
+        category: params.category ? (params.category || '')?.split(', ') : [],
+        fromDate: params.fromDate,
+        toDate: params.toDate,
         dateLabel: params.dateLabel,
         amountMin: params.amountMin || '',
         amountMax: params.amountMax || '',
@@ -57,9 +65,6 @@ const AllTransactions = () => {
     }
   }, [params]);
 
-  console.log(pathName, 'pathName');
-  console.log(params, 'params');
-  console.log(filterFormData, 'filterFormData');
   useEffect(() => {
     dispatch(getAllTransactionsAction({
       pageNumber: currentPage,
@@ -87,18 +92,32 @@ const AllTransactions = () => {
     }));
   }, []);
 
+  const renderFooter = () => {
+    return (
+      <View style={allTransactionsStyle.sortFilterWrapper}>
+        <TouchableOpacity style={allTransactionsStyle.footerBtn} onPress={() => setVisibleSortPopup(true)}>
+          {!(sortByForm === 'Latest') && <View style={{backgroundColor:Colors.secondary, height: 10, width: 10, borderRadius: 50}} />}
+          <FontAwesome6 name="sort" size={20} color="white" />
+          <Text style={allTransactionsStyle.footerText}>SORT</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={allTransactionsStyle.footerBtn} onPress={() => setFilterVisible(true)}>
+          <FontAwesome5 name="filter" size={20} color="white" />
+          <Text style={allTransactionsStyle.footerText}>
+            FILTER</Text>
+          {countFilter && <Text style={allTransactionsStyle.filterCount}>{countFilter}</Text>}
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       // ----------------------------------------------general header ----------------------------------------
       <KshirsaGeneralHeader
         pageTitle='Transactions History'
-        headerRight={() => (
-          <TouchableOpacity style={allTransactionsStyle.headerRight} onPress={() => setFilterVisible(true)}>
-            <Text style={allTransactionsStyle.filterText}>Filter</Text>
-          </TouchableOpacity>
-        )} />
+      />
 
-      <AllTransactionsFilter filterVisible={filterVisible} setFilterVisible={setFilterVisible} filterFormData={filterFormData} setFilterFormData={setFilterFormData} />
+      <AllTransactionsFilter filterVisible={filterVisible} setFilterVisible={setFilterVisible} filterFormData={filterFormData} setFilterFormData={setFilterFormData} urlParams={params} sortByForm={sortByForm} />
       // -----------------------------------------------all Transactions-------------------------------------------------------
       {
         allTransactionData.loading ?
@@ -110,10 +129,12 @@ const AllTransactions = () => {
             <AllTransactionsList allTransactionData={allTransactionData} currentPage={currentPage} setCurrentPage={setCurrentPage} onRefresh={onRefresh} />
             :
             <View style={allTransactionsStyle.noDataContainer}>
-                <KshirsaNoDataImage />
+              <KshirsaNoDataImage />
               <Text style={recentTransactionStyles.noDataText}>{uiText.NO_TRANSACTION_FOUND}</Text>
             </View>
       }
+      <TransactionSortBy  visibleSortPopup={visibleSortPopup} setVisibleSortPopup={setVisibleSortPopup} filterParams={params} sortByForm={sortByForm} setSortByForm={setSortByForm} />
+      {renderFooter()}
     </SafeAreaView>
   )
 }

@@ -30,3 +30,30 @@ export const toastTypes = {
 
 export const screenHeight = Dimensions.get('window').height
 export const screenWidth = Dimensions.get('window').width
+
+export const defaultamountRange = {
+    MIN: 0,
+    MAX: 20000
+}
+
+export const TransactionSortByToMap = [
+    {
+        label: 'New to Old',
+        value: 'Latest'
+    },
+    {
+        label: 'Old to New',
+        value: 'Oldest'
+    },
+    {
+        label: 'Amount - High to Low',
+        value: 'AmountHighToLow'
+    },
+    {
+        label: 'Amount - Low to High',
+        value: 'AmountLowToHigh'
+    },
+]
+
+// export const paymentModesToMap = {p
+// Latest', 'Oldest', 'AmountHighToLow', 'AmountLowToHigh

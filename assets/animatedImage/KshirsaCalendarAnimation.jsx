@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     transform: [{ scale: 2.5 }],
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
   },
 });
 
