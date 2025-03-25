@@ -35,7 +35,7 @@ export default function RootLayout() {
     <Provider store={KshirsaStore}>
       <GestureHandlerRootView>
       <AlertNotificationRoot>
-      <StatusBar backgroundColor={Colors.secondary} />
+      <StatusBar backgroundColor={Colors.moodyBlack} />
       <Slot />
       {/* {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(uiRoutes.addTransaction)}/>} */}
       <AlertComponent />
