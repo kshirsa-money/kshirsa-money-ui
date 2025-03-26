@@ -14,7 +14,6 @@ import { AlertNotificationRoot } from "react-native-alert-notification";
 import AlertComponent from "../small-components/KshirsaAlert";
 import KshirsaFloatingBtn from "../small-components/KshirsaFloatingBtn";
 import uiRoutes from "../constants/uiRoutes";
-import { setButtonState } from "../redux/reducers/floatingBtnReducer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ErrorFallback from "../components/errorBoundary/fallbackUi";
 import { ErrorBoundary } from "react-error-boundary";
@@ -36,9 +35,9 @@ export default function RootLayout() {
     <Provider store={KshirsaStore}>
       <GestureHandlerRootView>
       <AlertNotificationRoot>
-      <StatusBar backgroundColor={Colors.secondary} />
+      <StatusBar backgroundColor={Colors.moodyBlack} />
       <Slot />
-      {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(uiRoutes.addTransaction)}/>}
+      {/* {visibleFloatingBtn && <KshirsaFloatingBtn onPress={() => router.push(uiRoutes.addTransaction)}/>} */}
       <AlertComponent />
       <ToastContainer />
       </AlertNotificationRoot>

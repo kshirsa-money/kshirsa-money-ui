@@ -29,6 +29,7 @@ const transactionCardStyles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     padding: 10,
     borderRadius: 10,
+    height: 'fit-content',
   },
   deleteButton: {
     backgroundColor: Colors.red,
@@ -38,14 +39,11 @@ const transactionCardStyles = StyleSheet.create({
   container: {
     backgroundColor: Colors.transactionCardBg,
     borderRadius: 20,
-    // paddingVertical: 10,
     paddingHorizontal: 10,
-    marginTop: 20,
+    // marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    // borderColor: Colors.lightGrey,
-    // borderWidth: 1,
   },
   leftContainer: {
     flexDirection: "row",
@@ -56,6 +54,7 @@ const transactionCardStyles = StyleSheet.create({
     alignItems: "flex-end",
     gap: 6,
     padding: 5,
+    // flexDirection: 'row',
   },
   title: {
     fontSize: 16,
@@ -90,6 +89,12 @@ const transactionCardStyles = StyleSheet.create({
     alignItems: "flex-start",
     width: '100%',
     gap: 10,
+  },
+  rightSwipeContainer: {
+      alignItems: 'center',
+      gap: 6,
+      padding: 5,
+      flexDirection: 'row',
   }
 });
 

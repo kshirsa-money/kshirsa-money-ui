@@ -12,6 +12,8 @@ const paymentModeOptions = [
     { value: 'UPI', label: 'Upi', icon: <UpiIcon height={30} width={30} /> },
     { value: 'DEBIT_CARD', label: 'Debit Card', icon: <AtmCardIcon height={30} width={30} color='white' /> },
     { value: 'OTHERS', label: 'Other', icon: <OtherIcon height={30} width={30} /> },
+    { value: 'ACCOUNT', label: 'Account', icon: <BankIcon height={25} width={25} /> },
+    { value: 'WALLET', label: 'Wallet', icon: <BankIcon height={25} width={25} /> },
     // { value: 'BANK TRANSFER', label: 'Bank Transfer' },
     // { value: 'PAYTM', label: 'Paytm' },
     // { value: 'GOOGLE PAY', label: 'Google Pay' },

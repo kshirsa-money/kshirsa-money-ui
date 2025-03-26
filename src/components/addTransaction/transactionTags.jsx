@@ -11,7 +11,6 @@ const TransactionTags = ({formData, setFormData}) => {
     const initialTags = formData.tags ? formData.tags : [];
     const [tags, setTags] = useState(initialTags);
     const [inputValue, setInputValue] = useState('');
-    console.log(formData?.tags, 'tags');
 
     useEffect(() => {
         setFormData((prev) => ({

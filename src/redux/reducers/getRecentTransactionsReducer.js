@@ -31,7 +31,12 @@ const generateOtpReducer = createSlice({
         state.message = null;
       })
       .addCase(getRecentTransactionsAction.fulfilled, (state, action) => {
+        console.log('Fulfilled action triggered');
+        console.log('Fulfilled payload:', action.payload);
         const { data, success, message } = action.payload;
+        console.log('Data:', data);
+        console.log('Success:', success);
+        console.log('Message:', message);
         state.loading = false;
         state.data = data;
         state.success = success;

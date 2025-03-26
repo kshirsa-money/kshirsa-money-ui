@@ -7,4 +7,5 @@ export default uiRoutes = {
     addTransaction: '/AddTransaction',
     editTransaction: '/editTransaction',
     categories: '/categories',
+    allTransactions: '/all-transactions'
 } 

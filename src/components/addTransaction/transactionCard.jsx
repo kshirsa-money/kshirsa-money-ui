@@ -50,7 +50,6 @@ const TransactionCard = ({ formData, onChange, setFormData, editTransaction, han
       categoryId: categoryData?.[formData.transactionType]?.[0]?.category?.categoryId,
     }));
   }, [categoryData, formData?.transactionType]);
-  console.log(categoryData, ' datas')
   return (
     <>
       <CategoriesPopup visibleCategoryPopup={visibleCategoryPopup} setVisibleCategoryPopup={setVisibleCategoryPopup} categoryData={categoryData} categoryType={formData.transactionType} setFormData={setFormData} handleNavigateToCategories={handleNavigateToCategories} />

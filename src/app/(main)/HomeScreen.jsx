@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, ScrollViewComponent } from 'react-native'
+import { View, Text, ScrollView, ScrollViewComponent } from 'react-native'
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Colors from '../../styles/Colors';
@@ -9,15 +9,16 @@ import BalanceSummaryCard from '../../components/home/BalanceSummaryCard';
 import { RefreshControl } from 'react-native-gesture-handler';
 import KshirsaPullToRefresh from '../../../assets/animatedImage/KshirsaPullToRefresh';
 import getRecentTransactionsAction from '../../redux/actions/getRecentTransactionAction';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MainHomeScreen = () => {
   const dispatch = useDispatch();
-   const { loading: recentTransactionLoading } = useSelector((state) => state.getRecentTransactionsReducer) || {};
+   const { loading } = useSelector((state) => state.getRecentTransactionsReducer) || {};
   const onRefresh = useCallback(() => {
    dispatch(getRecentTransactionsAction())
   }
   , []);
-
+  console.log(loading, 'recentTransactionLoading')
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.moodyBlack, position: 'relative'}}>
       <ScrollView 
@@ -26,7 +27,7 @@ const MainHomeScreen = () => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            refreshing={recentTransactionLoading}
+            refreshing={loading}
             onRefresh={onRefresh}
             tintColor={Colors.black}
             colors={[Colors.secondary]}

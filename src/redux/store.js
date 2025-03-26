@@ -3,7 +3,6 @@ import fontsSlice from "./reducers/fontReducer";
 import validateOtpReducer from "./reducers/validateOtpReducer";
 import generateOtpReducer from "./reducers/generateOtpReducer";
 import userDetailsReducer from "./reducers/userDetailsReducer";
-import floatingButtonReducer from "./reducers/floatingBtnReducer";
 import addTransactionReducer from "./reducers/addTransactionReducer";
 import getRecentTransactionsReducer from "./reducers/getRecentTransactionsReducer";
 import deleteTransactionReducer from "./reducers/deleteTransactionReducer";
@@ -14,6 +13,8 @@ import savedFormDataReducer from "./reducers/savedFormDataReducer";
 import updateCategoryReducer from "./reducers/updateCategoryReducer";
 import addCategoryReducer from "./reducers/addCategoryReducer";
 import deleteCategoryReducer from "./reducers/deleteCategoryReducer";
+import getAllTransactionsReducer from "./reducers/getAllTransactionsReducer";
+import getAllTransactionsFilterReducer from "./reducers/getAllTransactionsFilterReducer";
 
 const KshirsaStore = configureStore({
     reducer: {
@@ -21,7 +22,6 @@ const KshirsaStore = configureStore({
       generateOtpReducer: generateOtpReducer,
       validateOtpReducer: validateOtpReducer,
       userDetailsReducer: userDetailsReducer,
-      floatingButtonReducer: floatingButtonReducer,
       addTransactionReducer: addTransactionReducer,
       getRecentTransactionsReducer: getRecentTransactionsReducer,
       deleteTransactionReducer: deleteTransactionReducer,
@@ -32,6 +32,8 @@ const KshirsaStore = configureStore({
       updateCategoryReducer: updateCategoryReducer,
       addCategoryReducer: addCategoryReducer,
       deleteCategoryReducer: deleteCategoryReducer,
+      allTransactionsReducer: getAllTransactionsReducer,
+      transactionsFilterReducer: getAllTransactionsFilterReducer,
     },
   });
 
