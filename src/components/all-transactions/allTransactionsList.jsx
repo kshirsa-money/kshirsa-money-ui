@@ -8,9 +8,12 @@ import allTransactionsStyle from '../../styles/stylesAllTransactions';
 import Colors from '../../styles/Colors';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
+import uiRoutes from '../../constants/uiRoutes';
 
 const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage, onRefresh }) => {
   const swipeableRef = useRef(null);
+  const router = useRouter();
   const allTransactions = allTransactionData?.transactionList || [];
   const hasNextPage = allTransactionData?.data?.hasNextPage || false;
   const infinityLoading = allTransactionData?.infinityLoading || false;
@@ -46,6 +49,13 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage, 
     }
   };
 
+  const onTransactionCardPress = (transactionData) => {
+        router.push({
+          pathname: uiRoutes.editTransaction,
+          params: { transactionId: transactionData?.transactionId },
+        });
+  }
+
   // 🟢 Render Items
   const renderItem = ({ item, index }) => {
     if (item.type === 'header') {
@@ -58,10 +68,11 @@ const AllTransactionsList = ({ allTransactionData, currentPage, setCurrentPage, 
         index={index}
         onDelete={() => {}}
         onDuplicate={() => {}}
-        onPress={() => {}}
+        onPress={onTransactionCardPress}
         fromAllTransaction={true}
         swipeableRef={swipeableRef}
         needDelayAnimation = { currentPage  === 1}
+        isSwipeNeed={false}
       />
     );
   };

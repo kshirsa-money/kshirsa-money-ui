@@ -4,18 +4,20 @@ import GoBack from '../../small-components/goBack';
 
 export default function AddTransactionLayout() {
   return (
-    <Stack>
+    <Stack
+      options={{
+        animation: 'slide_from_right', // Default animation for the stack
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
           title: 'Add Transaction',
-          headerStyle: { backgroundColor: Colors.generalCardBg },
-          headerTintColor: Colors.white,
-          headerTitleStyle: { fontWeight: 'bold' },
-          headerLeft: () => <GoBack />,
+          headerShown: false,
+          animation: 'slide_from_right', // Animation when opening the page
+          gestureDirection: 'horizontal', // Gesture for back navigation
         }}
       />
     </Stack>
   );
 }
-

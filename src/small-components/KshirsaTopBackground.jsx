@@ -9,9 +9,9 @@ const KshirsaTopBackground = () => {
     const { greeting, image } = useGetCurrentTimeDetails();
   return (
     <LinearGradient
-    colors={[Colors.secondary, Colors.moodyBlack]}
-    start={{ x: -0.5, y: 0.5 }}
-    end={{ x: 0.5, y: 1 }}
+    colors={[Colors.primary, Colors.moodyGreen, Colors.moodyGreen2, Colors.moodyBlack]}
+    start={{ x: 0.1, y: 0.1 }}
+    end={{ x: 0.4, y: 0.5 }}
     // style={{ flex: 1, borderRadius: 20 }}
     style={[KshirsaTopBgStyles.container, KshirsaTopBgStyles.welcomeContainer]}
   >

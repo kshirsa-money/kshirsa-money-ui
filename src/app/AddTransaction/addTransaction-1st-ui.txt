@@ -7,7 +7,7 @@ import {
   Platform,
   Keyboard,
   BackHandler,
-  TouchableWithoutFeedback,
+  SafeAreaView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import TransactionCard from '../../components/addTransaction/transactionCard';
@@ -24,6 +24,7 @@ import uiRoutes from '../../constants/uiRoutes';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { resetaddTransactionAction } from '../../redux/reducers/addTransactionReducer';
 import uiText from '../../constants/uiTexts';
+import { TouchableWithoutFeedback } from 'react-native-web';
 import TransactionTags from '../../components/addTransaction/transactionTags';
 import { KshirsaAlert } from '../../small-components/KshirsaAlert';
 import updateTransactionAction from '../../redux/actions/updateTransactionAction';
@@ -35,13 +36,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { resetSavedFormDataAction, setSavedFormDataAction } from '../../redux/reducers/savedFormDataReducer';
 import { renderTransactionSuccessToast } from '../../constants/ToastRender';
 import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import AddTransactionHeader from '../../components/addTransactionUi2/addTransactionHeader';
-import Animated from 'react-native-reanimated';
-import AddTransactionAmount from '../../components/addTransactionUi2/addTransactionAmount';
-import AddTransactionCategory from '../../components/addTransactionUi2/addTransactionCategory';
-import AddTransactionDateTime from '../../components/addTransactionUi2/addTransactionDateTime';
-import { handleBackNavigation } from '../../utils/utilityFunction';
 
 const AddTransaction = ({ editTransaction = false, transactionId }) => {
   const dispatch = useDispatch();
@@ -51,7 +45,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
   const { data: viewTransactionData, loading: viewTransactionLoading } = useSelector((state) => state.getTransactionReducer);
   const { success: updateTransactionSuccess, loading: updateTransactionLoading, data: updateTransactionData } = useSelector((state) => state.updateTransactionReducer);
   const deleteTransactionReducer = useSelector((state) => state.deleteTransactionReducer);
-  console.log(editTransaction, 'isEdit')
+
   const [formData, setFormData] = useState({
     amount: '',
     paymentMode: 'CASH',
@@ -76,7 +70,6 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
   });
   const [isFormModified, setIsFormModified] = useState(false);
   const [errors, setErrors] = useState('');
-  const [transactionTypeDropdownOpen, setTransactionTypeDropdownOpen] = useState(false);
 
 
   useEffect(() => {
@@ -109,7 +102,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
         isRecurring: false,
         tags: [],
       });
-      handleBackNavigation(router)
+      router.replace(uiRoutes.main)
       renderTransactionSuccessToast(deleteTransactionReducer, editTransaction);
       dispatch(resetSavedFormDataAction());
     }
@@ -132,7 +125,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     if (field === 'amount') {
       if (!value) {
         setErrors('Amount cannot be empty!');
-      } else if (value.length > 8) {
+      } else if (value.length > 10) {
         setErrors('Amount cannot be more than 10000000!');
       } else {
         setErrors('');
@@ -151,7 +144,7 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
       return;
     }
 
-    if (formData.amount.length > 8) {
+    if (formData.amount.length > 10) {
       setErrors('Amount cannot be more than 10000000!');
       return;
     }
@@ -211,54 +204,64 @@ const AddTransaction = ({ editTransaction = false, transactionId }) => {
     });
   };
 
-  const handlePressOutside = () => {
-    Keyboard.dismiss();
-    setTransactionTypeDropdownOpen(false);
-  }
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
-      <TouchableWithoutFeedback onPress={handlePressOutside} style={{ backgroundColor: Colors.moodyBlack, flex: 1 }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
-        >
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
+      {editTransaction && viewTransactionLoading ? <KshirsaMoneyLoadingImg />
+        :
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{ flex: 1, backgroundColor: Colors.moodyBlack }}>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
           >
-            {/* --------------------------add-transaction header-------------- */}
-            <AddTransactionHeader formData={formData} setFormData={setFormData} transactionTypeDropdownOpen={transactionTypeDropdownOpen} setTransactionTypeDropdownOpen={setTransactionTypeDropdownOpen} editTransaction={editTransaction} />
-            {/* --------------------------add-transaction amount-------------- */}
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              keyboardShouldPersistTaps="handled"
+            >
+              <View style={addTransactionStyles.container}>
+                <TransactionCard
+                  onChange={handleInputChange}
+                  formData={formData}
+                  errors={errors}
+                  setFormData={setFormData}
+                  editTransaction={editTransaction}
+                  handleNavigateToCategories={handleNavigateToCategories}
+                />
 
-            <AddTransactionAmount formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} errors={errors} />
-            {/* --------------------------add-transaction category-------------- */}
+                {errors ? (
+                  <Text style={{ color: Colors.red, paddingHorizontal: 10 }}>{errors}</Text>
+                ) : null}
 
-            <AddTransactionCategory formData={formData} setFormData={setFormData} handleNavigateToCategories={handleNavigateToCategories} handleInputChange={handleInputChange} />
-            {/* --------------------------add-transaction date time-------------- */}
-
-            <AddTransactionDateTime formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} />
-            {/* --------------------------add-transaction tags-------------- */}
-
-            <TransactionTags
-              onChange={handleInputChange}
-              formData={formData}
-              setFormData={setFormData} />
-            {/* --------------------------add-transaction notes-------------- */}
-            <TransactionNotes
-              onChange={handleInputChange}
-              formData={formData}
-              setFormData={setFormData}
-            />
-            {/* --------------------------add-transaction button-------------- */}
-            <View style={addTransactionStyles.buttonContainer}>
-              <KshirsaButton icon={<AntDesign name="save" size={30} color={Colors.black} />} onPress={handleSaveTransaction} disabled={editTransaction ? !isFormModified || deleteTransactionReducer.loading : false} loading={addTransactionResponse.loading || updateTransactionLoading} width={100} />
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+                <TransactionDateTime
+                  onChange={handleInputChange}
+                  formData={formData}
+                  setFormData={setFormData}
+                  setInitialFormData={setInitialFormData}
+                />
+                {/* 
+          <TransactionCategory
+            onChange={handleInputChange}
+            formData={formData}
+            setFormData={setFormData}
+          /> */}
+                <TransactionTags
+                  onChange={handleInputChange}
+                  formData={formData}
+                  setFormData={setFormData} />
+                <TransactionNotes
+                  onChange={handleInputChange}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+                <View style={addTransactionStyles.buttonContainer}>
+                  <KshirsaButton icon={<AntDesign name="save" size={30} color={Colors.white} />} onPress={handleSaveTransaction} disabled={editTransaction ? !isFormModified : false} loading={addTransactionResponse.loading} />
+                </View>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      }
     </SafeAreaView>
-  )
+  );
 };
 
 export default AddTransaction;

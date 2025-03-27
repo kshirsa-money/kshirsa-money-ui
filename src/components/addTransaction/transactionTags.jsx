@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         fontSize: cssUtils.smallTextSize,
     },
     inputContainer: {
-        backgroundColor: Colors.generalCardBg,
+        backgroundColor: Colors.generalFocusBg,
         width: '100%',
     }
 })

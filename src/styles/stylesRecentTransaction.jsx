@@ -16,6 +16,7 @@ const recentTransactionStyles = StyleSheet.create({
        flexDirection: 'row',
        justifyContent: 'space-between',
        alignItems: 'center',
+       marginBottom: 20
     },
     title: {
         color: Colors.white,
@@ -26,10 +27,9 @@ const recentTransactionStyles = StyleSheet.create({
         color: Colors.lightGrey,
         fontSize: cssUtils.smallTextSize,
         fontWeight: cssUtils.smallBold,
-        textDecorationLine: 'underline',
     },
     noDataText: {
-        color: Colors.lightGrey,
+        color: Colors.white,
         fontSize: cssUtils.smallTextSize,
         fontWeight: cssUtils.mediumBold,
         textAlign: 'center',

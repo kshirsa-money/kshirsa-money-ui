@@ -19,13 +19,15 @@ import { countFilters, getDateRanges } from '../../utils/helper'
 import { FontAwesome5, FontAwesome6 } from '@expo/vector-icons'
 import TransactionSortBy from '../../components/all-transactions/transactionSortBy'
 import Colors from '../../styles/Colors'
+import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransactionReducer'
+import { resetUpdateTransactionAction } from '../../redux/reducers/updateTransactionReducer'
 
 const AllTransactions = () => {
   const allTransactionData = useSelector((state) => state.allTransactionsReducer);
   const dispatch = useDispatch();
-  const pathName = usePathname();
   const params = useLocalSearchParams();
   const prevParamsRef = useRef();
+  const paramsString = JSON.stringify(params);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterVisible, setFilterVisible] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
@@ -47,8 +49,7 @@ const AllTransactions = () => {
   const countFilter = countFilters(params);
   console.log(countFilter, 'countFilter');
   useEffect(() => {
-    if (params && JSON.stringify(prevParamsRef.current) !== JSON.stringify(params)) {
-      console.log('insideIf')
+    if (params && prevParamsRef.current !== paramsString) {
       setSortByForm(params.sortBy || 'Latest');      
       setFilterFormData({
         hashTag: params.hashTag ? (params.hashTag || '')?.split(', ') : [],
@@ -62,14 +63,13 @@ const AllTransactions = () => {
         amountMax: params.amountMax || '',
         sortBy: params.sortBy || 'Latest'
       });
-      prevParamsRef.current = params;
+      prevParamsRef.current = paramsString;
     }
   }, [JSON.stringify(params)]);
 
   useEffect(() => {
-    // const paramsString = JSON.stringify(params);
-    // if (prevParamsRef.current !== paramsString) {
-      // prevParamsRef.current = paramsString; // Update the reference
+    // if (!params || prevParamsRef.current !== paramsString) {  
+    //   prevParamsRef.current = paramsString; // Update the reference
       // setCurrentPage(1); // Reset to first page on filter change
   
       dispatch(getAllTransactionsAction({
@@ -78,17 +78,18 @@ const AllTransactions = () => {
         ...params
       }));
     // }
-  }, [dispatch,currentPage, refreshPage, JSON.stringify(params)]);  // ✅ Using stringified params to prevent unnecessary re-renders
-  
-  console.log(currentPage, 'kingshuk')
+  }, [dispatch, currentPage, refreshPage, JSON.stringify(params)]); 
 
   // reset the state when the component unmounts
   useEffect(() => {
     dispatch(getAllTransactionsFilterAction());
-    return () => {
-      setCurrentPage(1);
-      dispatch(resetGetAllTransactionsAction());
-    }
+    dispatch(resetDeleteTransactionAction());
+    dispatch(resetUpdateTransactionAction());
+    // return () => {
+    //   // setCurrentPage(1);
+    //   // dispatch(resetGetAllTransactionsAction());
+
+    // }
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -120,13 +121,13 @@ const AllTransactions = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      // ----------------------------------------------general header ----------------------------------------
+       {/* ----------------------------------------------general header ---------------------------------------- */}
       <KshirsaGeneralHeader
         pageTitle='Transactions History'
       />
 
       <AllTransactionsFilter filterVisible={filterVisible} setFilterVisible={setFilterVisible} filterFormData={filterFormData} setFilterFormData={setFilterFormData} urlParams={params} sortByForm={sortByForm} />
-      // -----------------------------------------------all Transactions-------------------------------------------------------
+      {/* // -----------------------------------------------all Transactions------------------------------------------------------- */}
       {
         allTransactionData.loading ?
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -35,6 +35,7 @@ export default function EditTransactionLayout() {
         name="index"
         options={{
           title: 'Edit Transaction',
+          headerShown: false,
           headerStyle: { backgroundColor: Colors.generalCardBg },
           headerTintColor: Colors.white,
           headerTitleStyle: { fontWeight: 'bold' },

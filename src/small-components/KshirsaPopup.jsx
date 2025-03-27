@@ -47,7 +47,7 @@ const KshirsaPopup = ({ visible, onClose, header = "Popup Header", children, pop
             </TouchableOpacity>
             : null}
         </View>
-        <ScrollView style={{ flex: 1, paddingVertical: 20 }} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{ flex: 1, paddingVertical: 20, alignItems: 'flex-start' }} showsVerticalScrollIndicator={false}>
           {children}
         </ScrollView>
         {(!isChildPopupOpen && footer) &&

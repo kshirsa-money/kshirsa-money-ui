@@ -13,27 +13,41 @@ export const formatTime = (date) => {
   return `${String(hours).padStart(2, '0')}:${minutes} ${amPm}`;
 };
 
-export const formatTransactionDate = (date, timeCheck = true) => {
+export const formatTransactionDateTime = (date, timeCheck = true) => {
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-if(timeCheck) {
+
   const isToday = date.toDateString() === today.toDateString();
   const isYesterday = date.toDateString() === yesterday.toDateString();
   const isTomorrow = date.toDateString() === tomorrow.toDateString();
 
-  if (isToday) return 'Today';
-  if (isYesterday) return 'Yesterday';
-  if (isTomorrow) return 'Tomorrow';
-}
+  // Format time as hh:mm AM/PM
+  const hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12; // Convert 24-hour format to 12-hour
+
+  const formattedTime = `${formattedHours}:${minutes} ${ampm}`;
+
+  if (timeCheck) {
+    if (isToday) return `Today, ${formattedTime}`;
+    if (isYesterday) return `Yesterday, ${formattedTime}`;
+    if (isTomorrow) return `Tomorrow, ${formattedTime}`;
+  }
 
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+  
+  return {
+    date: `${day}-${month}-${year}`,
+    time: formattedTime
+  };
 };
+
 
 export const formatFilterDate = (date) => {
   // date = new Date(date);

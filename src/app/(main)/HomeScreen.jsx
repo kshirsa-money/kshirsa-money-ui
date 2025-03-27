@@ -18,7 +18,6 @@ const MainHomeScreen = () => {
    dispatch(getRecentTransactionsAction())
   }
   , []);
-  console.log(loading, 'recentTransactionLoading')
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.moodyBlack, position: 'relative'}}>
       <ScrollView 
