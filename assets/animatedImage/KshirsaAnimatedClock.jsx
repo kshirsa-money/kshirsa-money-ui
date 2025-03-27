@@ -2,15 +2,15 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-const KshirsaPlusAnimation = ({height=60, width=60}) => {
+const KshirsaAnimatedClock = ({width=30, height=30}) => {
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('./plusAnimation.json')}
+        source={require('./animatedClock.json')}
         autoPlay
         loop={true}
-        style={[styles.animation, {height, width}]}
-        
+        style={[styles.animation,{width, height}]}
+        speed={1}
       />
     </View>
   );
@@ -18,15 +18,11 @@ const KshirsaPlusAnimation = ({height=60, width=60}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#fff',
   },
   animation: {
-    // width: 60,
-    // height: 60,
   },
 });
 
-export default KshirsaPlusAnimation;
+export default KshirsaAnimatedClock;

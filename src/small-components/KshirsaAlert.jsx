@@ -58,6 +58,7 @@ const AlertComponent = () => {
                customColor={button.style === "secondary" ? Colors.secondaryButtonLinearGradient : ""}
                loading={button.loading}
                disabled={button.disabled}
+               titleStyle={button.style === "secondary" ? { color: Colors.white } : {}}
              />
             ))}
           </View>

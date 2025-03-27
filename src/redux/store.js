@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import fontsSlice from "./reducers/fontReducer";
+import uiReducer from "./reducers/uiReducer";
 import validateOtpReducer from "./reducers/validateOtpReducer";
 import generateOtpReducer from "./reducers/generateOtpReducer";
 import userDetailsReducer from "./reducers/userDetailsReducer";
@@ -18,7 +18,7 @@ import getAllTransactionsFilterReducer from "./reducers/getAllTransactionsFilter
 
 const KshirsaStore = configureStore({
     reducer: {
-      fonts: fontsSlice.reducer,
+      uiReducer: uiReducer,
       generateOtpReducer: generateOtpReducer,
       validateOtpReducer: validateOtpReducer,
       userDetailsReducer: userDetailsReducer,

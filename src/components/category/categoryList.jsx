@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import categoryStyles from '../../styles/stylesCategory'
 import KshirsaMoneyLoadingImg from '../../../assets/animatedImage/moneyLoadingImage'
@@ -11,11 +11,12 @@ import deleteCategoryAction from '../../redux/actions/deleteCategoryAction'
 import KshirsaToast from '../../small-components/KshirsaToast'
 import { showToast } from '../../constants/toastUtils'
 
-const CategoryList = ({ data, loading, categoryType, handleClickCategory, fromPopup }) => {
+const CategoryList = ({ data, loading, categoryType, handleClickCategory, fromPopup, deleteCategoryLoading }) => {
   const dispatch = useDispatch()
 
   const handleDeleteCategory = (category) => {
     const disabled = category?.isDefault || category?.isInUse
+    console.log(category, 'category')
     if (disabled) {
       showToast({
         message: uiText.DEFAULT_CATEGORY_NOT_dELETE,
@@ -24,7 +25,7 @@ const CategoryList = ({ data, loading, categoryType, handleClickCategory, fromPo
       return
     }
     const deleteQuery = {
-      categoryId: category?.categoryId
+      categoryId: category?.category?.categoryId
     }
     dispatch(deleteCategoryAction(deleteQuery))
   }
@@ -44,9 +45,12 @@ const CategoryList = ({ data, loading, categoryType, handleClickCategory, fromPo
                       <Text style={categoryStyles.categoryText}>{category?.category?.categoryName}</Text>
                       <Text style={categoryStyles.categoryDesc}>{category?.category?.description}</Text>
                     </TouchableOpacity>
-                    {!fromPopup && <TouchableOpacity onPress={() => handleDeleteCategory(category)}>
-                      <MaterialIcons name="delete" size={24} color={Colors.white} />
-                    </TouchableOpacity>}
+                    {!fromPopup &&
+                      deleteCategoryLoading ? <ActivityIndicator size="small" color={Colors.white} />
+                      :
+                      <TouchableOpacity onPress={() => handleDeleteCategory(category)}>
+                        <MaterialIcons name="delete" size={24} color={Colors.white} />
+                      </TouchableOpacity>}
                   </View>
                 )
               })

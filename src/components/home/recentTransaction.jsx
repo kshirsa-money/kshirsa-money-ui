@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import Animated, {
   useSharedValue,
@@ -21,6 +21,7 @@ import { resetDeleteTransactionAction } from '../../redux/reducers/deleteTransac
 import { resetaddTransactionAction } from '../../redux/reducers/addTransactionReducer';
 import { resetUpdateTransactionAction } from '../../redux/reducers/updateTransactionReducer';
 import { renderDeleteOrDuplicateSuccessToast } from '../../constants/ToastRender';
+import Colors from '../../styles/Colors';
 
 const RecentTransaction = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,9 @@ const RecentTransaction = () => {
       {/* Header */}
       <View style={recentTransactionStyles.titleWrapper}>
         <Text style={recentTransactionStyles.title}>Recent Transactions</Text>
+        <TouchableOpacity onPress={() => router.push(uiRoutes.allTransactions)} style={{padding: 5, backgroundColor: Colors.generalFocusBg, borderRadius: 5}}>
         <Text style={recentTransactionStyles.seeAllText}>See All</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Skeleton Loader */}

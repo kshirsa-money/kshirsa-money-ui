@@ -28,6 +28,14 @@ const AddEditCategoryModal = ({setOpenCategoryModal, openCategoryModal, editCate
     const onClose = () => {
         setOpenCategoryModal(false)
     }
+    useEffect(() => {
+        if (editCategoryData) {
+            setFormData({
+                categoryName: editCategoryData?.category?.categoryName,
+                description: editCategoryData?.category?.description
+            })
+        }
+    }, [editCategoryData])
 
     useEffect(() => {
         if(updateCategorySuccess || addCategorySuccess) {
@@ -71,7 +79,7 @@ const AddEditCategoryModal = ({setOpenCategoryModal, openCategoryModal, editCate
         }
     }
 
-
+console.log(editCategoryData, 'editCategoryData')
   return (
     <KshirsaModal
     isVisible={openCategoryModal}

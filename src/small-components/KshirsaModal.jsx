@@ -34,7 +34,7 @@ const KshirsaModal = ({
             <Text style={styles.buttonText}>{closeText}</Text>
           </TouchableOpacity>
           {onConfirm && (
-              <KshirsaButton title={confirmText} loading={confirmLoading} onPress={onConfirm} disabled={confirmDisabled} />
+              <KshirsaButton title={confirmText} width={140} loading={confirmLoading} onPress={onConfirm} disabled={confirmDisabled} />
           )}
         </View>}
       </View>

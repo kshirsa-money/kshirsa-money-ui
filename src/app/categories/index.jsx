@@ -13,19 +13,20 @@ import { showToast } from '../../constants/toastUtils'
 
 const ViewCategories = () => {
   const dispatch = useDispatch();
+  const { loading: deleteCategoryLoading, success: deleteCategorySuccess } = useSelector((state) => state.deleteCategoryReducer)
   const pathName = usePathname();
   const { transactionType } = useLocalSearchParams()
   const { loading, data, success } = useSelector((state) => state.viewCategoriesReducer)
-   const {success: updateCategorySuccess } = useSelector((state) => state.updateCategoryReducer) || {}
+  const { success: updateCategorySuccess } = useSelector((state) => state.updateCategoryReducer) || {}
   const { success: addCategorySuccess } = useSelector((state) => state.addCategoryReducer) || {}
   const [selectedType, setSelectedType] = useState(transactionType || transactionTypes.EXPENSE)
   const [openCategoryModal, setOpenCategoryModal] = useState(false)
   const [clickedCategory, setClickedCategory] = useState(null)
-  console.log(pathName, 'path')
+
   useEffect(() => {
     dispatch(viewCategoriesAction())
   }
-  , [addCategorySuccess, updateCategorySuccess])
+    , [addCategorySuccess, updateCategorySuccess, deleteCategorySuccess])
 
   const handlePress = (types) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -40,25 +41,25 @@ const ViewCategories = () => {
 
   //---------------------- Function to handle click on category----------------------
   const handleClickCategory = (category) => {
-  if(category?.isDefault || category?.isInUse) {
-   showToast({
-      message: 'Cannot delete default or in use category',
-      type: 'info',
-      duration: 3000,
+    if (category?.isDefault || category?.isInUse) {
+      showToast({
+        message: 'Cannot delete default or in use category',
+        type: 'info',
+        duration: 3000,
 
-   })
-    return
-  };
-  setOpenCategoryModal(true)
-  if(category) {
-    setClickedCategory(category)
-  } else {
-    setClickedCategory(null)
-  }
+      })
+      return
+    };
+    setOpenCategoryModal(true)
+    if (category) {
+      setClickedCategory(category)
+    } else {
+      setClickedCategory(null)
+    }
   }
   return (
     <ScrollView style={categoryStyles.container}>
-       {openCategoryModal && <AddEditCategoryModal setOpenCategoryModal={setOpenCategoryModal} openCategoryModal={openCategoryModal} editCategoryData={clickedCategory} dispatch={dispatch} transactionType={selectedType}  />}
+      <AddEditCategoryModal setOpenCategoryModal={setOpenCategoryModal} openCategoryModal={openCategoryModal} editCategoryData={clickedCategory} dispatch={dispatch} transactionType={selectedType} />
       <View style={categoryStyles.transactionTypeContainer}>
         {TransactionTypesToMap.map((types, index) => (
           <TouchableOpacity
@@ -77,7 +78,7 @@ const ViewCategories = () => {
         <FontAwesome6 name="add" size={24} color={Colors.white} />
         <Text style={categoryStyles.transactionTypeText}>Add Category</Text>
       </TouchableOpacity>
-      <CategoryList data={data} loading={loading} categoryType={selectedType} handleClickCategory={handleClickCategory} />
+      <CategoryList data={data} loading={loading} categoryType={selectedType} handleClickCategory={handleClickCategory} deleteCategoryLoading={deleteCategoryLoading} />
     </ScrollView>
   )
 }

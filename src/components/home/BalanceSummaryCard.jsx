@@ -25,9 +25,10 @@ const BalanceSummaryCard = () => {
     <>
       {/* Original UI */}
       <LinearGradient
-        colors={['#002200', Colors.primary, '#002200']} // Subtle gradient colors
-        start={{ x: 0, y: 0.5 }} // Top-left
-        end={{ x: 1, y: 0.5 }}   // Bottom-left
+        colors={[Colors.moodyBlack, Colors.moodyGreen2, Colors.moodyGreen, Colors.moodyGreen2, Colors.moodyBlack]} // Subtle gradient colors
+
+        start={{ x: 0.3, y: 0 }} // Top-left
+        end={{ x: 0.9, y: 1 }}   // Bottom-left
         // style={styles.card}
         style={balanceSummaryCardStyles.container}
       >

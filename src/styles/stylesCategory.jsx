@@ -55,7 +55,9 @@ const categoryStyles = StyleSheet.create({
         height: screenHeight* 0.6,
         justifyContent: 'center',
         alignItems: 'center',
-        alignSelf: 'center',
+        // alignSelf: 'center',
+        width: '100%',
+        paddingHorizontal: 20,
     },
     noDataContainer: {
         flex: 1,
@@ -75,7 +77,6 @@ const categoryStyles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         width: '100%',
-        // justifyContent: 'space-between',
     },
     categoryBtn: {
         flexDirection: 'row',
@@ -98,7 +99,8 @@ const categoryStyles = StyleSheet.create({
     popupContainer: {
         flexDirection: 'column',
         alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        // justifyContent: 'flex-start',
+        width: '100%'
 
     },
     categoryItem: {

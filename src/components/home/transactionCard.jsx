@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { formatLocalDateTime } from '../../utils/helper';
 import paymentModeOptions from '../../constants/paymentModeOptions';
 
-const TransactionCard = ({ transactionData, index, swipeableRef, onPress, onDuplicate, onDelete, needDelayAnimation = true }) => {
+const TransactionCard = ({ transactionData, index, swipeableRef, onPress, onDuplicate, onDelete, needDelayAnimation = true, isSwipeNeed=true }) => {
   const swipeRef = useRef(null);
   const scaleAnim = useRef(new Animated.Value(0)).current; // Start at 0 (hidden)
   const translateYAnim = useRef(new Animated.Value(50)).current; // Start below
@@ -44,7 +44,9 @@ const TransactionCard = ({ transactionData, index, swipeableRef, onPress, onDupl
   };
 
   // Right swipeable actions
-  const renderRightActions = () => (
+  const renderRightActions = () => {
+    if(!isSwipeNeed) return null;
+    return (
     <View style={transactionCardStyles.rightSwipeContainer}>
       <TouchableOpacity
         style={transactionCardStyles.editButton}
@@ -60,6 +62,7 @@ const TransactionCard = ({ transactionData, index, swipeableRef, onPress, onDupl
       </TouchableOpacity>
     </View>
   );
+};
 
   return (
     <Swipeable

@@ -23,8 +23,8 @@ const TransactionSortBy = ({visibleSortPopup, setVisibleSortPopup, filterParams,
             }
         })
     }
-    console.log(sortByForm, 'sortByForm')
-  return (
+
+    return (
    <KshirsaPopup visible={visibleSortPopup} onClose={onClose} header="Sort By" popupHeight={300}>
     <View style={{paddingHorizontal: 20}}>
         {TransactionSortByToMap.map((item, index) => (

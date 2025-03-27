@@ -163,7 +163,7 @@ export const addTransactionStyles = StyleSheet.create({
         fontSize: cssUtils.smallTextSize,
     },
     transactionNotesContainer: {
-        backgroundColor: Colors.generalCardBg,
+        backgroundColor: Colors.generalFocusBg,
         height: 80,
         marginHorizontal: 10,
         borderRadius: 10,
@@ -188,7 +188,8 @@ export const addTransactionStyles = StyleSheet.create({
     paymentModeOptionsContainer: {
         flexDirection: 'column',
         gap: 10,
-        marginHorizontal: 10,
+        paddingHorizontal: 10,
+        // marginHorizontal: 10,
     },
     paymentModeOption: {
         backgroundColor: Colors.moodyBlack,
@@ -198,7 +199,7 @@ export const addTransactionStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginHorizontal: 10,
+        // marginHorizontal: 10,
         marginVertical: 5,
         justifyContent: 'space-between',
         width: '100%',
@@ -210,11 +211,12 @@ export const addTransactionStyles = StyleSheet.create({
         fontSize: cssUtils.smallTextSize,
     },
     buttonContainer: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 10,
         position: 'absolute',
-        bottom: 50,
+        // bottom: 50,
         right: 30,
+        bottom: 0,
     }
     });

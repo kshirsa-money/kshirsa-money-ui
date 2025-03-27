@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font';
 import { AppLoading } from 'expo';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFontsLoaded } from '../redux/reducers/fontReducer';
+import { setFontsLoaded } from '../redux/reducers/uiReducer';
 import { Text, View } from 'react-native';
 
 const FontLoader = ({ children }) => {
