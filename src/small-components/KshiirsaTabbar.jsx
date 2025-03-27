@@ -11,8 +11,10 @@ import { usePathname, useRouter } from 'expo-router';
 import KshirsaFloatingBtn from './KshirsaFloatingBtn';
 import KshirsaUserAnimation from '../../assets/animatedImage/KshirsaUserAnimation';
 import KshirsaHomeAnimation from '../../assets/animatedImage/KshirsaHomeAnimated';
+import { useSelector } from 'react-redux';
 
 export default function KshirsaTabbar({ state, descriptors, navigation }) {
+    const { popupVisible } = useSelector((state) => state.uiReducer.aiVoiceSpeakerData) || {};
     const pathname = usePathname();
     const visibleFloatingBtn = pathname === uiRoutes.main;
     const router = useRouter();
@@ -42,7 +44,7 @@ export default function KshirsaTabbar({ state, descriptors, navigation }) {
             colors={Colors.tabBarGradientBorder} // Adjust gradient colors
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={KshirsaTabbarStyles.gradientBorder}
+            style={[KshirsaTabbarStyles.gradientBorder, popupVisible && { bottom: -200}]}
         >
             <View style={KshirsaTabbarStyles.container} onLayout={onTabbarLayout}>
                 {visibleFloatingBtn && (

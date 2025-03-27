@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TouchableOpacity, StyleSheet, Animated, View, Text, Pressable } from "react-native";
+import { TouchableOpacity, StyleSheet, Animated, View, } from "react-native";
 import Colors from "../styles/Colors";
 import KshirsaPlusAnimation from "../../assets/animatedImage/KshirsaPlusAnimation";
 import KshirsaAiSpeaker from "../../assets/animatedImage/KshirsaAiSpeaker";
 import { Entypo } from "@expo/vector-icons";
 import uiRoutes from "../constants/uiRoutes";
+import { useDispatch } from "react-redux";
+import { setAiVoiceSpeakerPopupVisible } from "../redux/reducers/uiReducer";
 
 export default function KshirsaFloatingBtn({ router }) {
-
+    const dispatch = useDispatch();
     // Fade animations for the first instance
     const fadeAnim1 = useRef(new Animated.Value(1)).current;
     const fadeAnim2 = useRef(new Animated.Value(0)).current;
@@ -31,12 +33,12 @@ export default function KshirsaFloatingBtn({ router }) {
         Animated.parallel([
             Animated.timing(position1, {
                 toValue: { x: -40, y: -80 }, // Move left & up
-                duration: 500,
+                duration: 300,
                 useNativeDriver: true,
             }),
             Animated.timing(position2, {
                 toValue: { x: 40, y: -80 }, // Move right & up
-                duration: 500,
+                duration: 300,
                 useNativeDriver: true,
             }),
         ]).start();
@@ -100,6 +102,12 @@ export default function KshirsaFloatingBtn({ router }) {
     const navigateAddTransaction = () => {
         router.push(uiRoutes.addTransaction);
     }
+
+    const handleAiVoiceClick = () => {
+        // dispatch(setAiVoiceSpeakerPopupVisible(true));
+        router.push(uiRoutes.KshirsaAiVoice)
+    }
+        
     return (
         <View style={[styles.container]}>
             {/* Overlapping animations (Before Click) */}
@@ -121,7 +129,7 @@ export default function KshirsaFloatingBtn({ router }) {
             {/* New Positioned animations (After Click) */}
             {isClicked && (
                 <>
-                    <Pressable onPress={navigateAddTransaction}>
+                    <TouchableOpacity onPress={navigateAddTransaction} style={{ zIndex: 10 }}>
                         <Animated.View
                             style={[
                                 styles.imageContainer,
@@ -130,9 +138,9 @@ export default function KshirsaFloatingBtn({ router }) {
                         >
                             <KshirsaPlusAnimation height={80} width={80} />
                         </Animated.View>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable onPress={() => console.log("AI Speaker Clicked")}>
+                    <TouchableOpacity onPress={handleAiVoiceClick} style={{ zIndex: 10 }}>
                         <Animated.View
                             style={[
                                 styles.imageContainer,
@@ -141,7 +149,7 @@ export default function KshirsaFloatingBtn({ router }) {
                         >
                             <KshirsaAiSpeaker />
                         </Animated.View>
-                    </Pressable>
+                    </TouchableOpacity>
 
                     {/* Close Button (X) */}
                 </>
