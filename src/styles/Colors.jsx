@@ -31,5 +31,10 @@ export default {
     generalFocusBg: 'rgb(64, 64, 66)',
     transactionCardBg: 'rgb(39, 38, 38)',
     modalBg: 'rgba(20, 30, 25, 0.89)',
-    tabBarBg: 'rgb(31, 31, 31)'
+    tabBarBg: 'rgb(31, 31, 31)',
+    deepMove: 'rgba(189, 91, 255, 0.4)',
+
+    // ai voice
+    aiVoicePageGradient: ["rgba(14, 16, 16, 0.7)", "rgba(0, 173, 121, 0.7)", 'rgba(0, 102, 255, 0.5)', 'rgb(27, 27, 27)'],
+    aiVoicePageGradient2: ['rgb(35, 75, 49)',"rgba(0, 173, 121, 0.7)", "rgba(0, 102, 255, 0.5)", "rgba(153, 0, 255, 0.4)", 'rgb(1, 29, 20)'],
 }
