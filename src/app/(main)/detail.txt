@@ -1,1 +1,3 @@
 all main file, menas after login, file should be here
+
+  <!-- <uses-permission android:name="android.permission.RECORD_AUDIO"/> -->

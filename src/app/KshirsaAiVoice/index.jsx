@@ -10,6 +10,7 @@ import KshirsaAiVoiceLogo from "../../../assets/animatedImage/KshirsaAiAnimated"
 import { screenWidth } from "../../constants/utils";
 import { FontAwesome, FontAwesome6, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import KshirsaAiSpeaker from "../../../assets/animatedImage/KshirsaAiSpeaker";
+import VoiceSpeaker from "../../components/voice-to-text/voiceSpeaker";
 
 const VoiceToText = () => {
   const [isChatMode, setIsChatMode] = useState(false);
@@ -157,9 +158,7 @@ const VoiceToText = () => {
 
             {/* Mic Button (Moves Right) */}
             <Animated.View style={{transform: [{ translateX: micTranslateX }]}}>
-              <TouchableOpacity onPress={toggleMic}>
-                <KshirsaAiSpeaker />
-              </TouchableOpacity>
+             <VoiceSpeaker toggleMic={toggleMic} />
             </Animated.View>
 
             {/* Send Button (Hidden in Chat Mode) */}

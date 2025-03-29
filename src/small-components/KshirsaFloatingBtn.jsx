@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { TouchableOpacity, StyleSheet, Animated, View, } from "react-native";
+import { StyleSheet, Animated, View, } from "react-native";
 import Colors from "../styles/Colors";
 import KshirsaPlusAnimation from "../../assets/animatedImage/KshirsaPlusAnimation";
 import KshirsaAiSpeaker from "../../assets/animatedImage/KshirsaAiSpeaker";
@@ -7,6 +7,7 @@ import { Entypo } from "@expo/vector-icons";
 import uiRoutes from "../constants/uiRoutes";
 import { useDispatch } from "react-redux";
 import { setAiVoiceSpeakerPopupVisible } from "../redux/reducers/uiReducer";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function KshirsaFloatingBtn({ router }) {
     const dispatch = useDispatch();
